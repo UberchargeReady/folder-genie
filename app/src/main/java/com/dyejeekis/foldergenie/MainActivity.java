@@ -1,4 +1,4 @@
-package com.example.foldergenie;
+package com.dyejeekis.foldergenie;
 
 import android.os.Bundle;
 
@@ -13,7 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.foldergenie.databinding.ActivityMainBinding;
+import com.dyejeekis.foldergenie.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;

@@ -1,4 +1,4 @@
-package com.example.foldergenie;
+package com.dyejeekis.foldergenie;
 
 import org.junit.Test;
 
