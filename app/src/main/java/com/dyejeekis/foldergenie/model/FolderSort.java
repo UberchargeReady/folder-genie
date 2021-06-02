@@ -2,6 +2,9 @@ package com.dyejeekis.foldergenie.model;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,8 @@ public class FolderSort {
     private final File rootDir;
     private final FileGroup fileGroup;
     private final List<SortMethod> sortMethods;
+
+    // TODO: 5/30/2021 maybe redundant (replaced by SortMethod field), consider removing later
     private final boolean renameFiles; // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
 
     private FolderSort(Builder builder) {
@@ -41,9 +46,9 @@ public class FolderSort {
     public String toString() {
         String s = "Root directory: " + rootDir.getAbsolutePath() + "\nTarget file group: " +
                 fileGroup.toString() + "\nRename files: " + renameFiles + "\nSort methods: ";
-        for (SortMethod m : sortMethods) {
-            s = s.concat(m.toString());
-            if (sortMethods.indexOf(m) < sortMethods.size()-1) s = s.concat(", ");
+        for (int i=0; i<sortMethods.size(); i++) {
+            s = s.concat(sortMethods.get(i).toString());
+            if (i < sortMethods.size()-1) s = s.concat(", ");
         }
         return s;
     }

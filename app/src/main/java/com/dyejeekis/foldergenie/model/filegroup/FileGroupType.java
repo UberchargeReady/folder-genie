@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.model;
+package com.dyejeekis.foldergenie.model.filegroup;
 
 public enum FileGroupType {
     ALL("All files"),
@@ -9,6 +9,7 @@ public enum FileGroupType {
     MONTH_CREATED("Files created in (month)"),
     MONTH_MODIFIED("Files modified in (month)"),
     SIZE("Files in size range"),
+    ALPHANUMERIC("Files in alphanumeric range"),
     FILE_EXTENSION("Files with the extension"),
     IMAGE("All images"),
     VIDEO("All videos"),

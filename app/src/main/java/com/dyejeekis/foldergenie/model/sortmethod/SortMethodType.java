@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.model;
+package com.dyejeekis.foldergenie.model.sortmethod;
 
 public enum SortMethodType {
     DATE_CREATED("Sort by date created"),
