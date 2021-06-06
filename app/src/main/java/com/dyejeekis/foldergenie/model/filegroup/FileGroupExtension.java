@@ -1,5 +1,7 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
+import androidx.annotation.NonNull;
+
 import com.dyejeekis.foldergenie.Util;
 
 import java.io.File;
@@ -29,5 +31,11 @@ public class FileGroupExtension extends FileGroup {
             } catch (IllegalArgumentException e) {}
             return false;
         });
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Files with the extensions: " + Util.listToString(extensions);
     }
 }

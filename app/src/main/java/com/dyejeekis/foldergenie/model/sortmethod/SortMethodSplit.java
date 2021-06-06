@@ -4,17 +4,30 @@ import java.io.File;
 
 public class SortMethodSplit extends SortMethod {
 
-    private final int filesPerFolder;
+    public static final int MAX_FILES_PER_DIR = 99999;
 
-    public SortMethodSplit(boolean useZipArchive, boolean addToFilename,
-                           int filesPerFolder) {
+    private final int filesPerDir;
+
+    private int fileCounter, currentDirName;
+
+    public SortMethodSplit(int filesPerDir, boolean useZipArchive, boolean addToFilename) {
         super(useZipArchive, addToFilename);
-        this.filesPerFolder = filesPerFolder;
+        if (filesPerDir < 1 || filesPerDir > MAX_FILES_PER_DIR)
+            throw new IllegalArgumentException("Invalid number of files per directory");
+        this.filesPerDir = filesPerDir;
+        this.fileCounter = 0;
+        this.currentDirName = 1;
     }
 
     @Override
-    public File getTargetDir(File rootDir, File dir) {
-        // TODO: 5/31/2021
-        return null;
+    public String getDirName(File file) {
+        fileCounter++;
+        if (fileCounter > filesPerDir) currentDirName++;
+        return String.valueOf(currentDirName);
+    }
+
+    @Override
+    public File getTargetDir(File file, File parentDir) {
+        return new File(parentDir.getAbsolutePath() + File.separator + getDirName(file));
     }
 }

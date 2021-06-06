@@ -8,8 +8,12 @@ public class SortMethodImageRes extends SortMethod {
     }
 
     @Override
-    public File getTargetDir(File rootDir, File dir) {
-        // TODO: 5/30/2021
+    public String getDirName(File file) {
+        return null;
+    }
+
+    @Override
+    public File getTargetDir(File file, File parentDir) {
         return null;
     }
 }

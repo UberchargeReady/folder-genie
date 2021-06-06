@@ -1,5 +1,7 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 
 public class FileGroupAudio extends FileGroupExtension {
@@ -18,5 +20,11 @@ public class FileGroupAudio extends FileGroupExtension {
 
     public FileGroupAudio(boolean includeSubdirs) {
         super(includeSubdirs);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "All audio files";
     }
 }

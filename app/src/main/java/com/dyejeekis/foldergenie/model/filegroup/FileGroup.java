@@ -1,8 +1,9 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
 import java.io.File;
+import java.io.Serializable;
 
-public abstract class FileGroup {
+public abstract class FileGroup implements Serializable {
 
     private final boolean includeSubdirs; // include files in sub-directories
 

@@ -1,15 +1,21 @@
 package com.dyejeekis.foldergenie.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.Util;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderSort {
+public class FolderSort implements Serializable {
+
+    public static final String TAG = "FolderSort";
 
     private final File rootDir;
     private final FileGroup fileGroup;
@@ -56,7 +62,27 @@ public class FolderSort {
     // returns true on successful sort completion
     public boolean executeSort() {
         try {
-            // TODO: 5/28/2021
+            File[] files = fileGroup.listfiles(rootDir);
+            for (File f : files) {
+
+                // calculate new directory based on sort methods
+                File targetDir = f.getParentFile();
+                for (SortMethod m : sortMethods) {
+                    targetDir = m.getTargetDir(f, targetDir);
+                }
+
+                // create directories if they don't exist yet
+                if (!targetDir.exists()) {
+                    Log.d(TAG, "Creating target directory " + targetDir.getAbsolutePath());
+                    targetDir.mkdirs();
+                }
+
+                // move (rename) file to new directory
+                File newPath = new File(targetDir.getAbsolutePath() + File.separator +
+                        f.getName());
+                Log.d(TAG, "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath());
+                Util.rename(f, newPath);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;

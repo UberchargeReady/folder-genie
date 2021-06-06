@@ -1,8 +1,9 @@
 package com.dyejeekis.foldergenie.model.sortmethod;
 
 import java.io.File;
+import java.io.Serializable;
 
-public abstract class SortMethod {
+public abstract class SortMethod implements Serializable {
 
     private final boolean useZipArchive;
     private final boolean addToFilename;
@@ -20,5 +21,7 @@ public abstract class SortMethod {
         return addToFilename;
     }
 
-    public abstract File getTargetDir(File rootDir, File dir);
+    public abstract String getDirName(File file);
+
+    public abstract File getTargetDir(File file, File parentDir);
 }
