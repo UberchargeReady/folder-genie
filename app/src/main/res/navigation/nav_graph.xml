@@ -3,26 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/SortOptionsFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.dyejeekis.foldergenie.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/SortOptionsFragment"
+        android:name="com.dyejeekis.foldergenie.SortOptionsFragment"
+        android:label="@string/sort_options_fragment_label"
+        tools:layout="@layout/fragment_sort_options">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_SortOptionsFragment_to_SortProgressFragment"
+            app:destination="@id/SortProgressFragment"/>
+
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.dyejeekis.foldergenie.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/SortProgressFragment"
+        android:name="com.dyejeekis.foldergenie.SortProgressFragment"
+        android:label="@string/sort_progress_fragment_label"
+        tools:layout="@layout/fragment_sort_progress">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SortProgressFragment_to_SortOptionsFragment"
+            app:destination="@id/SortOptionsFragment"/>
+
     </fragment>
+
 </navigation>

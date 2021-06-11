@@ -30,6 +30,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_info"
         android:contentDescription="Begin folder sort based on parameters"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
