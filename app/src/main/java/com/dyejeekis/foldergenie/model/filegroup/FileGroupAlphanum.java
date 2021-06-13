@@ -22,4 +22,9 @@ public class FileGroupAlphanum extends FileGroup {
         // TODO: 6/6/2021
         return super.toString();
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.ALPHANUMERIC;
+    }
 }

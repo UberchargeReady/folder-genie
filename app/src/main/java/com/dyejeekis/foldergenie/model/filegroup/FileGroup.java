@@ -16,4 +16,7 @@ public abstract class FileGroup implements Serializable {
     }
 
     public abstract File[] listfiles(File dir);
+
+    public abstract FileGroupType getType();
+
 }

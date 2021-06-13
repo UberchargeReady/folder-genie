@@ -6,6 +6,7 @@ public class SortMethodSplit extends SortMethod {
 
     public static final int MAX_FILES_PER_DIR = 99999;
 
+    // TODO: 6/12/2021 maybe add file size as an option for split
     private final int filesPerDir;
 
     private int fileCounter, currentDirName;
@@ -29,5 +30,10 @@ public class SortMethodSplit extends SortMethod {
     @Override
     public File getTargetDir(File file, File parentDir) {
         return new File(parentDir.getAbsolutePath() + File.separator + getDirName(file));
+    }
+
+    @Override
+    public SortMethodType getType() {
+        return SortMethodType.SPLIT;
     }
 }

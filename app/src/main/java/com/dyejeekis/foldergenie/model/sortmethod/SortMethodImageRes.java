@@ -16,4 +16,9 @@ public class SortMethodImageRes extends SortMethod {
     public File getTargetDir(File file, File parentDir) {
         return null;
     }
+
+    @Override
+    public SortMethodType getType() {
+        return SortMethodType.IMAGE_RESOLUTION;
+    }
 }

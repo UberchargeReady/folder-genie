@@ -22,4 +22,10 @@ public class FileGroupDate extends FileGroup {
         // TODO: 6/6/2021
         return super.toString();
     }
+
+    @Override
+    public FileGroupType getType() {
+        // TODO: 6/12/2021
+        return null;
+    }
 }

@@ -12,4 +12,9 @@ public class FileGroupSize extends FileGroup {
     public File[] listfiles(File dir) {
         return new File[0];
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.SIZE;
+    }
 }

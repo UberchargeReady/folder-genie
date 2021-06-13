@@ -27,4 +27,9 @@ public class FileGroupDocument extends FileGroupExtension {
     public String toString() {
         return "All documents";
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.DOCUMENT;
+    }
 }

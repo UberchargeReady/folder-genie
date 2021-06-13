@@ -18,4 +18,9 @@ public class FileGroupImage extends FileGroupExtension {
             addExtension(e);
         }
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.IMAGE;
+    }
 }

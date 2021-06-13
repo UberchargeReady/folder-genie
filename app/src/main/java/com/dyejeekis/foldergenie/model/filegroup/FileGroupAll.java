@@ -26,4 +26,9 @@ public class FileGroupAll extends FileGroup {
     public String toString() {
         return "All files";
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.ALL;
+    }
 }

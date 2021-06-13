@@ -1,23 +1,26 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
 public enum FileGroupType {
-    ALL("All files"),
-    DATE_CREATED("Files created at (date)"),
-    DATE_MODIFIED("Files modified at (date)"),
-    YEAR_CREATED("Files created in (year)"),
-    YEAR_MODIFIED("Files modified in (year)"),
-    MONTH_CREATED("Files created in (month)"),
-    MONTH_MODIFIED("Files modified in (month)"),
-    SIZE("Files in size range"),
-    ALPHANUMERIC("Files in alphanumeric range"),
-    FILE_EXTENSION("Files with the extension"),
-    IMAGE("All images"),
-    VIDEO("All videos"),
-    AUDIO("All audio files");
+    ALL("all", "All files"),
+    DATE_CREATED("dateCreated", "Files created at (date)"),
+    DATE_MODIFIED("dateModified", "Files modified at (date)"),
+    YEAR_CREATED("yearCreated", "Files created in (year)"),
+    YEAR_MODIFIED("yearModified", "Files modified in (year)"),
+    MONTH_CREATED("monthCreated", "Files created in (month)"),
+    MONTH_MODIFIED("monthModified", "Files modified in (month)"),
+    SIZE("size", "Files in size range"),
+    ALPHANUMERIC("alphanum", "Files in alphanumeric range"),
+    FILE_EXTENSION("fileExtension", "Files with the extension"),
+    IMAGE("images", "All images"),
+    VIDEO("videos", "All videos"),
+    AUDIO("audio", "All audio files"),
+    DOCUMENT("documents", "All documents");
 
-    public final String label;
+    public final String name, label;
 
-    FileGroupType(String label) {
+    FileGroupType(String name, String label) {
+        this.name = name;
         this.label = label;
     }
+
 }

@@ -18,4 +18,9 @@ public class FileGroupVideo extends FileGroupExtension {
     public FileGroupVideo(boolean includeSubdirs) {
         super(includeSubdirs);
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.VIDEO;
+    }
 }

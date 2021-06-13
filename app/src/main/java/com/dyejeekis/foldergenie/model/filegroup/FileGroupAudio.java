@@ -27,4 +27,9 @@ public class FileGroupAudio extends FileGroupExtension {
     public String toString() {
         return "All audio files";
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.AUDIO;
+    }
 }

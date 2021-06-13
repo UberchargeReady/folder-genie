@@ -38,4 +38,9 @@ public class FileGroupExtension extends FileGroup {
     public String toString() {
         return "Files with the extensions: " + Util.listToString(extensions);
     }
+
+    @Override
+    public FileGroupType getType() {
+        return FileGroupType.FILE_EXTENSION;
+    }
 }
