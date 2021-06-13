@@ -1,3 +1,4 @@
+
 package com.dyejeekis.foldergenie.model;
 
 import android.util.Log;
