@@ -7,8 +7,9 @@ public class SortMethodParser {
 
     public static final String TAG = "SortMethodParser";
 
-    private static final String PARAMETER_PREFIX = "-";
-    private static final String SORT_METHOD_SEPARATOR = ",";
+    public static final String SORT_METHOD_SEPARATOR = ",";
+    public static final String PARAMETER_PREFIX = "-";
+    // parameters must be lower case strings
 
     public static class SortMethodWrapper {
         private SortMethodType sortMethodType;
@@ -20,19 +21,25 @@ public class SortMethodParser {
         }
     }
 
+    private String input;
     private List<SortMethodWrapper> sortMethods;
 
     public SortMethodParser(List<SortMethodWrapper> sortMethods) {
         this.sortMethods = sortMethods;
     }
 
-    public SortMethodParser(String text) {
+    public SortMethodParser(String input) {
+        this.input = sanitizeInput(input);
+        List<SortMethodType> types = parseTypes(this.input);
         sortMethods = new ArrayList<>();
-        List<SortMethodType> types = parseTypes(text);
         for (SortMethodType type : types) {
-            List<String> params = parseParameters(text, type);
+            List<String> params = parseParameters(this.input, type);
             sortMethods.add(new SortMethodWrapper(type, params));
         }
+    }
+
+    private String sanitizeInput(String input) {
+        return input.replace(" ", "").toLowerCase();
     }
 
     private List<SortMethodType> parseTypes(String text) {
@@ -45,8 +52,8 @@ public class SortMethodParser {
 
     private List<String> parseParameters(String text, SortMethodType type) {
         List<String> params = new ArrayList<>();
-        String s = text.replace(" ", "");
-        s = s.substring(s.indexOf(type.name)).substring(0, s.indexOf(SORT_METHOD_SEPARATOR));
+        String s = text.substring(text.indexOf(type.name))
+                .substring(0, text.indexOf(SORT_METHOD_SEPARATOR));
         int index = 0;
         while (index != -1) {
             index = s.indexOf(PARAMETER_PREFIX);

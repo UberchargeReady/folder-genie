@@ -7,36 +7,52 @@ public class FileGroupParser {
 
     public static final String TAG = "FileGroupParser";
 
-    private static final String PARAMETER_PREFIX = "-";
+    public static final String PARAMETER_PREFIX = "/";
+    // parameters must be lower case strings
+    public static final String PARAMETER_INCLUDE_SUBDIRS = "includesubdirs";
 
-    private FileGroupType fileGroupType;
-    private List<String> parameters;
+    private String input;
+    private final FileGroupType fileGroupType;
+    private final List<String> parameters;
 
     public FileGroupParser(FileGroupType fileGroupType, List<String> parameters) {
         this.fileGroupType = fileGroupType;
         this.parameters = parameters;
     }
 
-    public FileGroupParser(String text) {
-        this.fileGroupType = parseType(text);
-        this.parameters = parseParameters(text);
+    public FileGroupParser(String input) {
+        this.input = sanitizeInput(input);
+        this.fileGroupType = parseType();
+        this.parameters = parseParameters();
     }
 
-    private FileGroupType parseType(String text) {
+    public FileGroupType getType() {
+        return fileGroupType;
+    }
+
+    public List<String> getParameters() {
+        return parameters;
+    }
+
+    private String sanitizeInput(String input) {
+        return input.replace(" ", "").toLowerCase();
+    }
+
+    private FileGroupType parseType() {
         for (FileGroupType type : FileGroupType.values()) {
-            if (text.contains(type.name)) return type;
+            if (input.contains(type.name.toLowerCase())) return type;
         }
         return null;
     }
 
-    private List<String> parseParameters(String text) {
+    private List<String> parseParameters() {
         List<String> params = new ArrayList<>();
-        String s = text.replace(" ", "");
-        int index = 0;
+        String s = input;
+        int index = s.indexOf(PARAMETER_PREFIX);
         while (index != -1) {
-            index = s.indexOf(PARAMETER_PREFIX);
             s = s.substring(index+1, s.indexOf(PARAMETER_PREFIX, index+1));
             params.add(s);
+            index = s.indexOf(PARAMETER_PREFIX);
         }
         return params;
     }
@@ -44,8 +60,8 @@ public class FileGroupParser {
     public FileGroup getFileGroup() {
         switch (fileGroupType) {
             case ALL:
-                // TODO: 6/13/2021
-                return null;
+                boolean includeSubdirs = parameters.contains(PARAMETER_INCLUDE_SUBDIRS);
+                return new FileGroupAll(includeSubdirs);
             case SIZE:
                 // TODO: 6/13/2021
                 return null;
