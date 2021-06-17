@@ -1,13 +1,18 @@
 package com.dyejeekis.foldergenie;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,6 +22,7 @@ import com.dyejeekis.foldergenie.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             // TODO: 6/6/2021
             return true;
         } else if (id == R.id.action_grant_permissions) {
-            // TODO: 6/6/2021
+            checkPermissions();
             return true;
         } else if (id == R.id.action_generate_test_files) {
             // TODO: 6/6/2021
@@ -92,5 +98,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void showInfoDialog() {
         // TODO: 6/6/2021
+    }
+
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    Toast.makeText(this, "Permissions granted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed to grant required permissions", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show();
+        } else requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 }

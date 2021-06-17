@@ -55,9 +55,18 @@ public class SortMethodParser {
 
     private List<SortMethodType> parseTypes() {
         List<SortMethodType> types = new ArrayList<>();
-        for (SortMethodType type : SortMethodType.values()) {
-            if (input.contains(type.name.toLowerCase())) types.add(type);
+        String[] strings = input.split(SORT_METHOD_SEPARATOR);
+        for (String s : strings) {
+            for (SortMethodType type : SortMethodType.values()) {
+                if (s.contains(type.name.toLowerCase())) {
+                    types.add(type);
+                    break;
+                }
+            }
         }
+//        for (SortMethodType type : SortMethodType.values()) {
+//            if (input.contains(type.name.toLowerCase())) types.add(type);
+//        }
         return types;
     }
 
