@@ -7,7 +7,7 @@ public class FileGroupParser {
 
     public static final String TAG = "FileGroupParser";
 
-    public static final String PARAMETER_PREFIX = "/";
+    public static final String PARAMETER_PREFIX = " -";
     // parameters must be lower case strings
     public static final String PARAMETER_INCLUDE_SUBDIRS = "includesubdirs";
 
@@ -35,7 +35,7 @@ public class FileGroupParser {
     }
 
     private String sanitizeInput(String input) {
-        return input.replace(" ", "").toLowerCase();
+        return input.toLowerCase();
     }
 
     private FileGroupType parseType() {
@@ -47,14 +47,26 @@ public class FileGroupParser {
 
     private List<String> parseParameters() {
         List<String> params = new ArrayList<>();
-        String s = input;
-        int index = s.indexOf(PARAMETER_PREFIX);
-        while (index != -1) {
-            s = s.substring(index+1, s.indexOf(PARAMETER_PREFIX, index+1));
-            params.add(s);
-            index = s.indexOf(PARAMETER_PREFIX);
+        int start = input.indexOf(PARAMETER_PREFIX);
+        while (start != -1) {
+            int end = input.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
+            if (end == -1) end = input.length();
+
+            String param = sanitizeParam(input.substring(start, end));
+            if (isValidParam(param)) params.add(param);
+
+            start = input.indexOf(PARAMETER_PREFIX, end);
         }
         return params;
+    }
+
+    private String sanitizeParam(String param) {
+        return param.replace(" ", "");
+    }
+
+    private boolean isValidParam(String param) {
+        // TODO: 6/16/2021
+        return true;
     }
 
     public FileGroup getFileGroup() {

@@ -12,8 +12,8 @@ public class SortMethodParser {
     // parameters must be lower case strings
 
     public static class SortMethodWrapper {
-        private SortMethodType sortMethodType;
-        private List<String> parameters;
+        public SortMethodType sortMethodType;
+        public List<String> parameters;
 
         public SortMethodWrapper(SortMethodType sortMethodType, List<String> parameters) {
             this.sortMethodType = sortMethodType;
@@ -22,44 +22,77 @@ public class SortMethodParser {
     }
 
     private String input;
-    private List<SortMethodWrapper> sortMethods;
+    private List<SortMethodWrapper> sortMethodWrappers;
 
-    public SortMethodParser(List<SortMethodWrapper> sortMethods) {
-        this.sortMethods = sortMethods;
+    public SortMethodParser(List<SortMethodWrapper> sortMethodWrappers) {
+        this.sortMethodWrappers = sortMethodWrappers;
     }
 
     public SortMethodParser(String input) {
         this.input = sanitizeInput(input);
-        List<SortMethodType> types = parseTypes(this.input);
-        sortMethods = new ArrayList<>();
+        List<SortMethodType> types = parseTypes();
+        sortMethodWrappers = new ArrayList<>();
         for (SortMethodType type : types) {
-            List<String> params = parseParameters(this.input, type);
-            sortMethods.add(new SortMethodWrapper(type, params));
+            List<String> params = parseParameters(type);
+            sortMethodWrappers.add(new SortMethodWrapper(type, params));
         }
     }
 
-    private String sanitizeInput(String input) {
-        return input.replace(" ", "").toLowerCase();
+    public List<SortMethodWrapper> getSortMethodWrappers() {
+        return sortMethodWrappers;
     }
 
-    private List<SortMethodType> parseTypes(String text) {
+    public boolean contains(SortMethodType type) {
+        for (SortMethodWrapper wrapper : sortMethodWrappers) {
+            if (wrapper.sortMethodType == type) return true;
+        }
+         return false;
+    }
+
+    private String sanitizeInput(String input) {
+        return input.toLowerCase();
+    }
+
+    private List<SortMethodType> parseTypes() {
         List<SortMethodType> types = new ArrayList<>();
         for (SortMethodType type : SortMethodType.values()) {
-            if (text.contains(type.name)) types.add(type);
+            if (input.contains(type.name.toLowerCase())) types.add(type);
         }
         return types;
     }
 
-    private List<String> parseParameters(String text, SortMethodType type) {
+    private List<String> parseParameters(SortMethodType type) {
+        // separate the part of the string that belongs to the given type
+        String s = input.substring(input.indexOf(type.name.toLowerCase()));
+        int end = s.indexOf(SORT_METHOD_SEPARATOR);
+        if (end == -1) end = s.length();
+        s = s.substring(0, end);
+
         List<String> params = new ArrayList<>();
-        String s = text.substring(text.indexOf(type.name))
-                .substring(0, text.indexOf(SORT_METHOD_SEPARATOR));
-        int index = 0;
-        while (index != -1) {
-            index = s.indexOf(PARAMETER_PREFIX);
-            s = s.substring(index+1, s.indexOf(PARAMETER_PREFIX, index+1));
-            params.add(s);
+        int start = s.indexOf(PARAMETER_PREFIX);
+        while (start != -1) {
+            end = s.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
+            if (end == -1) end = s.length();
+
+            String param = sanitizeParam(s.substring(start, end));
+            if (isValidParam(param)) params.add(param);
+
+            start = s.indexOf(PARAMETER_PREFIX, end);
         }
         return params;
+    }
+
+    private String sanitizeParam(String param) {
+        return param.replace(" ", "");
+    }
+
+    private boolean isValidParam(String param) {
+        // TODO: 6/16/2021
+        return true;
+    }
+
+    public List<SortMethod> getSortMethods() {
+        // TODO: 6/16/2021
+        return null;
     }
 }

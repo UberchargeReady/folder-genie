@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 public class FileGroupParserTest {
 
     FileGroupParser p1 = new FileGroupParser("alphanum");
-    FileGroupParser p2 = new FileGroupParser("SIZE /includesubdirs");
-    FileGroupParser p3 = new FileGroupParser("monthCreated/ includesubdirs");
-    FileGroupParser p4 = new FileGroupParser("year MoDified");
+    FileGroupParser p2 = new FileGroupParser("SIZE -param1");
+    FileGroupParser p3 = new FileGroupParser("monthCreated -PARAM2  -param3");
+    FileGroupParser p4 = new FileGroupParser("year modified - param4");
     FileGroupParser p5 = new FileGroupParser("invalidFileGroup");
 
     @Test
@@ -20,14 +20,15 @@ public class FileGroupParserTest {
         assertSame(p1.getType(), FileGroupType.ALPHANUMERIC);
         assertSame(p2.getType(), FileGroupType.SIZE);
         assertSame(p3.getType(), FileGroupType.MONTH_CREATED);
-        assertSame(p4.getType(), FileGroupType.YEAR_MODIFIED);
+        assertNull(p4.getType());
         assertNull(p5.getType());
     }
 
     @Test
     public void testParameters() {
         assertTrue(p1.getParameters().isEmpty());
-        assertEquals(p2.getParameters().get(0), FileGroupParser.PARAMETER_INCLUDE_SUBDIRS);
-        assertEquals(p3.getParameters().get(0), FileGroupParser.PARAMETER_INCLUDE_SUBDIRS);
+        assertEquals(p2.getParameters().get(0), "-param1");
+        assertEquals(p3.getParameters().get(0), "-param2");
+        assertEquals(p3.getParameters().get(1), "-param3");
     }
 }
