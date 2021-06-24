@@ -64,9 +64,6 @@ public class SortMethodParser {
                 }
             }
         }
-//        for (SortMethodType type : SortMethodType.values()) {
-//            if (input.contains(type.name.toLowerCase())) types.add(type);
-//        }
         return types;
     }
 
