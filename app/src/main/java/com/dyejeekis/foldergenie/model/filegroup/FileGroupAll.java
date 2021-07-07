@@ -2,10 +2,9 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.Util;
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
-import java.io.FileFilter;
 
 public class FileGroupAll extends FileGroup {
 
@@ -16,7 +15,7 @@ public class FileGroupAll extends FileGroup {
     @Override
     public File[] listfiles(File dir) {
         if (includeSubdirs()) {
-            return Util.listFilesRecursive(dir); // TODO: 6/5/2021 this isn't implemented yet
+            return GeneralUtil.listFilesRecursive(dir); // TODO: 6/5/2021 this isn't implemented yet
         }
         return dir.listFiles(File::isFile);
     }

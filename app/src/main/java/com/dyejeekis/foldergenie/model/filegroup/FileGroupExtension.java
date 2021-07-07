@@ -2,7 +2,7 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.Util;
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class FileGroupExtension extends FileGroup {
         // TODO: 5/30/2021 include sub-dirs
         return dir.listFiles(pathname -> {
             try {
-                String e = Util.getFileExtension(pathname);
+                String e = GeneralUtil.getFileExtension(pathname);
                 return extensions.contains(e);
             } catch (IllegalArgumentException e) {}
             return false;
@@ -36,7 +36,7 @@ public class FileGroupExtension extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "Files with the extensions: " + Util.listToString(extensions);
+        return "Files with the extensions: " + GeneralUtil.listToString(extensions);
     }
 
     @Override

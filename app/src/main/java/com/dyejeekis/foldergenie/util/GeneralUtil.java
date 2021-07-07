@@ -1,7 +1,16 @@
-package com.dyejeekis.foldergenie;
+package com.dyejeekis.foldergenie.util;
+
+import android.net.Uri;
+import android.util.Log;
+
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributeView;
@@ -11,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +29,9 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
-public class Util {
+public class GeneralUtil {
+
+    public static final String TAG = "GeneralUtil";
 
     public static File[] listFilesRecursive(File dir) {
         // TODO: 5/30/2021
@@ -40,17 +53,39 @@ public class Util {
                 && from.exists() && from.renameTo(to);
     }
 
-    public static File[] generateDummyFiles(File parentDir, int fileCount) throws IOException {
-        // TODO: 6/5/2021 add random file extensions
+    public static File[] generateDummyFiles(File parentDir, int fileCount) {
         File[] files = new File[fileCount];
-        for (int i=0; i<fileCount; i++) {
-            String name = UUID.randomUUID().toString();
-            File file = new File(parentDir.getAbsolutePath() + File.separator + name);
-            file.setLastModified(getRandomTimestamp());
-            boolean success = file.createNewFile();
-            if (success) files[i] = file;
+        List<String> extensions = getExtensionsList();
+        try {
+            for (int i = 0; i < fileCount; i++) {
+                String name = UUID.randomUUID().toString();
+                name = name.concat(getRandomFileExtension(extensions));
+                File file = new File(parentDir.getAbsolutePath() + File.separator + name);
+                file.setLastModified(getRandomTimestamp());
+                boolean success = file.createNewFile();
+                if (success) {
+                    Log.d(TAG, "Generated file " + file.getAbsolutePath());
+                    files[i] = file;
+                } else Log.d(TAG, "Failed to create file " + file.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return files;
+    }
+
+    public static List<String> getExtensionsList() {
+        List<String> extensions = new ArrayList<>();
+        extensions.addAll(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
+        return extensions;
+    }
+
+    public static String getRandomFileExtension(List<String> extensions) {
+        Random random = new Random();
+        return extensions.get(random.nextInt(extensions.size()));
     }
 
     public static Date getRandomDate() {
@@ -99,4 +134,13 @@ public class Util {
         }
         return string;
     }
+
+//    public static File uriToFile(Uri uri) {
+//        try {
+//            return new File(new URI(uri.getPath()));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.Util;
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
 
@@ -82,7 +82,7 @@ public class FolderSort implements Serializable {
                 File newPath = new File(targetDir.getAbsolutePath() + File.separator +
                         f.getName());
                 Log.d(TAG, "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath());
-                Util.rename(f, newPath);
+                GeneralUtil.rename(f, newPath);
             }
         } catch (Exception e) {
             e.printStackTrace();

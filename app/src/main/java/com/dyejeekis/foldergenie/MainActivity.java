@@ -1,15 +1,24 @@
 package com.dyejeekis.foldergenie;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.dyejeekis.foldergenie.util.FileUtil;
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
@@ -24,7 +33,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.File;
+import java.net.URI;
+
+public class MainActivity extends BaseActivity {
+
+    public static final String TAG = "MainActivity";
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -42,13 +56,8 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        binding.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
         binding.fab.setOnClickListener(v -> {
             showInfoDialog();
         });
@@ -76,7 +85,16 @@ public class MainActivity extends AppCompatActivity {
             checkPermissions();
             return true;
         } else if (id == R.id.action_generate_test_files) {
-            // TODO: 6/6/2021
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
+            activityLauncher.launch(intent, result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Uri uri = result.getData().getData();
+                    File file = new File(FileUtil.getFullPathFromTreeUri(uri, this));
+                    Log.d(TAG, "Generating dummy files in " + file.getAbsolutePath());
+                    GeneralUtil.generateDummyFiles(file, 20);
+                }
+            });
             return true;
         } else if (id == R.id.action_about) {
             showInfoDialog();
