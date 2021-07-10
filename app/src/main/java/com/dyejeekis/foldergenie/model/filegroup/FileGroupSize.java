@@ -4,8 +4,12 @@ import java.io.File;
 
 public class FileGroupSize extends FileGroup {
 
-    public FileGroupSize(boolean includeSubdirs) {
+    private final long minSize, maxSize;
+
+    public FileGroupSize(boolean includeSubdirs, long minSize, long maxSize) {
         super(includeSubdirs);
+        this.minSize = minSize;
+        this.maxSize = maxSize;
     }
 
     @Override
@@ -16,5 +20,13 @@ public class FileGroupSize extends FileGroup {
     @Override
     public FileGroupType getType() {
         return FileGroupType.SIZE;
+    }
+
+    public long getMinSize() {
+        return minSize;
+    }
+
+    public long getMaxSize() {
+        return maxSize;
     }
 }

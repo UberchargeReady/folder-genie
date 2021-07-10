@@ -3,8 +3,8 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 import java.io.File;
 
 public class SortMethodExtension extends SortMethod {
-    public SortMethodExtension(boolean useZipArchive, boolean addToFilename) {
-        super(useZipArchive, addToFilename);
+    public SortMethodExtension(boolean addToArchive, boolean addToFilename) {
+        super(addToArchive, addToFilename);
     }
 
     @Override

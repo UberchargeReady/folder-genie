@@ -22,14 +22,18 @@ public class FolderSort implements Serializable {
     private final FileGroup fileGroup;
     private final List<SortMethod> sortMethods;
 
-    // TODO: 5/30/2021 maybe redundant (replaced by SortMethod field), consider removing later
-    private final boolean renameFiles; // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
+    private boolean renameFiles; // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
 
     private FolderSort(Builder builder) {
         this.rootDir = builder.rootDir;
         this.fileGroup = builder.fileGroup;
         this.sortMethods = builder.sortMethods;
-        this.renameFiles = builder.renameFiles;
+        for (SortMethod sortMethod : this.sortMethods) {
+            if (sortMethod.addToFilename()) {
+                renameFiles = true;
+                break;
+            }
+        }
     }
 
     public File getRootDir() {
@@ -96,7 +100,6 @@ public class FolderSort implements Serializable {
         private File rootDir;
         private FileGroup fileGroup;
         private final List<SortMethod> sortMethods;
-        private boolean renameFiles;
 
         public Builder() {
             sortMethods = new ArrayList<>();
@@ -112,13 +115,13 @@ public class FolderSort implements Serializable {
             return this;
         }
 
-        public Builder addSortMethod(SortMethod sortMethod) {
-            this.sortMethods.add(sortMethod);
+        public Builder addSortMethods(List<SortMethod> sortMethods) {
+            this.sortMethods.addAll(sortMethods);
             return this;
         }
 
-        public Builder renameFiles(boolean renameFiles) {
-            this.renameFiles = renameFiles;
+        public Builder addSortMethod(SortMethod sortMethod) {
+            this.sortMethods.add(sortMethod);
             return this;
         }
 

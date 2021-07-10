@@ -11,15 +11,10 @@ import com.dyejeekis.foldergenie.util.FileUtil;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.DocumentsContract;
 import android.util.Log;
-import android.view.View;
 
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
@@ -34,7 +29,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.File;
-import java.net.URI;
+import java.io.IOException;
 
 public class MainActivity extends BaseActivity {
 
@@ -89,10 +84,29 @@ public class MainActivity extends BaseActivity {
             //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
             activityLauncher.launch(intent, result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Uri uri = result.getData().getData();
-                    File file = new File(FileUtil.getFullPathFromTreeUri(uri, this));
-                    Log.d(TAG, "Generating dummy files in " + file.getAbsolutePath());
-                    GeneralUtil.generateDummyFiles(file, 20);
+                    Uri treeUri = result.getData().getData();
+
+                    // TODO: 7/8/2021 permission denied when creating test files in sd card
+                    //DocumentFile pickedDir = DocumentFile.fromTreeUri(this, treeUri);
+                    //grantUriPermission(getPackageName(), treeUri,
+                    //        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    //getContentResolver().takePersistableUriPermission(treeUri,
+                    //        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+
+                    File file = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
+                    Log.d(TAG, "Generating test files in " + file.getAbsolutePath());
+                    Exception ex = null;
+                    final int fileCount = 20;
+                    try {
+                        GeneralUtil.generateTestFiles(file, fileCount);
+                    } catch (IOException e) {
+                        ex = e;
+                        e.printStackTrace();
+                        Toast.makeText(this, "Failed to generate test files", Toast.LENGTH_SHORT).show();
+                    }
+                    if (ex == null) Toast.makeText(this, fileCount + " test files generated successfully in " +
+                            file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                 }
             });
             return true;

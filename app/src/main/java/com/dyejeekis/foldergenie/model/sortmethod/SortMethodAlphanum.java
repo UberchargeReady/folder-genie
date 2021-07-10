@@ -3,8 +3,8 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 import java.io.File;
 
 public class SortMethodAlphanum extends SortMethod {
-    public SortMethodAlphanum(boolean useZipArchive, boolean addToFilename) {
-        super(useZipArchive, addToFilename);
+    public SortMethodAlphanum(boolean addToArchive, boolean addToFilename) {
+        super(addToArchive, addToFilename);
     }
 
     @Override

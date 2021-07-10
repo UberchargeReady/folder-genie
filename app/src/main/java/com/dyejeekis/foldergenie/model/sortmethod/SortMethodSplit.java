@@ -1,5 +1,7 @@
 package com.dyejeekis.foldergenie.model.sortmethod;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 
 public class SortMethodSplit extends SortMethod {
@@ -11,8 +13,8 @@ public class SortMethodSplit extends SortMethod {
 
     private int fileCounter, currentDirName;
 
-    public SortMethodSplit(int filesPerDir, boolean useZipArchive, boolean addToFilename) {
-        super(useZipArchive, addToFilename);
+    public SortMethodSplit(int filesPerDir, boolean addToArchive, boolean addToFilename) {
+        super(addToArchive, addToFilename);
         if (filesPerDir < 1 || filesPerDir > MAX_FILES_PER_DIR)
             throw new IllegalArgumentException("Invalid number of files per directory");
         this.filesPerDir = filesPerDir;
@@ -35,5 +37,16 @@ public class SortMethodSplit extends SortMethod {
     @Override
     public SortMethodType getType() {
         return SortMethodType.SPLIT;
+    }
+
+    @Override
+    public boolean addToFilename() {
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return  "Split in folders of " + filesPerDir + " files" + super.toString();
     }
 }

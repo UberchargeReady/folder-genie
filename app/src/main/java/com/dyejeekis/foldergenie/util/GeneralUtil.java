@@ -1,7 +1,11 @@
 package com.dyejeekis.foldergenie.util;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
@@ -28,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneralUtil {
 
@@ -53,23 +58,20 @@ public class GeneralUtil {
                 && from.exists() && from.renameTo(to);
     }
 
-    public static File[] generateDummyFiles(File parentDir, int fileCount) {
+    public static File[] generateTestFiles(File parentDir, int fileCount) throws IOException {
         File[] files = new File[fileCount];
         List<String> extensions = getExtensionsList();
-        try {
-            for (int i = 0; i < fileCount; i++) {
-                String name = UUID.randomUUID().toString();
-                name = name.concat(getRandomFileExtension(extensions));
-                File file = new File(parentDir.getAbsolutePath() + File.separator + name);
-                file.setLastModified(getRandomTimestamp());
-                boolean success = file.createNewFile();
-                if (success) {
-                    Log.d(TAG, "Generated file " + file.getAbsolutePath());
-                    files[i] = file;
-                } else Log.d(TAG, "Failed to create file " + file.getAbsolutePath());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i = 0; i < fileCount; i++) {
+            String name = UUID.randomUUID().toString();
+            String extension = ".".concat(getRandomFileExtension(extensions));
+            name = name.concat(extension);
+            File file = new File(parentDir.getAbsolutePath() + File.separator + name);
+            boolean success = file.createNewFile();
+            file.setLastModified(getRandomTimestamp());
+            if (success) {
+                Log.d(TAG, "Generated file " + file.getAbsolutePath());
+                files[i] = file;
+            } else Log.d(TAG, "Failed to create file " + file.getAbsolutePath());
         }
         return files;
     }
@@ -93,8 +95,9 @@ public class GeneralUtil {
     }
 
     public static long getRandomTimestamp() {
-        Random rnd = new Random();
-        return Math.abs(System.currentTimeMillis() - rnd.nextLong());
+        //Random rnd = new Random();
+        //return Math.abs(System.currentTimeMillis() - rnd.nextLong());
+        return ThreadLocalRandom.current().nextLong(System.currentTimeMillis());
     }
 
 //    public void setFileCreationDate(String filePath, Date creationDate) throws IOException{
@@ -133,6 +136,15 @@ public class GeneralUtil {
             if (list.indexOf(s) < list.size()-1) string = string.concat(", ");
         }
         return string;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        // Check if no view has focus:
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
 //    public static File uriToFile(Uri uri) {

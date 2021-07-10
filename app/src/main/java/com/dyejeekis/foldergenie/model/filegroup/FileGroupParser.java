@@ -1,5 +1,7 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
+import com.dyejeekis.foldergenie.util.ParameterList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +12,17 @@ public class FileGroupParser {
     public static final String PARAMETER_PREFIX = " -";
     // parameters must be lower case strings
     public static final String PARAMETER_INCLUDE_SUBDIRS = "includesubdirs";
+    public static final String PARAMETER_SIZE_MIN = "min";
+    public static final String PARAMETER_SIZE_MAX = "max";
+
+    public static final String[] VALID_PARAMETERS =
+            {PARAMETER_INCLUDE_SUBDIRS, PARAMETER_SIZE_MIN, PARAMETER_SIZE_MAX};
 
     private String input;
     private final FileGroupType fileGroupType;
-    private final List<String> parameters;
+    private final ParameterList parameters;
 
-    public FileGroupParser(FileGroupType fileGroupType, List<String> parameters) {
+    public FileGroupParser(FileGroupType fileGroupType, ParameterList parameters) {
         this.fileGroupType = fileGroupType;
         this.parameters = parameters;
     }
@@ -45,8 +52,8 @@ public class FileGroupParser {
         return null;
     }
 
-    private List<String> parseParameters() {
-        List<String> params = new ArrayList<>();
+    private ParameterList parseParameters() {
+        ParameterList params = new ParameterList();
         int start = input.indexOf(PARAMETER_PREFIX);
         while (start != -1) {
             int end = input.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
@@ -70,31 +77,42 @@ public class FileGroupParser {
     }
 
     public FileGroup getFileGroup() {
+        FileGroup fileGroup;
+        final boolean includeSubdirs = parameters.contains(PARAMETER_INCLUDE_SUBDIRS);
         switch (fileGroupType) {
             case ALL:
-                boolean includeSubdirs = parameters.contains(PARAMETER_INCLUDE_SUBDIRS);
-                return new FileGroupAll(includeSubdirs);
+                fileGroup = new FileGroupAll(includeSubdirs);
+                return fileGroup;
             case SIZE:
                 // TODO: 6/13/2021
-                return null;
+                long minSize = parameters.getLongParamValue(PARAMETER_SIZE_MIN);
+                long maxSize = parameters.getLongParamValue(PARAMETER_SIZE_MAX);
+                fileGroup = new FileGroupSize(includeSubdirs, minSize, maxSize);
+                return fileGroup;
             case AUDIO:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupAudio(includeSubdirs);
+                return fileGroup;
             case IMAGE:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupImage(includeSubdirs);
+                return fileGroup;
             case VIDEO:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupVideo(includeSubdirs);
+                return fileGroup;
             case DOCUMENT:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupDocument(includeSubdirs);
+                return fileGroup;
             case ALPHANUMERIC:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupAlphanum(includeSubdirs);
+                return fileGroup;
             case FILE_EXTENSION:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupExtension(includeSubdirs);
+                return fileGroup;
             case DATE_CREATED:
             case DATE_MODIFIED:
             case YEAR_CREATED:
@@ -102,7 +120,8 @@ public class FileGroupParser {
             case MONTH_CREATED:
             case MONTH_MODIFIED:
                 // TODO: 6/13/2021
-                return null;
+                fileGroup = new FileGroupDate(includeSubdirs);
+                return fileGroup;
             default:
                 throw new IllegalArgumentException("Invalid file group type");
         }
