@@ -19,17 +19,29 @@ public class ParameterList extends ArrayList<String> {
     }
 
     public int getIntParamValue(String param) {
-        String s = get(indexOf(param));
+        return getIntParamValue(param, indexOf(param));
+    }
+
+    public int getIntParamValue(String param, int index) {
+        String s = get(index);
         return Integer.parseInt(s.substring(param.length() + 1));
     }
 
     public long getLongParamValue(String param) {
-        String s = get(indexOf(param));
+        return getLongParamValue(param, indexOf(param));
+    }
+
+    public long getLongParamValue(String param, int index) {
+        String s = get(index);
         return Long.parseLong(s.substring(param.length() + 1));
     }
 
     public String getStringParamValue(String param) {
-        String s = get(indexOf(param));
+        return getStringParamValue(param, indexOf(param));
+    }
+
+    public String getStringParamValue(String param, int index) {
+        String s = get(index);
         return s.substring(param.length() + 1);
     }
 }

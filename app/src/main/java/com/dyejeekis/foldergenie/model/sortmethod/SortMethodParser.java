@@ -11,13 +11,15 @@ public class SortMethodParser {
 
     public static final String SORT_METHOD_SEPARATOR = ",";
     public static final String PARAMETER_PREFIX = "-";
+    public static final String PARAMETER_VALUE_RANGE_SEPARATOR = "to";
     // parameters must be lower case strings
     public static final String PARAMETER_ADD_TO_ARCHIVE = "archive";
     public static final String PARAMETER_ADD_TO_FILENAME = "rename";
     public static final String PARAMETER_FILES_PER_DIR = "filecount";
+    public static final String PARAMETER_SIZE_RANGE = "range";
 
     public static final String[] VALID_PARAMETERS =
-            {};
+            {PARAMETER_ADD_TO_ARCHIVE, PARAMETER_ADD_TO_FILENAME, PARAMETER_FILES_PER_DIR};
 
     public static class SortMethodWrapper {
         public SortMethodType sortMethodType;
@@ -118,8 +120,15 @@ public class SortMethodParser {
                     sortMethod = new SortMethodSplit(filecount, addToArchive, addToFilename);
                     break;
                 case SIZE:
-                    // TODO: 7/10/2021
                     sortMethod = new SortMethodSize(addToArchive, addToFilename);
+                    for (int i=0; i<params.size(); i++) {
+                        if (params.get(i).contains(PARAMETER_SIZE_RANGE)) {
+                            String range = params.getStringParamValue(PARAMETER_SIZE_RANGE, i);
+                            long min = Long.parseLong(range.split(PARAMETER_VALUE_RANGE_SEPARATOR)[0]);
+                            long max = Long.parseLong(range.split(PARAMETER_VALUE_RANGE_SEPARATOR)[1]);
+                            ((SortMethodSize) sortMethod).addSizeRange(min, max);
+                        }
+                    }
                     break;
                 case FILE_EXTENSION:
                     // TODO: 7/10/2021

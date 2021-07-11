@@ -11,7 +11,7 @@ public class FileGroupParser {
 
     public static final String PARAMETER_PREFIX = " -";
     // parameters must be lower case strings
-    public static final String PARAMETER_INCLUDE_SUBDIRS = "includesubdirs";
+    public static final String PARAMETER_INCLUDE_SUBDIRS = "subdirs";
     public static final String PARAMETER_SIZE_MIN = "min";
     public static final String PARAMETER_SIZE_MAX = "max";
 

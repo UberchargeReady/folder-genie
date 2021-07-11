@@ -20,7 +20,7 @@ public class FolderSort implements Serializable {
 
     private final File rootDir;
     private final FileGroup fileGroup;
-    private final List<SortMethod> sortMethods;
+    private final List<SortMethod> sortMethods; // TODO: 7/11/2021 properly handle multiple sort methods of the same type
 
     private boolean renameFiles; // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
 
@@ -59,7 +59,7 @@ public class FolderSort implements Serializable {
                 fileGroup.toString() + "\nRename files: " + renameFiles + "\nSort methods: ";
         for (int i=0; i<sortMethods.size(); i++) {
             s = s.concat(sortMethods.get(i).toString());
-            if (i < sortMethods.size()-1) s = s.concat(", ");
+            if (i < sortMethods.size()-1) s = s.concat(" -THEN- ");
         }
         return s;
     }

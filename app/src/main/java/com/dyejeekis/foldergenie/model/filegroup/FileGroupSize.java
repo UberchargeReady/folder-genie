@@ -8,6 +8,7 @@ public class FileGroupSize extends FileGroup {
 
     public FileGroupSize(boolean includeSubdirs, long minSize, long maxSize) {
         super(includeSubdirs);
+        if (minSize <= 0 && maxSize <= 0) throw new IllegalArgumentException("Invalid size range");
         this.minSize = minSize;
         this.maxSize = maxSize;
     }

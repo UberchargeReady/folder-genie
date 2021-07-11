@@ -147,6 +147,25 @@ public class GeneralUtil {
         }
     }
 
+    public static String getReadableFilesize(long bytes) {
+        final int decimalPlaces = 1;
+        if (bytes >= 1000000000) {
+            return round((double) bytes / 1000000000, decimalPlaces) + "GB";
+        }
+        if (bytes >= 1000000) {
+            return round((double) bytes / 1000000, decimalPlaces) + "MB";
+        }
+        if (bytes >= 1000) {
+            return round((double) bytes / 1000, decimalPlaces) + "KB";
+        }
+        return bytes + "B";
+    }
+
+    private static double round(double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
+    }
+
 //    public static File uriToFile(Uri uri) {
 //        try {
 //            return new File(new URI(uri.getPath()));
