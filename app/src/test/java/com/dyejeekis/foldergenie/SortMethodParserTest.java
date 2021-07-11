@@ -14,6 +14,7 @@ public class SortMethodParserTest {
     SortMethodParser p3 = new SortMethodParser("split -param2 -param3 , size -param4");
     SortMethodParser p4 = new SortMethodParser("file extension -param5,alphanum  -param6 -param7, imageRes");
     SortMethodParser p5 = new SortMethodParser("invalidSortMethod");
+    SortMethodParser p6 = new SortMethodParser("split -param8, split -param9");
 
     @Test
     public void testType() {
@@ -25,6 +26,8 @@ public class SortMethodParserTest {
         assertSame(p4.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.ALPHANUMERIC);
         assertSame(p4.getSortMethodWrappers().get(1).sortMethodType, SortMethodType.IMAGE_RESOLUTION);
         assertTrue(p5.getSortMethodWrappers().isEmpty());
+        assertSame(p6.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.SPLIT);
+        assertSame(p6.getSortMethodWrappers().get(1).sortMethodType, SortMethodType.SPLIT);
     }
 
     @Test
@@ -38,5 +41,7 @@ public class SortMethodParserTest {
         assertEquals(p4.getSortMethodWrappers().get(0).parameters.get(0), "-param6");
         assertEquals(p4.getSortMethodWrappers().get(0).parameters.get(1), "-param7");
         assertTrue(p4.getSortMethodWrappers().get(1).parameters.isEmpty());
+        assertEquals(p6.getSortMethodWrappers().get(0).parameters.get(0), "-param8");
+        assertEquals(p6.getSortMethodWrappers().get(1).parameters.get(0), "-param9");
     }
 }

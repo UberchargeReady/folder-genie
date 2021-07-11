@@ -166,6 +166,14 @@ public class GeneralUtil {
         return (double) Math.round(value * scale) / scale;
     }
 
+    // returns index of nth occurrence of substr in str
+    public static int ordinalIndexOf(String str, String substr, int n) {
+        int pos = str.indexOf(substr);
+        while (--n > 0 && pos != -1)
+            pos = str.indexOf(substr, pos + 1);
+        return pos;
+    }
+
 //    public static File uriToFile(Uri uri) {
 //        try {
 //            return new File(new URI(uri.getPath()));

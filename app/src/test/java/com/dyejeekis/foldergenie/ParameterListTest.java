@@ -15,9 +15,9 @@ public class ParameterListTest {
 
     @Before
     public void init() {
-        p1.add("-param1 423424");
-        p1.add("-param2 543525325442");
-        p1.add("-param3 fajsdf");
+        p1.add("-param1423424");
+        p1.add("-param2543525325442");
+        p1.add("-param3fajsdf");
     }
 
     @Test

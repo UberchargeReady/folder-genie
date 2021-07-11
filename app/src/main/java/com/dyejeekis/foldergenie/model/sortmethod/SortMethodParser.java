@@ -1,5 +1,6 @@
 package com.dyejeekis.foldergenie.model.sortmethod;
 
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.util.ParameterList;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class SortMethodParser {
     }
 
     private String input;
-    private List<SortMethodWrapper> sortMethodWrappers;
+    private final List<SortMethodWrapper> sortMethodWrappers;
 
     public SortMethodParser(List<SortMethodWrapper> sortMethodWrappers) {
         this.sortMethodWrappers = sortMethodWrappers;
@@ -40,54 +41,36 @@ public class SortMethodParser {
 
     public SortMethodParser(String input) {
         this.input = sanitizeInput(input);
-        List<SortMethodType> types = parseTypes();
-        sortMethodWrappers = new ArrayList<>();
-        for (SortMethodType type : types) {
-            ParameterList params = parseParameters(type);
-            sortMethodWrappers.add(new SortMethodWrapper(type, params));
-        }
+        this.sortMethodWrappers = parseSortMethodWrappers();
     }
 
     public List<SortMethodWrapper> getSortMethodWrappers() {
         return sortMethodWrappers;
     }
 
-    public boolean contains(SortMethodType type) {
-        for (SortMethodWrapper wrapper : sortMethodWrappers) {
-            if (wrapper.sortMethodType == type) return true;
-        }
-         return false;
-    }
-
     private String sanitizeInput(String input) {
         return input.toLowerCase();
     }
 
-    private List<SortMethodType> parseTypes() {
-        List<SortMethodType> types = new ArrayList<>();
+    private List<SortMethodWrapper> parseSortMethodWrappers() {
+        List<SortMethodWrapper> wrappers = new ArrayList<>();
         String[] strings = input.split(SORT_METHOD_SEPARATOR);
         for (String s : strings) {
             for (SortMethodType type : SortMethodType.values()) {
                 if (s.contains(type.name.toLowerCase())) {
-                    types.add(type);
+                    wrappers.add(new SortMethodWrapper(type, parseParameters(s)));
                     break;
                 }
             }
         }
-        return types;
+        return wrappers;
     }
 
-    private ParameterList parseParameters(SortMethodType type) {
-        // separate the part of the string that belongs to the given type
-        String s = input.substring(input.indexOf(type.name.toLowerCase()));
-        int end = s.indexOf(SORT_METHOD_SEPARATOR);
-        if (end == -1) end = s.length();
-        s = s.substring(0, end);
-
+    private ParameterList parseParameters(String s) {
         ParameterList params = new ParameterList();
         int start = s.indexOf(PARAMETER_PREFIX);
         while (start != -1) {
-            end = s.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
+            int end = s.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
             if (end == -1) end = s.length();
 
             String param = sanitizeParam(s.substring(start, end));
