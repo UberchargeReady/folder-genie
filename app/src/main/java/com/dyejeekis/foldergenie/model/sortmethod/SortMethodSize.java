@@ -26,9 +26,9 @@ public class SortMethodSize extends SortMethod {
             String minS = GeneralUtil.getReadableFilesize(minSize);
             String maxS = GeneralUtil.getReadableFilesize(maxSize);
             if (minSize == maxSize) return minS;
-            if (minSize <= 0) return "<=" + maxS;
-            if (maxSize <= 0) return ">=" + minS;
-            return minS + "-" + maxS;
+            if (minSize <= 0) return maxS + " or less";
+            if (maxSize <= 0) return minS + " or more";
+            return minS + " to " + maxS;
         }
     }
 
@@ -42,12 +42,13 @@ public class SortMethodSize extends SortMethod {
 
     @Override
     public String getDirName(File file) {
-        return null;
-    }
-
-    @Override
-    public File getTargetDir(File file, File parentDir) {
-        return null;
+        for (SizeRange range : sizeRanges) {
+            if (file.length() >= range.minSize) {
+                if (range.maxSize <= 0 || file.length() <= range.maxSize)
+                    return range.toString();
+            }
+        }
+        return "";
     }
 
     @Override
@@ -78,9 +79,5 @@ public class SortMethodSize extends SortMethod {
 
     public void addSizeRange(long minSize, long maxSize) {
         sizeRanges.add(new SizeRange(minSize, maxSize));
-    }
-
-    public void addSizeRange(SizeRange sizeRange) {
-        sizeRanges.add(sizeRange);
     }
 }

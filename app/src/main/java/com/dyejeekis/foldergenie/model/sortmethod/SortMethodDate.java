@@ -13,11 +13,6 @@ public class SortMethodDate extends SortMethod {
     }
 
     @Override
-    public File getTargetDir(File file, File parentDir) {
-        return null;
-    }
-
-    @Override
     public SortMethodType getType() {
         // TODO: 6/12/2021
         return null;

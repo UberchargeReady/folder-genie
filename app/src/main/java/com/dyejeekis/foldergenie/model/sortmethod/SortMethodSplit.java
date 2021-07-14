@@ -30,11 +30,6 @@ public class SortMethodSplit extends SortMethod {
     }
 
     @Override
-    public File getTargetDir(File file, File parentDir) {
-        return new File(parentDir.getAbsolutePath() + File.separator + getDirName(file));
-    }
-
-    @Override
     public SortMethodType getType() {
         return SortMethodType.SPLIT;
     }

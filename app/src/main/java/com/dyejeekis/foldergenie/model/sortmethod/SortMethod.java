@@ -25,7 +25,9 @@ public abstract class SortMethod implements Serializable {
 
     public abstract String getDirName(File file);
 
-    public abstract File getTargetDir(File file, File parentDir);
+    public File getTargetDir(File file, File parentDir) {
+        return new File(parentDir.getAbsolutePath() + File.separator + getDirName(file));
+    }
 
     public abstract SortMethodType getType();
 
