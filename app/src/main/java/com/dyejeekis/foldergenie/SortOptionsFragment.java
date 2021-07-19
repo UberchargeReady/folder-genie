@@ -29,6 +29,8 @@ public class SortOptionsFragment extends Fragment {
 
     private FragmentSortOptionsBinding binding;
 
+    private FolderSort folderSort;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,9 +56,13 @@ public class SortOptionsFragment extends Fragment {
 
         binding.buttonCheckSortParameters.setOnClickListener(v -> {
             GeneralUtil.hideKeyboard(getActivity());
-            binding.textViewSortInfo.setText(getFolderSortInfo());
+            updateFolderSort();
+            String sortInfo = getFolderSortInfo();
+            binding.textViewSortInfo.setText(sortInfo);
+            binding.buttonBeginSort.setEnabled(folderSort != null);
         });
 
+        binding.buttonBeginSort.setEnabled(false);
         binding.buttonBeginSort.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_SortOptionsFragment_to_SortProgressFragment);
             // TODO: 6/6/2021
@@ -70,13 +76,12 @@ public class SortOptionsFragment extends Fragment {
     }
 
     private String getFolderSortInfo() {
-        FolderSort folderSort = getFolderSort();
-        if (folderSort == null) {
+        if (folderSort == null)
             return "Invalid/incomplete inputs";
-        } else return folderSort.toString();
+        else return folderSort.toString();
     }
 
-    private FolderSort getFolderSort() {
+    private void updateFolderSort() {
         try {
             if (validateInputs()) {
                 File rootDir = new File(binding.textViewSelectedDir.getText().toString());
@@ -87,7 +92,7 @@ public class SortOptionsFragment extends Fragment {
                 SortMethodParser sortMethodParser = new SortMethodParser(binding.editTextSortMethod.getText().toString());
                 List<SortMethod> sortMethods = sortMethodParser.getSortMethods();
 
-                return new FolderSort.Builder()
+                folderSort = new FolderSort.Builder()
                         .rootDir(rootDir)
                         .fileGroup(fileGroup)
                         .addSortMethods(sortMethods)
@@ -95,8 +100,8 @@ public class SortOptionsFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            folderSort = null;
         }
-        return null;
     }
 
     private boolean validateInputs() {
