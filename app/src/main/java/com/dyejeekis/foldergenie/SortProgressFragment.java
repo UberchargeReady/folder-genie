@@ -12,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dyejeekis.foldergenie.databinding.FragmentSortProgressBinding;
+import com.dyejeekis.foldergenie.model.FolderSort;
 
 public class SortProgressFragment extends Fragment {
 
     private FragmentSortProgressBinding binding;
+
+    private FolderSort folderSort;
 
     @Nullable
     @Override
