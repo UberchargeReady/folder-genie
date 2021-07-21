@@ -11,25 +11,29 @@ public class SortMethodSplit extends SortMethod {
     // TODO: 6/12/2021 maybe add file size as an option for split
     private final int filesPerDir;
 
-    private int fileCounter, currentDirName;
+    private int currentDirName;
 
     public SortMethodSplit(int filesPerDir, boolean addToArchive, boolean addToFilename) {
         super(addToArchive, addToFilename);
         if (filesPerDir < 1 || filesPerDir > MAX_FILES_PER_DIR)
             throw new IllegalArgumentException("Invalid number of files per directory");
         this.filesPerDir = filesPerDir;
-        this.fileCounter = 0;
-        this.currentDirName = 1;
+        this.currentDirName = 0;
+    }
+
+    @Override
+    public File getTargetDir(File file, File parentDir) {
+        File targetDir = super.getTargetDir(file, parentDir);
+        if (targetDir.exists() && targetDir.listFiles().length >= filesPerDir) {
+            currentDirName++;
+            return getTargetDir(file, parentDir);
+        }
+        return targetDir;
     }
 
     @Override
     public String getDirName(File file) {
-        fileCounter++;
-        if (fileCounter > filesPerDir) {
-            fileCounter = 1;
-            currentDirName++;
-        }
-        return String.valueOf(currentDirName);
+        return String.valueOf(MAX_FILES_PER_DIR - currentDirName);
     }
 
     @Override

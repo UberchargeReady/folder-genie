@@ -99,6 +99,8 @@ public class FolderSort implements Serializable {
                 }
 
                 GeneralUtil.rename(f, newPath);
+
+                //Thread.sleep(500);
             }
         } catch (Exception e) {
             e.printStackTrace();
