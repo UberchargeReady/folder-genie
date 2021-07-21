@@ -23,7 +23,7 @@ public class FileGroupAll extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "All files in directory";
+        return "All files in directory" + super.toString();
     }
 
     @Override

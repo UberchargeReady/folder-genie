@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie;
+package com.dyejeekis.foldergenie.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.databinding.FragmentSortOptionsBinding;
 import com.dyejeekis.foldergenie.model.FolderSort;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
@@ -45,7 +47,7 @@ public class SortOptionsFragment extends Fragment {
         binding.buttonBrowseDirectories.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
-            ((MainActivity) getActivity()).activityLauncher.launch(intent, result -> {
+            ((MainActivity) getActivity()).getActivityLauncher().launch(intent, result -> {
                 if (result.getData() != null) {
                     Uri treeUri = result.getData().getData();
                     File file = new File(FileUtil.getFullPathFromTreeUri(treeUri, getActivity()));
@@ -64,8 +66,9 @@ public class SortOptionsFragment extends Fragment {
 
         binding.buttonBeginSort.setEnabled(false);
         binding.buttonBeginSort.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_SortOptionsFragment_to_SortProgressFragment);
-            // TODO: 6/6/2021
+            SortOptionsFragmentDirections.BeginSortAction action =
+                    SortOptionsFragmentDirections.beginSortAction(folderSort);
+            NavHostFragment.findNavController(this).navigate(action);
         });
     }
 

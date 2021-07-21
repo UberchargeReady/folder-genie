@@ -1,10 +1,14 @@
-package com.dyejeekis.foldergenie;
+package com.dyejeekis.foldergenie.service;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 
 public class ServiceResultReceiver extends ResultReceiver {
+
+    public static final int CODE_SHOW_PROGRESS = 2000;
+
+    public static final String KEY_PROGRESS_MESSAGE = "progressMessage";
 
     private Receiver receiver;
 

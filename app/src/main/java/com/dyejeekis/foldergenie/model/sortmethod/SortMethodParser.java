@@ -1,7 +1,6 @@
 package com.dyejeekis.foldergenie.model.sortmethod;
 
-import com.dyejeekis.foldergenie.util.GeneralUtil;
-import com.dyejeekis.foldergenie.util.ParameterList;
+import com.dyejeekis.foldergenie.model.ParameterList;
 
 import java.util.ArrayList;
 import java.util.List;

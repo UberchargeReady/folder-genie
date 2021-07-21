@@ -25,7 +25,10 @@ public class SortMethodSplit extends SortMethod {
     @Override
     public String getDirName(File file) {
         fileCounter++;
-        if (fileCounter > filesPerDir) currentDirName++;
+        if (fileCounter > filesPerDir) {
+            fileCounter = 1;
+            currentDirName++;
+        }
         return String.valueOf(currentDirName);
     }
 

@@ -1,11 +1,9 @@
-package com.dyejeekis.foldergenie;
+package com.dyejeekis.foldergenie.activity;
 
 import android.content.Intent;
 
 import androidx.activity.result.ActivityResult;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.dyejeekis.foldergenie.util.BetterActivityResult;
 
 public class BaseActivity extends AppCompatActivity {
 

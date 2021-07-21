@@ -1,10 +1,13 @@
 
 package com.dyejeekis.foldergenie.model;
 
+import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
@@ -16,7 +19,7 @@ import java.util.List;
 
 public class FolderSort implements Serializable {
 
-    public static final String TAG = "FolderSort";
+    public static final String TAG = FolderSort.class.getSimpleName();
 
     private final File rootDir;
     private final FileGroup fileGroup;
@@ -65,7 +68,7 @@ public class FolderSort implements Serializable {
     }
 
     // returns true on successful sort completion
-    public boolean executeSort() {
+    public boolean executeSort(ResultReceiver resultReceiver) {
         try {
             File[] files = fileGroup.listfiles(rootDir);
             for (File f : files) {
@@ -85,14 +88,43 @@ public class FolderSort implements Serializable {
                 // move (rename) file to new directory
                 File newPath = new File(targetDir.getAbsolutePath() + File.separator +
                         f.getName());
-                Log.d(TAG, "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath());
+
+                String msg = "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath();
+                Log.d(TAG, msg);
+
+                if (resultReceiver != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE, msg);
+                    resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
+                }
+
                 GeneralUtil.rename(f, newPath);
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            if (resultReceiver != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE,
+                        "Operation failed to complete\n" + e.toString());
+                resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
+            }
+
             return false;
         }
+
+        if (resultReceiver != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE,
+                    "Operation completed successfully");
+            resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
+        }
+
         return true;
+    }
+
+    public boolean executeSort() {
+        return executeSort(null);
     }
 
     public static class Builder {

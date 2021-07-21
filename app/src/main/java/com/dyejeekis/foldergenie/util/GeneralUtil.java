@@ -36,7 +36,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneralUtil {
 
-    public static final String TAG = "GeneralUtil";
+    public static final String TAG = GeneralUtil.class.getSimpleName();
 
     public static File[] listFilesRecursive(File dir) {
         // TODO: 5/30/2021

@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.util;
+package com.dyejeekis.foldergenie.activity;
 
 import android.content.Intent;
 import androidx.activity.result.ActivityResult;

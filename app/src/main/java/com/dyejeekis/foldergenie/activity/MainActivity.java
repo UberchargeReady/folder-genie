@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie;
+package com.dyejeekis.foldergenie.activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -7,10 +7,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.util.FileUtil;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
@@ -33,7 +35,7 @@ import java.io.IOException;
 
 public class MainActivity extends BaseActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -97,7 +99,7 @@ public class MainActivity extends BaseActivity {
                     File file = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
                     Log.d(TAG, "Generating test files in " + file.getAbsolutePath());
                     Exception ex = null;
-                    final int fileCount = 20;
+                    final int fileCount = 100;
                     try {
                         GeneralUtil.generateTestFiles(file, fileCount);
                     } catch (IOException e) {
@@ -126,6 +128,10 @@ public class MainActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public BetterActivityResult<Intent, ActivityResult> getActivityLauncher() {
+        return activityLauncher;
     }
 
     private void showInfoDialog() {
