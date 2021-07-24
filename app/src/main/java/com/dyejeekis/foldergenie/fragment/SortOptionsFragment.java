@@ -61,7 +61,13 @@ public class SortOptionsFragment extends Fragment {
             updateFolderSort();
             String sortInfo = getFolderSortInfo();
             binding.textViewSortInfo.setText(sortInfo);
+            binding.buttonSaveSortPreset.setEnabled(folderSort != null);
             binding.buttonBeginSort.setEnabled(folderSort != null);
+        });
+
+        binding.buttonSaveSortPreset.setEnabled(false);
+        binding.buttonSaveSortPreset.setOnClickListener(v -> {
+            // TODO: 7/23/2021
         });
 
         binding.buttonBeginSort.setEnabled(false);

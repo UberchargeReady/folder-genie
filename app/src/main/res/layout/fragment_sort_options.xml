@@ -47,6 +47,12 @@
             android:layout_height="wrap_content"
             android:text="Check sort parameters" />
 
+        <Button
+            android:id="@+id/button_save_sort_preset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save sort preset" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

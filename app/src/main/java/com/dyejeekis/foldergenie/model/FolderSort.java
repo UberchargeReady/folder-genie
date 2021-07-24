@@ -58,6 +58,7 @@ public class FolderSort implements Serializable {
     @NonNull
     @Override
     public String toString() {
+        // TODO: 7/23/2021 show file count of selected file group in parenthesis
         String s = "Root directory: " + rootDir.getAbsolutePath() + "\nTarget file group: " +
                 fileGroup.toString() + "\nRename files: " + renameFiles + "\nSort methods: ";
         for (int i=0; i<sortMethods.size(); i++) {

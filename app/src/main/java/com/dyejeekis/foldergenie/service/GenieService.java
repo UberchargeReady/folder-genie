@@ -47,14 +47,15 @@ public class GenieService extends JobIntentService {
     protected void onHandleWork(@NonNull Intent intent) {
         Log.d(TAG, "onHandleWork() called with: intent = [" + intent + "]");
         if (intent.getAction() != null) {
+            ResultReceiver resultReceiver = intent.getParcelableExtra(RECEIVER);
             switch (intent.getAction()) {
                 case ACTION_SORT_FILES:
-                    ResultReceiver resultReceiver = intent.getParcelableExtra(RECEIVER);
                     FolderSort folderSort = (FolderSort) intent.getSerializableExtra(EXTRA_FOLDER_SORT);
                     folderSort.executeSort(resultReceiver);
                     break;
                 case ACTION_FLATTEN_FILE_TREE:
-                    // TODO: 6/6/2021
+                    FolderFlatten folderFlatten = (FolderFlatten) intent.getSerializableExtra(EXTRA_FOLDER_FLATTEN);
+                    folderFlatten.executeFlatten(resultReceiver);
                     break;
             }
         }

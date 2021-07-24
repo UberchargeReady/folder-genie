@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public abstract class FileGroup implements Serializable {
 
-    private final boolean includeSubdirs; // include files in sub-directories
+    private boolean includeSubdirs; // include files in sub-directories
 
     public FileGroup(boolean includeSubdirs) {
         this.includeSubdirs = includeSubdirs;
@@ -15,6 +15,10 @@ public abstract class FileGroup implements Serializable {
 
     public boolean includeSubdirs() {
         return includeSubdirs;
+    }
+
+    public void setIncludeSubdirs(boolean includeSubdirs) {
+        this.includeSubdirs = includeSubdirs;
     }
 
     public abstract File[] listfiles(File dir);
