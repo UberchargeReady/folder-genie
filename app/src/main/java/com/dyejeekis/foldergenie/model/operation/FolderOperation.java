@@ -6,8 +6,9 @@ import android.os.ResultReceiver;
 import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
 
 import java.io.File;
+import java.io.Serializable;
 
-public abstract class FolderOperation {
+public abstract class FolderOperation implements Serializable {
 
     protected final File rootDir;
 

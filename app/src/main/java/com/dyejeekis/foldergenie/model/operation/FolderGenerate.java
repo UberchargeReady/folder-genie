@@ -3,9 +3,8 @@ package com.dyejeekis.foldergenie.model.operation;
 import android.os.ResultReceiver;
 
 import java.io.File;
-import java.io.Serializable;
 
-public class FolderGenerate extends FolderOperation implements Serializable {
+public class FolderGenerate extends FolderOperation {
 
     public static final String TAG = FolderGenerate.class.getSimpleName();
 

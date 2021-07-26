@@ -3,9 +3,8 @@ package com.dyejeekis.foldergenie.model.operation;
 import android.os.ResultReceiver;
 
 import java.io.File;
-import java.io.Serializable;
 
-public class FolderClear extends FolderOperation implements Serializable {
+public class FolderClear extends FolderOperation {
 
     public static final String TAG = FolderClear.class.getSimpleName();
 

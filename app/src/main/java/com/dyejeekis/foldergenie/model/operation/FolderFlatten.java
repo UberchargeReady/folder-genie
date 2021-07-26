@@ -1,18 +1,15 @@
 package com.dyejeekis.foldergenie.model.operation;
 
-import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAll;
-import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
-import java.io.Serializable;
 
-public class FolderFlatten extends FolderOperation implements Serializable {
+public class FolderFlatten extends FolderOperation {
 
     public static final String TAG = FolderFlatten.class.getSimpleName();
 

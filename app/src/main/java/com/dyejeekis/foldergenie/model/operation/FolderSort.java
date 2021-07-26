@@ -1,23 +1,20 @@
 
 package com.dyejeekis.foldergenie.model.operation;
 
-import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderSort extends FolderOperation implements Serializable {
+public class FolderSort extends FolderOperation {
 
     public static final String TAG = FolderSort.class.getSimpleName();
 
