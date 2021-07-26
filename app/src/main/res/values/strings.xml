@@ -20,4 +20,5 @@
     <string name="action_help">Help</string>
     <string name="action_flatten_dir_tree">Flatten folder tree</string>
     <string name="action_preset_all_split">All split</string>
+    <string name="action_clear_empty_dirs">Clear empty folders</string>
 </resources>

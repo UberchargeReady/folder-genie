@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.model.operation.FolderFlatten;
+import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.util.FileUtil;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.google.android.material.snackbar.Snackbar;
@@ -82,44 +84,21 @@ public class MainActivity extends BaseActivity {
             checkPermissions();
             return true;
         } else if (id == R.id.action_generate_test_files) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
-            activityLauncher.launch(intent, result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Uri treeUri = result.getData().getData();
-
-                    // TODO: 7/8/2021 permission denied when creating test files in sd card
-                    //DocumentFile pickedDir = DocumentFile.fromTreeUri(this, treeUri);
-                    //grantUriPermission(getPackageName(), treeUri,
-                    //        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    //getContentResolver().takePersistableUriPermission(treeUri,
-                    //        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-
-                    File file = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
-                    Log.d(TAG, "Generating test files in " + file.getAbsolutePath());
-                    Exception ex = null;
-                    final int fileCount = 100;
-                    try {
-                        GeneralUtil.generateTestFiles(file, fileCount);
-                    } catch (IOException e) {
-                        ex = e;
-                        e.printStackTrace();
-                        Toast.makeText(this, "Failed to generate test files", Toast.LENGTH_SHORT).show();
-                    }
-                    if (ex == null) Toast.makeText(this, fileCount + " test files generated successfully in " +
-                            file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                }
-            });
+            generateTestFiles();
             return true;
+        } else if (id == R.id.action_help) {
+            showHelpDialog();
         } else if (id == R.id.action_about) {
             showInfoDialog();
             return true;
         } else if (id == R.id.action_sort_presets) {
-            // TODO: 6/6/2021
+            showSortPresetsDialog();
             return true;
+        } else if (id == R.id.action_flatten_dir_tree) {
+            flattenDirTree();
+        } else if (id == R.id.action_clear_empty_dirs) {
+            clearEmptyDirs();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -134,11 +113,68 @@ public class MainActivity extends BaseActivity {
         return activityLauncher;
     }
 
+    private void generateTestFiles() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
+        getActivityLauncher().launch(intent, result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Uri treeUri = result.getData().getData();
+
+                // TODO: 7/8/2021 permission denied when creating test files in sd card
+                //DocumentFile pickedDir = DocumentFile.fromTreeUri(this, treeUri);
+                //grantUriPermission(getPackageName(), treeUri,
+                //        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                //getContentResolver().takePersistableUriPermission(treeUri,
+                //        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+
+                File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
+                Log.d(TAG, "Generating test files in " + dir.getAbsolutePath());
+                Exception ex = null;
+                final int fileCount = 100;
+                try {
+                    GeneralUtil.generateTestFiles(dir, fileCount);
+                } catch (IOException e) {
+                    ex = e;
+                    e.printStackTrace();
+                    Toast.makeText(this, "Failed to generate test files", Toast.LENGTH_SHORT).show();
+                }
+                if (ex == null) Toast.makeText(this, fileCount + " test files generated successfully in " +
+                        dir.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void showSortPresetsDialog() {
+        // TODO: 7/25/2021
+    }
+
+    private void showHelpDialog() {
+        // TODO: 7/25/2021
+    }
+
     private void showInfoDialog() {
         // TODO: 6/6/2021
     }
 
-    private ActivityResultLauncher<String> requestPermissionLauncher =
+    private void flattenDirTree() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
+        getActivityLauncher().launch(intent, result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Uri treeUri = result.getData().getData();
+                File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
+                FolderFlatten folderFlatten = new FolderFlatten(dir);
+                GenieService.enqueueFolderFlatten(this, null, folderFlatten);
+            }
+        });
+    }
+
+    private void clearEmptyDirs() {
+        // TODO: 7/26/2021
+    }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     Toast.makeText(this, "Permissions granted successfully", Toast.LENGTH_SHORT).show();

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.databinding.FragmentSortProgressBinding;
-import com.dyejeekis.foldergenie.model.FolderSort;
+import com.dyejeekis.foldergenie.model.operation.FolderSort;
 import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
 

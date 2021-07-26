@@ -27,6 +27,12 @@
         app:showAsAction="never"
         android:visible="true"/>
     <item
+        android:id="@+id/action_clear_empty_dirs"
+        android:orderInCategory="128"
+        android:title="@string/action_clear_empty_dirs"
+        app:showAsAction="never"
+        android:visible="true"/>
+    <item
         android:id="@+id/action_sort_presets"
         android:orderInCategory="130"
         android:title="@string/action_sort_presets"
@@ -43,5 +49,5 @@
         android:orderInCategory="150"
         android:title="@string/action_about"
         app:showAsAction="never"
-        android:visible="true"/>
+        android:visible="false"/>
 </menu>

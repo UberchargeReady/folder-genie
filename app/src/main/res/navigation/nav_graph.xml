@@ -28,7 +28,7 @@
             app:destination="@id/SortOptionsFragment"/>
         <argument
             android:name="folderSort"
-            app:argType="com.dyejeekis.foldergenie.model.FolderSort" />
+            app:argType="com.dyejeekis.foldergenie.model.operation.FolderSort" />
 
     </fragment>
 

@@ -24,7 +24,7 @@ public class SortMethodSplit extends SortMethod {
     @Override
     public File getTargetDir(File file, File parentDir) {
         File targetDir = super.getTargetDir(file, parentDir);
-        if (targetDir.exists() && targetDir.listFiles().length >= filesPerDir) {
+        if (targetDir.exists() && targetDir.listFiles(File::isFile).length >= filesPerDir) {
             currentDirName++;
             return getTargetDir(file, parentDir);
         }

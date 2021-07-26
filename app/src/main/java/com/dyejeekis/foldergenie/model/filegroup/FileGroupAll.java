@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
+import java.util.List;
 
 public class FileGroupAll extends FileGroup {
 
@@ -15,7 +16,7 @@ public class FileGroupAll extends FileGroup {
     @Override
     public File[] listfiles(File dir) {
         if (includeSubdirs()) {
-            return GeneralUtil.listFilesRecursive(dir); // TODO: 6/5/2021 this isn't implemented yet
+            return GeneralUtil.listFilesRecursive(dir, null).toArray(new File[0]);
         }
         return dir.listFiles(File::isFile);
     }

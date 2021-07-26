@@ -13,10 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.databinding.FragmentSortOptionsBinding;
-import com.dyejeekis.foldergenie.model.FolderSort;
+import com.dyejeekis.foldergenie.model.operation.FolderSort;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupParser;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
@@ -101,11 +100,7 @@ public class SortOptionsFragment extends Fragment {
                 SortMethodParser sortMethodParser = new SortMethodParser(binding.editTextSortMethod.getText().toString());
                 List<SortMethod> sortMethods = sortMethodParser.getSortMethods();
 
-                folderSort = new FolderSort.Builder()
-                        .rootDir(rootDir)
-                        .fileGroup(fileGroup)
-                        .addSortMethods(sortMethods)
-                        .build();
+                folderSort = new FolderSort(rootDir, fileGroup, sortMethods);
             }
         } catch (Exception e) {
             e.printStackTrace();

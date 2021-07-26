@@ -1,5 +1,5 @@
 
-package com.dyejeekis.foldergenie.model;
+package com.dyejeekis.foldergenie.model.operation;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -17,30 +17,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderSort implements Serializable {
+public class FolderSort extends FolderOperation implements Serializable {
 
     public static final String TAG = FolderSort.class.getSimpleName();
 
-    private final File rootDir;
     private final FileGroup fileGroup;
-    private final List<SortMethod> sortMethods; // TODO: 7/11/2021 properly handle multiple sort methods of the same type
+    private final List<SortMethod> sortMethods;
 
-    private boolean renameFiles; // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
-
-    private FolderSort(Builder builder) {
-        this.rootDir = builder.rootDir;
-        this.fileGroup = builder.fileGroup;
-        this.sortMethods = builder.sortMethods;
-        for (SortMethod sortMethod : this.sortMethods) {
-            if (sortMethod.addToFilename()) {
-                renameFiles = true;
-                break;
-            }
-        }
+    public FolderSort(File rootDir, FileGroup fileGroup, List<SortMethod> sortMethods) {
+        super(rootDir);
+        this.fileGroup = fileGroup;
+        this.sortMethods = sortMethods;
     }
 
-    public File getRootDir() {
-        return rootDir;
+    private FolderSort(Builder builder) {
+        super(builder.rootDir);
+        this.fileGroup = builder.fileGroup;
+        this.sortMethods = builder.sortMethods;
     }
 
     public FileGroup getFileGroup() {
@@ -51,16 +44,20 @@ public class FolderSort implements Serializable {
         return sortMethods;
     }
 
-    public boolean isRenameFiles() {
-        return renameFiles;
+    // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
+    public boolean renameFiles() {
+        for (SortMethod sortMethod : this.sortMethods) {
+            if (sortMethod.addToFilename()) return true;
+        }
+        return false;
     }
 
     @NonNull
     @Override
     public String toString() {
-        // TODO: 7/23/2021 show file count of selected file group in parenthesis
         String s = "Root directory: " + rootDir.getAbsolutePath() + "\nTarget file group: " +
-                fileGroup.toString() + "\nRename files: " + renameFiles + "\nSort methods: ";
+                fileGroup.toString() + " (" + fileGroup.listfiles(rootDir).length +
+                ")\nRename files: " + renameFiles() + "\nSort methods: ";
         for (int i=0; i<sortMethods.size(); i++) {
             s = s.concat(sortMethods.get(i).toString());
             if (i < sortMethods.size()-1) s = s.concat(" -THEN- ");
@@ -68,8 +65,8 @@ public class FolderSort implements Serializable {
         return s;
     }
 
-    // returns true on successful sort completion
-    public boolean executeSort(ResultReceiver resultReceiver) {
+    @Override
+    public boolean startOperation(ResultReceiver resultReceiver) {
         try {
             File[] files = fileGroup.listfiles(rootDir);
             for (File f : files) {
@@ -90,44 +87,19 @@ public class FolderSort implements Serializable {
                 File newPath = new File(targetDir.getAbsolutePath() + File.separator +
                         f.getName());
 
-                String msg = "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath();
-                Log.d(TAG, msg);
-
-                if (resultReceiver != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE, msg);
-                    resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
-                }
+                String message = "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath();
+                Log.d(TAG, message);
+                onOperationProgress(resultReceiver, message);
 
                 GeneralUtil.rename(f, newPath);
-
-                //Thread.sleep(500);
             }
         } catch (Exception e) {
             e.printStackTrace();
-
-            if (resultReceiver != null) {
-                Bundle bundle = new Bundle();
-                bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE,
-                        "Operation failed to complete\n" + e.toString());
-                resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
-            }
-
+            onOperationProgress(resultReceiver, "Operation failed to complete\n" + e.toString());
             return false;
         }
-
-        if (resultReceiver != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE,
-                    "Operation completed successfully");
-            resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
-        }
-
+        onOperationProgress(resultReceiver, "Operation completed successfully");
         return true;
-    }
-
-    public boolean executeSort() {
-        return executeSort(null);
     }
 
     public static class Builder {

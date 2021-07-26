@@ -13,6 +13,7 @@ import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -38,9 +39,18 @@ public class GeneralUtil {
 
     public static final String TAG = GeneralUtil.class.getSimpleName();
 
-    public static File[] listFilesRecursive(File dir) {
-        // TODO: 5/30/2021
-        return null;
+    public static List<File> listFilesRecursive(File dir, FileFilter filter) {
+        List<File> resultList = new ArrayList<>();
+        File[] files = dir.listFiles();
+        for (File f : files) {
+            if (f.isFile() && (filter == null || filter.accept(f)))
+                resultList.add(f);
+            else if (f.isDirectory()) {
+                List<File> newFiles = listFilesRecursive(f, filter);
+                resultList.addAll(newFiles);
+            }
+        }
+        return resultList;
     }
 
     public static String getFileExtension(File file) throws IllegalArgumentException {
