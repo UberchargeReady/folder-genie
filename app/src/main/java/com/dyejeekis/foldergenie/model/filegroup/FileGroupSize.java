@@ -1,20 +1,23 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
+import androidx.annotation.NonNull;
+
+import com.dyejeekis.foldergenie.model.SizeRange;
+
 import java.io.File;
 
 public class FileGroupSize extends FileGroup {
 
-    private final long minSize, maxSize;
+    private final SizeRange sizeRange;
 
-    public FileGroupSize(boolean includeSubdirs, long minSize, long maxSize) {
+    public FileGroupSize(boolean includeSubdirs, SizeRange sizeRange) {
         super(includeSubdirs);
-        if (minSize <= 0 && maxSize <= 0) throw new IllegalArgumentException("Invalid size range");
-        this.minSize = minSize;
-        this.maxSize = maxSize;
+        this.sizeRange = sizeRange;
     }
 
     @Override
     public File[] listfiles(File dir) {
+        // TODO: 7/27/2021
         return new File[0];
     }
 
@@ -23,11 +26,14 @@ public class FileGroupSize extends FileGroup {
         return FileGroupType.SIZE;
     }
 
-    public long getMinSize() {
-        return minSize;
+    @NonNull
+    @Override
+    public String toString() {
+        String s = "All files ranging in size " + sizeRange.toString();
+        return s + super.toString();
     }
 
-    public long getMaxSize() {
-        return maxSize;
+    public SizeRange getSizeRange() {
+        return sizeRange;
     }
 }

@@ -2,12 +2,17 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.AlphanumRange;
+
 import java.io.File;
 
 public class FileGroupAlphanum extends FileGroup {
 
-    public FileGroupAlphanum(boolean includeSubdirs) {
+    private final AlphanumRange alphanumRange;
+
+    public FileGroupAlphanum(boolean includeSubdirs, AlphanumRange alphanumRange) {
         super(includeSubdirs);
+        this.alphanumRange = alphanumRange;
     }
 
     @Override
@@ -16,15 +21,19 @@ public class FileGroupAlphanum extends FileGroup {
         return new File[0];
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        // TODO: 6/6/2021
-        return super.toString();
-    }
-
     @Override
     public FileGroupType getType() {
         return FileGroupType.ALPHANUMERIC;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String s = "All files in alphanumeric range " + alphanumRange.toString();
+        return s + super.toString();
+    }
+
+    public AlphanumRange getAlphanumRange() {
+        return alphanumRange;
     }
 }

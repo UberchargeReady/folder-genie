@@ -1,6 +1,8 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
+import com.dyejeekis.foldergenie.model.AlphanumRange;
 import com.dyejeekis.foldergenie.model.ParameterList;
+import com.dyejeekis.foldergenie.model.SizeRange;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class FileGroupParser {
     public static final String PARAMETER_INCLUDE_SUBDIRS = "subdirs";
     public static final String PARAMETER_SIZE_MIN = "min";
     public static final String PARAMETER_SIZE_MAX = "max";
+    public static final String PARAMETER_START = "start";
+    public static final String PARAMETER_END = "end";
 
     public static final String[] VALID_PARAMETERS =
             {PARAMETER_INCLUDE_SUBDIRS, PARAMETER_SIZE_MIN, PARAMETER_SIZE_MAX};
@@ -83,10 +87,10 @@ public class FileGroupParser {
                 fileGroup = new FileGroupAll(includeSubdirs);
                 return fileGroup;
             case SIZE:
-                // TODO: 6/13/2021
+                // TODO: 6/13/2021 should work with at least one parameter
                 long minSize = parameters.getLongParamValue(PARAMETER_SIZE_MIN);
                 long maxSize = parameters.getLongParamValue(PARAMETER_SIZE_MAX);
-                fileGroup = new FileGroupSize(includeSubdirs, minSize, maxSize);
+                fileGroup = new FileGroupSize(includeSubdirs, new SizeRange(minSize, maxSize));
                 return fileGroup;
             case AUDIO:
                 // TODO: 6/13/2021
@@ -105,8 +109,10 @@ public class FileGroupParser {
                 fileGroup = new FileGroupDocument(includeSubdirs);
                 return fileGroup;
             case ALPHANUMERIC:
-                // TODO: 6/13/2021
-                fileGroup = new FileGroupAlphanum(includeSubdirs);
+                // TODO: 6/13/2021 should work with at least one parameter
+                String start = parameters.getStringParamValue(PARAMETER_START);
+                String end = parameters.getStringParamValue(PARAMETER_END);
+                fileGroup = new FileGroupAlphanum(includeSubdirs, new AlphanumRange(start, end));
                 return fileGroup;
             case FILE_EXTENSION:
                 // TODO: 6/13/2021

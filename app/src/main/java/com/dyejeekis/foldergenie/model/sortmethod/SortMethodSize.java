@@ -2,35 +2,13 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.util.GeneralUtil;
+import com.dyejeekis.foldergenie.model.SizeRange;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SortMethodSize extends SortMethod {
-
-    public static class SizeRange {
-        final long minSize, maxSize;
-
-        SizeRange(long minSize, long maxSize) {
-            if ((minSize <= 0 && maxSize <= 0) || minSize > maxSize)
-                throw new IllegalArgumentException("Invalid size range");
-            this.minSize = minSize;
-            this.maxSize = maxSize;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            String minS = GeneralUtil.getReadableFilesize(minSize);
-            String maxS = GeneralUtil.getReadableFilesize(maxSize);
-            if (minSize == maxSize) return minS;
-            if (minSize <= 0) return maxS + " or less";
-            if (maxSize <= 0) return minS + " or more";
-            return minS + " to " + maxS;
-        }
-    }
 
     // TODO: 7/11/2021 think about how to handle overlap in size ranges
     private final List<SizeRange> sizeRanges;
@@ -43,8 +21,8 @@ public class SortMethodSize extends SortMethod {
     @Override
     public String getDirName(File file) {
         for (SizeRange range : sizeRanges) {
-            if (file.length() >= range.minSize) {
-                if (range.maxSize <= 0 || file.length() <= range.maxSize)
+            if (file.length() >= range.getMinSize()) {
+                if (range.getMaxSize() <= 0 || file.length() <= range.getMaxSize())
                     return range.toString();
             }
         }
