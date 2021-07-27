@@ -8,7 +8,7 @@ public class ServiceResultReceiver extends ResultReceiver {
 
     public static final int CODE_SHOW_PROGRESS = 2000;
 
-    public static final String KEY_PROGRESS_MESSAGE = "progressMessage";
+    public static final String KEY_PROGRESS_MESSAGE = "key.PROGRESS_MESSAGE";
 
     private Receiver receiver;
 

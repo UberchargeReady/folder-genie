@@ -55,8 +55,8 @@ public class MainActivity extends BaseActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        binding.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action",
+                Snackbar.LENGTH_LONG).setAction("Action", null).show());
         binding.fab.setOnClickListener(v -> {
             showInfoDialog();
         });
@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity {
                 Uri treeUri = result.getData().getData();
                 File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
                 FolderFlatten folderFlatten = new FolderFlatten(dir);
-                GenieService.enqueueFolderFlatten(this, null, folderFlatten);
+                GenieService.enqueueFolderOperation(this, null, folderFlatten);
             }
         });
     }

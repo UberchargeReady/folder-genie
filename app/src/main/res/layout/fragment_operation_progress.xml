@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context=".fragment.SortProgressFragment">
+    tools:context=".fragment.OperationProgressFragment">
 
     <TextView
         android:id="@+id/textView_sort_progress"
@@ -14,7 +14,7 @@
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/button_stop_sort"
+        android:id="@+id/button_stop_operation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Stop operation"
