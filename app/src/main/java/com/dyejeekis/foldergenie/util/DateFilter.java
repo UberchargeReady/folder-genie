@@ -1,6 +1,8 @@
-package com.dyejeekis.foldergenie.model;
+package com.dyejeekis.foldergenie.util;
 
-public class DateFilter {
+import java.io.Serializable;
+
+public class DateFilter implements Serializable {
 
     public static final int UNUSED = -1;
 

@@ -27,9 +27,14 @@ public class FolderFlatten extends FolderOperation {
     }
 
     @Override
+    public String getTag() {
+        return TAG;
+    }
+
+    @Override
     public boolean startOperation(ResultReceiver resultReceiver) {
         try {
-            File[] files = fileGroup.listfiles(rootDir);
+            File[] files = fileGroup.listFiles(rootDir);
             for (File f : files) {
                 // move (rename) file to root directory
                 File newPath = new File(rootDir.getAbsolutePath() + File.separator +

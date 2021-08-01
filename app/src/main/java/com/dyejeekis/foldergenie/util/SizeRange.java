@@ -1,15 +1,17 @@
-package com.dyejeekis.foldergenie.model;
+package com.dyejeekis.foldergenie.util;
 
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
-public class SizeRange {
+import java.io.Serializable;
+
+public class SizeRange implements Serializable {
 
     private final long minSize, maxSize;
 
     public SizeRange(long minSize, long maxSize) {
-        if ((minSize <= 0 && maxSize <= 0) || minSize > maxSize)
+        if ((minSize <= 0 && maxSize <= 0) || (minSize > maxSize && maxSize >= 0))
             throw new IllegalArgumentException("Invalid size range");
         this.minSize = minSize;
         this.maxSize = maxSize;

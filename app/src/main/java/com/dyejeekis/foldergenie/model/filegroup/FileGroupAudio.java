@@ -3,6 +3,8 @@ package com.dyejeekis.foldergenie.model.filegroup;
 import androidx.annotation.NonNull;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileGroupAudio extends FileGroupExtension {
 
@@ -20,6 +22,11 @@ public class FileGroupAudio extends FileGroupExtension {
 
     public FileGroupAudio(boolean includeSubdirs) {
         super(includeSubdirs);
+    }
+
+    @Override
+    public List<String> getExtensions() {
+        return Arrays.asList(AUDIO_EXTENSIONS);
     }
 
     @NonNull

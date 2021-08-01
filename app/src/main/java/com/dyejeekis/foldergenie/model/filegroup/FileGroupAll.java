@@ -14,7 +14,7 @@ public class FileGroupAll extends FileGroup {
     }
 
     @Override
-    public File[] listfiles(File dir) {
+    public File[] listFiles(File dir) {
         if (includeSubdirs()) {
             return GeneralUtil.listFilesRecursive(dir, null).toArray(new File[0]);
         }

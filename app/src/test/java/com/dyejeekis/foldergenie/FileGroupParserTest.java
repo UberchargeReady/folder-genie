@@ -1,6 +1,6 @@
 package com.dyejeekis.foldergenie;
 
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupParser;
+import com.dyejeekis.foldergenie.model.parser.FileGroupParser;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
 
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class FileGroupParserTest {
     FileGroupParser p3 = new FileGroupParser("monthCreated -PARAM2  -param3");
     FileGroupParser p4 = new FileGroupParser("year modified - param4");
     FileGroupParser p5 = new FileGroupParser("invalidFileGroup");
-    FileGroupParser p6 = new FileGroupParser("YearCreated - param5 -   param6");
+    FileGroupParser p6 = new FileGroupParser("YearCreated - param5 -   param6 -param7");
 
     @Test
     public void testType() {
@@ -32,7 +32,6 @@ public class FileGroupParserTest {
         assertEquals(p2.getParameters().get(0), "-param1");
         assertEquals(p3.getParameters().get(0), "-param2");
         assertEquals(p3.getParameters().get(1), "-param3");
-        assertEquals(p6.getParameters().get(0), "-param5");
-        assertEquals(p6.getParameters().get(1), "-param6");
+        assertEquals(p6.getParameters().get(0), "-param7");
     }
 }

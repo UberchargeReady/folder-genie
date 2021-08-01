@@ -1,37 +1,34 @@
-package com.dyejeekis.foldergenie.model.filegroup;
+package com.dyejeekis.foldergenie.model.parser;
 
-import com.dyejeekis.foldergenie.model.AlphanumRange;
-import com.dyejeekis.foldergenie.model.ParameterList;
-import com.dyejeekis.foldergenie.model.SizeRange;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupAll;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupAlphanum;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupDate;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupExtension;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupSize;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
+import com.dyejeekis.foldergenie.util.AlphanumRange;
+import com.dyejeekis.foldergenie.util.ParameterList;
+import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.util.List;
 
-public class FileGroupParser {
+public class FileGroupParser extends TextParser {
 
-    public static final String TAG = "FileGroupParser";
+    public static final String TAG = FileGroupParser.class.getSimpleName();
 
-    public static final String PARAMETER_PREFIX = " -";
-    // parameters must be lower case strings
-    public static final String PARAMETER_INCLUDE_SUBDIRS = "subdirs";
-    public static final String PARAMETER_SIZE_MIN = "min";
-    public static final String PARAMETER_SIZE_MAX = "max";
-    public static final String PARAMETER_START = "start";
-    public static final String PARAMETER_END = "end";
+    private static final String[] VALID_PARAMETERS = {PARAMETER_INCLUDE_SUBDIRS,
+            PARAMETER_MIN, PARAMETER_MAX, PARAMETER_START, PARAMETER_END};
 
-    public static final String[] VALID_PARAMETERS =
-            {PARAMETER_INCLUDE_SUBDIRS, PARAMETER_SIZE_MIN, PARAMETER_SIZE_MAX};
-
-    private String input;
     private final FileGroupType fileGroupType;
     private final ParameterList parameters;
 
-    public FileGroupParser(FileGroupType fileGroupType, ParameterList parameters) {
-        this.fileGroupType = fileGroupType;
-        this.parameters = parameters;
-    }
-
     public FileGroupParser(String input) {
-        this.input = sanitizeInput(input);
+        super(input);
         this.fileGroupType = parseType();
         this.parameters = parseParameters();
     }
@@ -42,10 +39,6 @@ public class FileGroupParser {
 
     public List<String> getParameters() {
         return parameters;
-    }
-
-    private String sanitizeInput(String input) {
-        return input.toLowerCase();
     }
 
     private FileGroupType parseType() {
@@ -62,21 +55,15 @@ public class FileGroupParser {
             int end = input.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
             if (end == -1) end = input.length();
 
-            String param = sanitizeParam(input.substring(start, end));
-            if (isValidParam(param)) params.add(param);
+            String paramString = input.substring(start, end);
+            if (isValidParam(getParamName(paramString))) {
+                paramString = sanitizeParam(paramString);
+                params.add(paramString);
+            }
 
             start = input.indexOf(PARAMETER_PREFIX, end);
         }
         return params;
-    }
-
-    private String sanitizeParam(String param) {
-        return param.replace(" ", "");
-    }
-
-    private boolean isValidParam(String param) {
-        // TODO: 6/16/2021
-        return true;
     }
 
     public FileGroup getFileGroup() {
@@ -85,39 +72,37 @@ public class FileGroupParser {
         switch (fileGroupType) {
             case ALL:
                 fileGroup = new FileGroupAll(includeSubdirs);
-                return fileGroup;
+                break;
             case SIZE:
-                // TODO: 6/13/2021 should work with at least one parameter
-                long minSize = parameters.getLongParamValue(PARAMETER_SIZE_MIN);
-                long maxSize = parameters.getLongParamValue(PARAMETER_SIZE_MAX);
+                long minSize = parameters.getLongParamValueSafe(PARAMETER_MIN);
+                long maxSize = parameters.getLongParamValueSafe(PARAMETER_MAX);
                 fileGroup = new FileGroupSize(includeSubdirs, new SizeRange(minSize, maxSize));
-                return fileGroup;
+                break;
             case AUDIO:
                 // TODO: 6/13/2021
                 fileGroup = new FileGroupAudio(includeSubdirs);
-                return fileGroup;
+                break;
             case IMAGE:
                 // TODO: 6/13/2021
                 fileGroup = new FileGroupImage(includeSubdirs);
-                return fileGroup;
+                break;
             case VIDEO:
                 // TODO: 6/13/2021
                 fileGroup = new FileGroupVideo(includeSubdirs);
-                return fileGroup;
+                break;
             case DOCUMENT:
                 // TODO: 6/13/2021
                 fileGroup = new FileGroupDocument(includeSubdirs);
-                return fileGroup;
+                break;
             case ALPHANUMERIC:
-                // TODO: 6/13/2021 should work with at least one parameter
-                String start = parameters.getStringParamValue(PARAMETER_START);
-                String end = parameters.getStringParamValue(PARAMETER_END);
+                String start = parameters.getStringParamValueSafe(PARAMETER_START);
+                String end = parameters.getStringParamValueSafe(PARAMETER_END);
                 fileGroup = new FileGroupAlphanum(includeSubdirs, new AlphanumRange(start, end));
-                return fileGroup;
+                break;
             case FILE_EXTENSION:
                 // TODO: 6/13/2021
                 fileGroup = new FileGroupExtension(includeSubdirs);
-                return fileGroup;
+                break;
             case DATE_CREATED:
             case DATE_MODIFIED:
             case YEAR_CREATED:
@@ -126,10 +111,15 @@ public class FileGroupParser {
             case MONTH_MODIFIED:
                 // TODO: 6/13/2021
                 fileGroup = new FileGroupDate(includeSubdirs);
-                return fileGroup;
+                break;
             default:
                 throw new IllegalArgumentException("Invalid file group type");
         }
+        return fileGroup;
     }
 
+    @Override
+    protected String[] getValidParams() {
+        return VALID_PARAMETERS;
+    }
 }

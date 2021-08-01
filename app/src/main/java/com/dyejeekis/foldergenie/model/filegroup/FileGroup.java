@@ -21,7 +21,7 @@ public abstract class FileGroup implements Serializable {
         this.includeSubdirs = includeSubdirs;
     }
 
-    public abstract File[] listfiles(File dir);
+    public abstract File[] listFiles(File dir);
 
     public abstract FileGroupType getType();
 

@@ -2,7 +2,7 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.model.SizeRange;
+import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,10 +42,10 @@ public class SortMethodSize extends SortMethod {
     @NonNull
     @Override
     public String toString() {
-        String s = "Sort in folders based on file size - Folders: ";
+        String s = "Sort in folders based on file size ";
         for (SizeRange sizeRange : sizeRanges) {
             s = s.concat(sizeRange.toString());
-            if (sizeRanges.indexOf(sizeRange) < sizeRanges.size()-1)
+            if (sizeRanges.indexOf(sizeRange) < sizeRanges.size() - 1)
                 s = s.concat(", ");
         }
         return s  + super.toString();
@@ -55,7 +55,7 @@ public class SortMethodSize extends SortMethod {
         return sizeRanges;
     }
 
-    public void addSizeRange(long minSize, long maxSize) {
-        sizeRanges.add(new SizeRange(minSize, maxSize));
+    public void addSizeRange(SizeRange sizeRange) {
+        sizeRanges.add(sizeRange);
     }
 }

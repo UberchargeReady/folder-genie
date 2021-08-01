@@ -20,6 +20,8 @@ public abstract class FolderOperation implements Serializable {
         return rootDir;
     }
 
+    public abstract String getTag();
+
     public abstract boolean startOperation(ResultReceiver resultReceiver);
 
     public boolean startOperation() {

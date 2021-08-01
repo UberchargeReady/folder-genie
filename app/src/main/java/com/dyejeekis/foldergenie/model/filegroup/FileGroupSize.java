@@ -2,9 +2,10 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.model.SizeRange;
+import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.io.File;
+import java.io.FileFilter;
 
 public class FileGroupSize extends FileGroup {
 
@@ -16,9 +17,12 @@ public class FileGroupSize extends FileGroup {
     }
 
     @Override
-    public File[] listfiles(File dir) {
-        // TODO: 7/27/2021
-        return new File[0];
+    public File[] listFiles(File dir) {
+        return dir.listFiles(file -> {
+            if (file.length() >= sizeRange.getMinSize())
+                return sizeRange.getMaxSize() <= 0 || file.length() <= sizeRange.getMaxSize();
+            return false;
+        });
     }
 
     @Override

@@ -1,25 +1,29 @@
-package com.dyejeekis.foldergenie.model.sortmethod;
+package com.dyejeekis.foldergenie.model.parser;
 
-import com.dyejeekis.foldergenie.model.ParameterList;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodAlphanum;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodDate;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodExtension;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodImageRes;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSize;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSplit;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
+import com.dyejeekis.foldergenie.util.AlphanumRange;
+import com.dyejeekis.foldergenie.util.ParameterList;
+import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SortMethodParser {
+public class SortMethodParser extends TextParser {
 
-    public static final String TAG = "SortMethodParser";
+    public static final String TAG = SortMethodParser.class.getSimpleName();
+
+    private static final String[] VALID_PARAMETERS = {PARAMETER_ADD_TO_ARCHIVE,
+            PARAMETER_ADD_TO_FILENAME, PARAMETER_FILES_PER_DIR, PARAMETER_RANGE, PARAMETER_MIN,
+            PARAMETER_MAX, PARAMETER_START, PARAMETER_END};
 
     public static final String SORT_METHOD_SEPARATOR = ",";
-    public static final String PARAMETER_PREFIX = "-";
-    public static final String PARAMETER_VALUE_RANGE_SEPARATOR = "to";
-    // parameters must be lower case strings
-    public static final String PARAMETER_ADD_TO_ARCHIVE = "archive";
-    public static final String PARAMETER_ADD_TO_FILENAME = "rename";
-    public static final String PARAMETER_FILES_PER_DIR = "filecount";
-    public static final String PARAMETER_SIZE_RANGE = "range";
-
-    public static final String[] VALID_PARAMETERS =
-            {PARAMETER_ADD_TO_ARCHIVE, PARAMETER_ADD_TO_FILENAME, PARAMETER_FILES_PER_DIR};
 
     public static class SortMethodWrapper {
         public SortMethodType sortMethodType;
@@ -31,24 +35,15 @@ public class SortMethodParser {
         }
     }
 
-    private String input;
     private final List<SortMethodWrapper> sortMethodWrappers;
 
-    public SortMethodParser(List<SortMethodWrapper> sortMethodWrappers) {
-        this.sortMethodWrappers = sortMethodWrappers;
-    }
-
     public SortMethodParser(String input) {
-        this.input = sanitizeInput(input);
+        super(input);
         this.sortMethodWrappers = parseSortMethodWrappers();
     }
 
     public List<SortMethodWrapper> getSortMethodWrappers() {
         return sortMethodWrappers;
-    }
-
-    private String sanitizeInput(String input) {
-        return input.toLowerCase();
     }
 
     private List<SortMethodWrapper> parseSortMethodWrappers() {
@@ -72,21 +67,15 @@ public class SortMethodParser {
             int end = s.indexOf(PARAMETER_PREFIX, start + PARAMETER_PREFIX.length());
             if (end == -1) end = s.length();
 
-            String param = sanitizeParam(s.substring(start, end));
-            if (isValidParam(param)) params.add(param);
+            String paramString = s.substring(start, end);
+            if (isValidParam(getParamName(paramString))) {
+                paramString = sanitizeParam(paramString);
+                params.add(paramString);
+            }
 
             start = s.indexOf(PARAMETER_PREFIX, end);
         }
         return params;
-    }
-
-    private String sanitizeParam(String param) {
-        return param.replace(" ", "");
-    }
-
-    private boolean isValidParam(String param) {
-        // TODO: 6/16/2021
-        return true;
     }
 
     public List<SortMethod> getSortMethods() {
@@ -104,21 +93,30 @@ public class SortMethodParser {
                 case SIZE:
                     sortMethod = new SortMethodSize(addToArchive, addToFilename);
                     for (int i=0; i<params.size(); i++) {
-                        if (params.get(i).contains(PARAMETER_SIZE_RANGE)) {
-                            String range = params.getStringParamValue(PARAMETER_SIZE_RANGE, i);
-                            long min = Long.parseLong(range.split(PARAMETER_VALUE_RANGE_SEPARATOR)[0]);
-                            long max = Long.parseLong(range.split(PARAMETER_VALUE_RANGE_SEPARATOR)[1]);
-                            ((SortMethodSize) sortMethod).addSizeRange(min, max);
+                        if (params.get(i).contains(PARAMETER_RANGE)) {
+                            String range = params.getStringParamValue(PARAMETER_RANGE, i);
+                            long min = Long.parseLong(range.split(PARAMETER_RANGE_SEPARATOR)[0]);
+                            long max = Long.parseLong(range.split(PARAMETER_RANGE_SEPARATOR)[1]);
+                            ((SortMethodSize) sortMethod).addSizeRange(new SizeRange(min, max));
                         }
                     }
+                    if (((SortMethodSize) sortMethod).getSizeRanges().size() == 0)
+                        throw new IllegalArgumentException("Sort method must have at least one size range to be valid");
                     break;
                 case FILE_EXTENSION:
                     // TODO: 7/10/2021
                     sortMethod = new SortMethodExtension(addToArchive, addToFilename);
                     break;
                 case ALPHANUMERIC:
-                    // TODO: 7/10/2021
                     sortMethod = new SortMethodAlphanum(addToArchive, addToFilename);
+                    for (int i=0; i<params.size(); i++) {
+                        String range = params.getStringParamValue(PARAMETER_RANGE, i);
+                        String start = range.split(PARAMETER_RANGE_SEPARATOR)[0].trim();
+                        String end = range.split(PARAMETER_RANGE_SEPARATOR)[1].trim();
+                        ((SortMethodAlphanum) sortMethod).addAlphanumRange(new AlphanumRange(start, end));
+                    }
+                    if (((SortMethodAlphanum) sortMethod).getAlphanumRanges().size() == 0)
+                        throw new IllegalArgumentException("Sort method must have at least one alphanum range to be valid");
                     break;
                 case IMAGE_RESOLUTION:
                     // TODO: 7/10/2021
@@ -139,5 +137,10 @@ public class SortMethodParser {
             sortMethods.add(sortMethod);
         }
         return sortMethods;
+    }
+
+    @Override
+    protected String[] getValidParams() {
+        return VALID_PARAMETERS;
     }
 }

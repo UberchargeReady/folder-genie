@@ -21,14 +21,31 @@ public class FileGroupExtension extends FileGroup {
         this.extensions.add(extension);
     }
 
+    public List<String> getExtensions() {
+        return extensions;
+    }
+
     @Override
-    public File[] listfiles(File dir) {
-        // TODO: 5/30/2021 include sub-dirs
-        return dir.listFiles(pathname -> {
+    public File[] listFiles(File dir) {
+        if (includeSubdirs()) {
+            List<File> fileList = GeneralUtil.listFilesRecursive(dir, file -> {
+                try {
+                    String extension = GeneralUtil.getFileExtension(file);
+                    return getExtensions().contains(extension);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            });
+            return fileList.toArray(new File[0]);
+        }
+        return dir.listFiles(file -> {
             try {
-                String e = GeneralUtil.getFileExtension(pathname);
-                return extensions.contains(e);
-            } catch (IllegalArgumentException e) {}
+                String extension = GeneralUtil.getFileExtension(file);
+                return getExtensions().contains(extension);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
             return false;
         });
     }
@@ -36,7 +53,7 @@ public class FileGroupExtension extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "Files with the extensions: " + GeneralUtil.listToString(extensions);
+        return "Files with extensions " + GeneralUtil.listToString(getExtensions());
     }
 
     @Override

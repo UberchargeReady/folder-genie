@@ -1,8 +1,10 @@
-package com.dyejeekis.foldergenie.model;
+package com.dyejeekis.foldergenie.util;
 
 import androidx.annotation.NonNull;
 
-public class DateRange {
+import java.io.Serializable;
+
+public class DateRange implements Serializable {
 
     private final DateFilter from, to;
 

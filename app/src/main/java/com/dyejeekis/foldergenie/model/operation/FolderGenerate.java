@@ -13,6 +13,11 @@ public class FolderGenerate extends FolderOperation {
     }
 
     @Override
+    public String getTag() {
+        return TAG;
+    }
+
+    @Override
     public boolean startOperation(ResultReceiver resultReceiver) {
         // TODO: 7/26/2021
         return false;

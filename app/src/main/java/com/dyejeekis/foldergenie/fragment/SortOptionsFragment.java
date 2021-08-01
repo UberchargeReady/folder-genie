@@ -17,9 +17,9 @@ import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.databinding.FragmentSortOptionsBinding;
 import com.dyejeekis.foldergenie.model.operation.FolderSort;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupParser;
+import com.dyejeekis.foldergenie.model.parser.FileGroupParser;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodParser;
+import com.dyejeekis.foldergenie.model.parser.SortMethodParser;
 import com.dyejeekis.foldergenie.util.FileUtil;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 

@@ -2,7 +2,7 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.model.AlphanumRange;
+import com.dyejeekis.foldergenie.util.AlphanumRange;
 
 import java.io.File;
 
@@ -16,9 +16,14 @@ public class FileGroupAlphanum extends FileGroup {
     }
 
     @Override
-    public File[] listfiles(File dir) {
-        // TODO: 5/30/2021
-        return new File[0];
+    public File[] listFiles(File dir) {
+        return dir.listFiles(file -> {
+            String start = alphanumRange.getStartStr();
+            String end = alphanumRange.getEndStr();
+            if (start == null || file.getName().compareTo(start) >= 0)
+                return end == null || file.getName().compareTo(end) <= 0;
+            return false;
+        });
     }
 
     @Override
@@ -29,7 +34,7 @@ public class FileGroupAlphanum extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        String s = "All files in alphanumeric range " + alphanumRange.toString();
+        String s = "All files with names " + alphanumRange.toString();
         return s + super.toString();
     }
 

@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
+
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
@@ -53,14 +55,15 @@ public class GeneralUtil {
         return resultList;
     }
 
-    public static String getFileExtension(File file) throws IllegalArgumentException {
+    public static String getFileExtension(@NonNull File file) throws IllegalArgumentException {
         if (file.isFile()) {
             int i = file.getName().lastIndexOf('.');
             if (i > 0) {
                 return file.getName().substring(i+1);
-            } else throw new IllegalArgumentException("File name doesn't have an extension");
+            } else throw new IllegalArgumentException("File name doesn't have an extension: " +
+                    file.getAbsolutePath());
         }
-        throw new IllegalArgumentException("Argument is not a file");
+        throw new IllegalArgumentException("Argument is not a file: " + file.getAbsolutePath());
     }
 
     public static boolean rename(File from, File to) {

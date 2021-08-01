@@ -49,23 +49,15 @@ public class FolderSort extends FolderOperation {
         return false;
     }
 
-    @NonNull
     @Override
-    public String toString() {
-        String s = "Root directory: " + rootDir.getAbsolutePath() + "\nTarget file group: " +
-                fileGroup.toString() + " (" + fileGroup.listfiles(rootDir).length +
-                ")\nRename files: " + renameFiles() + "\nSort methods: ";
-        for (int i=0; i<sortMethods.size(); i++) {
-            s = s.concat(sortMethods.get(i).toString());
-            if (i < sortMethods.size()-1) s = s.concat(" -THEN- ");
-        }
-        return s;
+    public String getTag() {
+        return TAG;
     }
 
     @Override
     public boolean startOperation(ResultReceiver resultReceiver) {
         try {
-            File[] files = fileGroup.listfiles(rootDir);
+            File[] files = fileGroup.listFiles(rootDir);
             for (File f : files) {
 
                 // calculate new directory based on sort methods
@@ -97,6 +89,21 @@ public class FolderSort extends FolderOperation {
         }
         onOperationProgress(resultReceiver, "Operation completed successfully");
         return true;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        File[] filegroupFiles = fileGroup.listFiles(rootDir);
+        int filegroupCount = filegroupFiles == null ? 0 : filegroupFiles.length;
+        String s = "Root directory: " + rootDir.getAbsolutePath() + "\nTarget file group: " +
+                fileGroup.toString() + " (" + filegroupCount + ")\nRename files: " + renameFiles()
+                + "\nSort methods: ";
+        for (int i=0; i<sortMethods.size(); i++) {
+            s = s.concat(sortMethods.get(i).toString());
+            if (i < sortMethods.size()-1) s = s.concat(" -THEN- ");
+        }
+        return s;
     }
 
     public static class Builder {

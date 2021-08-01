@@ -1,6 +1,6 @@
 package com.dyejeekis.foldergenie;
 
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodParser;
+import com.dyejeekis.foldergenie.model.parser.SortMethodParser;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 
 import org.junit.Test;

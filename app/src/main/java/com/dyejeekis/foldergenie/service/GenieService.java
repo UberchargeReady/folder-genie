@@ -53,7 +53,7 @@ public class GenieService extends JobIntentService {
                             .getSerializableExtra(EXTRA_FOLDER_OPERATION);
                     boolean success = folderOperation.startOperation(resultReceiver);
                     if (resultReceiver == null) {
-                        String message = success ? "Operation (" + intent.getAction() +
+                        String message = success ? "Operation (" + folderOperation.getTag() +
                                 ") completed successfully" : "Failed to complete operation (" +
                                 intent.getAction() + ")";
                         handler.post(new DisplayToast(this, message, Toast.LENGTH_SHORT));

@@ -1,5 +1,10 @@
 package com.dyejeekis.foldergenie.model.filegroup;
 
+import androidx.annotation.NonNull;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class FileGroupVideo extends FileGroupExtension {
 
     public static String[] VIDEO_EXTENSIONS = {
@@ -17,6 +22,17 @@ public class FileGroupVideo extends FileGroupExtension {
 
     public FileGroupVideo(boolean includeSubdirs) {
         super(includeSubdirs);
+    }
+
+    @Override
+    public List<String> getExtensions() {
+        return Arrays.asList(VIDEO_EXTENSIONS);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "All videos";
     }
 
     @Override
