@@ -12,16 +12,13 @@ import com.dyejeekis.foldergenie.util.AlphanumRange;
 import com.dyejeekis.foldergenie.util.ParameterList;
 import com.dyejeekis.foldergenie.util.SizeRange;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SortMethodParser extends TextParser {
 
     public static final String TAG = SortMethodParser.class.getSimpleName();
-
-    private static final String[] VALID_PARAMETERS = {PARAMETER_ADD_TO_ARCHIVE,
-            PARAMETER_ADD_TO_FILENAME, PARAMETER_FILES_PER_DIR, PARAMETER_RANGE, PARAMETER_MIN,
-            PARAMETER_MAX, PARAMETER_START, PARAMETER_END};
 
     public static final String SORT_METHOD_SEPARATOR = ",";
 
@@ -52,7 +49,7 @@ public class SortMethodParser extends TextParser {
         for (String s : strings) {
             for (SortMethodType type : SortMethodType.values()) {
                 if (s.contains(type.name.toLowerCase())) {
-                    wrappers.add(new SortMethodWrapper(type, parseParameters(s)));
+                    wrappers.add(new SortMethodWrapper(type, parseParameters(s, type)));
                     break;
                 }
             }
@@ -60,7 +57,7 @@ public class SortMethodParser extends TextParser {
         return wrappers;
     }
 
-    private ParameterList parseParameters(String s) {
+    private ParameterList parseParameters(String s, SortMethodType type) {
         ParameterList params = new ParameterList();
         int start = s.indexOf(PARAMETER_PREFIX);
         while (start != -1) {
@@ -68,14 +65,31 @@ public class SortMethodParser extends TextParser {
             if (end == -1) end = s.length();
 
             String paramString = s.substring(start, end);
-            if (isValidParam(getParamName(paramString))) {
+            if (isValidParam(getParamName(paramString), type)) {
                 paramString = sanitizeParam(paramString);
                 params.add(paramString);
-            }
+            } else throw new InvalidParameterException("Invalid parameter string: " + paramString);
 
             start = s.indexOf(PARAMETER_PREFIX, end);
         }
         return params;
+    }
+
+    private boolean isValidParam(String param, SortMethodType type) {
+        if (param.equals(PARAMETER_ADD_TO_ARCHIVE) || param.equals(PARAMETER_ADD_TO_FILENAME)
+        || super.isValidParam(param)) return true;
+        switch (type) {
+            case SPLIT:
+                return param.equals(PARAMETER_FILES_PER_DIR);
+            case SIZE:
+                return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_MIN)
+                        || param.equals(PARAMETER_MAX);
+            case ALPHANUMERIC:
+                return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_START)
+                        || param.equals(PARAMETER_END);
+            // TODO: 8/1/2021
+        }
+        return false;
     }
 
     public List<SortMethod> getSortMethods() {
@@ -139,8 +153,4 @@ public class SortMethodParser extends TextParser {
         return sortMethods;
     }
 
-    @Override
-    protected String[] getValidParams() {
-        return VALID_PARAMETERS;
-    }
 }

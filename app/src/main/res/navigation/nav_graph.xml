@@ -17,6 +17,7 @@
 
     </fragment>
 
+<!--    todo maybe change id and label-->
     <fragment
         android:id="@+id/SortProgressFragment"
         android:name="com.dyejeekis.foldergenie.fragment.OperationProgressFragment"

@@ -3,18 +3,37 @@ package com.dyejeekis.foldergenie;
 import com.dyejeekis.foldergenie.model.parser.SortMethodParser;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.security.InvalidParameterException;
 
 import static org.junit.Assert.*;
 
 public class SortMethodParserTest {
 
-    SortMethodParser p1 = new SortMethodParser("fileextension");
-    SortMethodParser p2 = new SortMethodParser("YEARCREATED  -PARAM1, monthCreated");
-    SortMethodParser p3 = new SortMethodParser("split -param2 -param3 , size -param4");
-    SortMethodParser p4 = new SortMethodParser("file extension -param5,alphanum  -param6 -param7, imageRes");
-    SortMethodParser p5 = new SortMethodParser("invalidSortMethod");
-    SortMethodParser p6 = new SortMethodParser("split -param8, split -param9");
+    static SortMethodParser p1;
+    static SortMethodParser p2;
+    static SortMethodParser p3;
+    static SortMethodParser p4;
+    static SortMethodParser p5;
+    static SortMethodParser p6;
+    static SortMethodParser p7;
+
+    @BeforeClass
+    public static void init() {
+        p1 = new SortMethodParser("fileextension");
+        p2 = new SortMethodParser("YEARCREATED  -PARAM1, monthCreated");
+        p3 = new SortMethodParser("split -param2 -param3 , size -param4");
+        p4 = new SortMethodParser("file extension -param5,alphanum  -param6 -param7, imageRes");
+        p5 = new SortMethodParser("invalidSortMethod");
+        p6 = new SortMethodParser("split -param8, split -param9");
+        try {
+            p7 = new SortMethodParser("monthmodified - param10");
+        } catch (Exception e) {
+            assertTrue(e instanceof InvalidParameterException);
+        }
+    }
 
     @Test
     public void testType() {
@@ -28,6 +47,7 @@ public class SortMethodParserTest {
         assertTrue(p5.getSortMethodWrappers().isEmpty());
         assertSame(p6.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.SPLIT);
         assertSame(p6.getSortMethodWrappers().get(1).sortMethodType, SortMethodType.SPLIT);
+        assertNull(p7);
     }
 
     @Test

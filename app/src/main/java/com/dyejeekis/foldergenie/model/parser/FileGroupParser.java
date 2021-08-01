@@ -15,14 +15,13 @@ import com.dyejeekis.foldergenie.util.AlphanumRange;
 import com.dyejeekis.foldergenie.util.ParameterList;
 import com.dyejeekis.foldergenie.util.SizeRange;
 
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileGroupParser extends TextParser {
 
     public static final String TAG = FileGroupParser.class.getSimpleName();
-
-    private static final String[] VALID_PARAMETERS = {PARAMETER_INCLUDE_SUBDIRS,
-            PARAMETER_MIN, PARAMETER_MAX, PARAMETER_START, PARAMETER_END};
 
     private final FileGroupType fileGroupType;
     private final ParameterList parameters;
@@ -59,16 +58,29 @@ public class FileGroupParser extends TextParser {
             if (isValidParam(getParamName(paramString))) {
                 paramString = sanitizeParam(paramString);
                 params.add(paramString);
-            }
+            } else throw new InvalidParameterException("Invalid parameter string: " + paramString);
 
             start = input.indexOf(PARAMETER_PREFIX, end);
         }
         return params;
     }
 
+    protected boolean isValidParam(String param) {
+        if (param.equals(PARAMETER_INCLUDE_SUBDIRECTORIES) || super.isValidParam(param))
+            return true;
+        switch (fileGroupType) {
+            case SIZE:
+                return param.equals(PARAMETER_MIN) || param.equals(PARAMETER_MAX);
+            case ALPHANUMERIC:
+                return param.equals(PARAMETER_START) || param.equals(PARAMETER_END);
+            // TODO: 8/1/2021
+        }
+        return false;
+    }
+
     public FileGroup getFileGroup() {
         FileGroup fileGroup;
-        final boolean includeSubdirs = parameters.contains(PARAMETER_INCLUDE_SUBDIRS);
+        final boolean includeSubdirs = parameters.contains(PARAMETER_INCLUDE_SUBDIRECTORIES);
         switch (fileGroupType) {
             case ALL:
                 fileGroup = new FileGroupAll(includeSubdirs);
@@ -116,10 +128,5 @@ public class FileGroupParser extends TextParser {
                 throw new IllegalArgumentException("Invalid file group type");
         }
         return fileGroup;
-    }
-
-    @Override
-    protected String[] getValidParams() {
-        return VALID_PARAMETERS;
     }
 }
