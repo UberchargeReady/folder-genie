@@ -15,10 +15,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_about">About</string>
     <string name="action_sort_presets">Sort presets</string>
-    <string name="sort_options_fragment_label">Sort options</string>
-    <string name="sort_progress_fragment_label">Sort progress</string>
+    <string name="fragment_label_sort_options">Sort options</string>
+    <string name="fragment_label_operation_progress">Operation progress</string>
     <string name="action_help">Help</string>
     <string name="action_flatten_dir_tree">Flatten folder tree</string>
     <string name="action_preset_all_split">All split</string>
     <string name="action_clear_empty_dirs">Clear empty folders</string>
+    <string name="label_select_folder">Select folder</string>
+    <string name="action_browse">Browse</string>
+    <string name="action_check_sort_parameters">Check sort parameters</string>
+    <string name="action_save_sort_preset">Save sort preset</string>
+    <string name="label_sort_info">Choose your sort options\n\nRead the \'Help\' dialog in the overflow menu for more info</string>
 </resources>

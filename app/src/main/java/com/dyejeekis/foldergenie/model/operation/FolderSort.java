@@ -84,7 +84,7 @@ public class FolderSort extends FolderOperation {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            onOperationProgress(resultReceiver, "Operation failed to complete\n" + e.toString());
+            onOperationProgress(resultReceiver, "Operation failed to complete\n\n" + e.toString());
             return false;
         }
         onOperationProgress(resultReceiver, "Operation completed successfully");

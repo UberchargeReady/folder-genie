@@ -16,14 +16,14 @@
             android:id="@+id/textView_selected_dir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select folder"
+            android:text="@string/label_select_folder"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/button_browse_directories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Browse" />
+            android:text="@string/action_browse" />
 
         <EditText
             android:id="@+id/editText_file_group"
@@ -45,13 +45,13 @@
             android:id="@+id/button_check_sort_parameters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Check sort parameters" />
+            android:text="@string/action_check_sort_parameters" />
 
         <Button
             android:id="@+id/button_save_sort_preset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save sort preset" />
+            android:text="@string/action_save_sort_preset" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                     android:id="@+id/textView_sort_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="(folder sort parameters)"
+                    android:text="@string/label_sort_info"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>

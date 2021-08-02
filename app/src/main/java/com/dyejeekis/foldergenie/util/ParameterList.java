@@ -2,6 +2,7 @@ package com.dyejeekis.foldergenie.util;
 
 import androidx.annotation.Nullable;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ParameterList extends ArrayList<String> {
 
     private void uniqueParamCheck(String param) {
         if (this.contains(param) && uniqueParams.contains(param))
-            throw new IllegalArgumentException("Illegal attempt to add a unique parameter twice: " + param);
+            throw new InvalidParameterException("Illegal attempt to add a unique parameter twice: " + param);
     }
 
     public List<String> getUniqueParams() {

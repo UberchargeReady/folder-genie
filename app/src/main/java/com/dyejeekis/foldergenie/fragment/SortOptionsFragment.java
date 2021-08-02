@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.databinding.FragmentSortOptionsBinding;
 import com.dyejeekis.foldergenie.model.operation.FolderSort;
@@ -31,6 +32,7 @@ public class SortOptionsFragment extends Fragment {
     private FragmentSortOptionsBinding binding;
 
     private FolderSort folderSort;
+    private Exception exception;
 
     @Nullable
     @Override
@@ -85,7 +87,7 @@ public class SortOptionsFragment extends Fragment {
 
     private String getFolderSortInfo() {
         if (folderSort == null)
-            return "Invalid/incomplete inputs";
+            return "Invalid/incomplete inputs\n\n" + exception.toString();
         else return folderSort.toString();
     }
 
@@ -101,15 +103,19 @@ public class SortOptionsFragment extends Fragment {
                 List<SortMethod> sortMethods = sortMethodParser.getSortMethods();
 
                 folderSort = new FolderSort(rootDir, fileGroup, sortMethods);
+                exception = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
             folderSort = null;
+            exception = e;
         }
     }
 
     private boolean validateInputs() {
         // TODO: 7/8/2021
+        if (binding.textViewSelectedDir.getText().toString().equals(getString(R.string.label_select_folder)))
+            throw new IllegalArgumentException("Please choose a valid directory");
         return true;
     }
 
