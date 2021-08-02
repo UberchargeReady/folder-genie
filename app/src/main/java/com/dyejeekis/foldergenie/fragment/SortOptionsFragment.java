@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.method.ScrollingMovementMethod;
@@ -78,7 +79,7 @@ public class SortOptionsFragment extends Fragment {
         binding.buttonBeginSort.setOnClickListener(v -> {
             SortOptionsFragmentDirections.BeginSortAction action =
                     SortOptionsFragmentDirections.beginSortAction(folderSort);
-            NavHostFragment.findNavController(this).navigate(action);
+            NavHostFragment.findNavController(this).navigate((NavDirections) action);
         });
     }
 
