@@ -52,7 +52,6 @@ public abstract class TextParser {
 
     protected boolean isValidParam(String param) {
         return Arrays.asList(VALID_PARAMETERS_TEST).contains(param);
-        // TODO: 8/1/2021 rewrite parser test and disable test parameters (remove this method)
     }
 
 }

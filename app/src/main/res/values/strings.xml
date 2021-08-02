@@ -23,7 +23,12 @@
     <string name="action_clear_empty_dirs">Clear empty folders</string>
     <string name="label_select_folder">Select folder</string>
     <string name="action_browse">Browse</string>
-    <string name="action_check_sort_parameters">Check sort parameters</string>
+    <string name="action_check_sort_parameters">Confirm sort options</string>
     <string name="action_save_sort_preset">Save sort preset</string>
-    <string name="label_sort_info">Choose your sort options\n\nRead the \'Help\' dialog in the overflow menu for more info</string>
+    <string name="label_sort_info">Choose your sort options and confirm them. Then begin the sort
+        operation based on the displayed options or save them as a preset.\n\nRead the \'Help\' dialog in the overflow menu for more info.</string>
+    <string name="action_stop_operation">Stop operation</string>
+    <string name="action_back">Back</string>
+    <string name="action_begin_sort_operation">Begin sort</string>
+    <string name="label_operation_in_progress">Operation in progress..</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class SortOptionsFragment extends Fragment {
         binding.buttonSaveSortPreset.setOnClickListener(v -> {
             // TODO: 7/23/2021
         });
+
+        binding.textViewSortInfo.setMovementMethod(new ScrollingMovementMethod());
 
         binding.buttonBeginSort.setEnabled(false);
         binding.buttonBeginSort.setOnClickListener(v -> {

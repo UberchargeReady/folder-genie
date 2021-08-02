@@ -2,6 +2,7 @@ package com.dyejeekis.foldergenie.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
@@ -53,10 +54,14 @@ public class GenieService extends JobIntentService {
                             .getSerializableExtra(EXTRA_FOLDER_OPERATION);
                     boolean success = folderOperation.startOperation(resultReceiver);
                     if (resultReceiver == null) {
-                        String message = success ? "Operation (" + folderOperation.getTag() +
-                                ") completed successfully" : "Failed to complete operation (" +
-                                intent.getAction() + ")";
+                        String opName = folderOperation.getTag();
+                        String message = success ? "Operation (" + opName + ") completed successfully"
+                                : "Failed to complete operation (" + opName + ")";
                         handler.post(new DisplayToast(this, message, Toast.LENGTH_SHORT));
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean(ServiceResultReceiver.KEY_OPERATION_COMPLETED, true);
+                        resultReceiver.send(ServiceResultReceiver.CODE_OPERATION_COMPLETION, bundle);
                     }
                     break;
             }
