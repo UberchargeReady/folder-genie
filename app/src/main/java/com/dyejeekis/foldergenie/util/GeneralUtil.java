@@ -71,76 +71,24 @@ public class GeneralUtil {
                 && from.exists() && from.renameTo(to);
     }
 
-    public static File[] generateTestFiles(File parentDir, int fileCount) throws IOException {
-        File[] files = new File[fileCount];
-        List<String> extensions = getExtensionsList();
-        for (int i = 0; i < fileCount; i++) {
-            String name = UUID.randomUUID().toString();
-            String extension = ".".concat(getRandomFileExtension(extensions));
-            name = name.concat(extension);
-            File file = new File(parentDir.getAbsolutePath() + File.separator + name);
-            boolean success = file.createNewFile();
-            file.setLastModified(getRandomTimestamp());
-            if (success) {
-                Log.d(TAG, "Generated file " + file.getAbsolutePath());
-                files[i] = file;
-            } else Log.d(TAG, "Failed to create file " + file.getAbsolutePath());
-        }
-        return files;
-    }
-
-    public static List<String> getExtensionsList() {
-        List<String> extensions = new ArrayList<>();
-        extensions.addAll(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
-        extensions.addAll(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
-        extensions.addAll(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
-        extensions.addAll(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
-        return extensions;
-    }
-
-    public static String getRandomFileExtension(List<String> extensions) {
-        Random random = new Random();
-        return extensions.get(random.nextInt(extensions.size()));
-    }
-
     public static Date getRandomDate() {
         return new Date(getRandomTimestamp());
     }
 
     public static long getRandomTimestamp() {
-        //Random rnd = new Random();
-        //return Math.abs(System.currentTimeMillis() - rnd.nextLong());
         return ThreadLocalRandom.current().nextLong(System.currentTimeMillis());
     }
 
-//    public void setFileCreationDate(String filePath, Date creationDate) throws IOException{
-//
-//        BasicFileAttributeView attributes = Files.getFileAttributeView(Paths.get(filePath), BasicFileAttributeView.class);
-//        FileTime time = FileTime.fromMillis(creationDate.getTime());
-//        attributes.setTimes(time, time, time);
-//
-//    }
-
-    public static int getDayNumberOld(Date date) {
+    public static int getDayNumber(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_WEEK);
     }
 
-    public static String getDayStringOld(Date date, Locale locale) {
+    public static String getDayString(Date date, Locale locale) {
         DateFormat formatter = new SimpleDateFormat("EEEE", locale);
         return formatter.format(date);
     }
-
-//    public static int getDayNumberNew(LocalDate date) {
-//        DayOfWeek day = date.getDayOfWeek();
-//        return day.getValue();
-//    }
-//
-//    public static String getDayStringNew(LocalDate date, Locale locale) {
-//        DayOfWeek day = date.getDayOfWeek();
-//        return day.getDisplayName(TextStyle.FULL, locale);
-//    }
 
     public static String listToString(List<String> list) {
         String string = "";
@@ -186,13 +134,4 @@ public class GeneralUtil {
             pos = str.indexOf(substr, pos + 1);
         return pos;
     }
-
-//    public static File uriToFile(Uri uri) {
-//        try {
-//            return new File(new URI(uri.getPath()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.model.operation.FolderFlatten;
+import com.dyejeekis.foldergenie.model.operation.FolderGenerate;
 import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.util.FileUtil;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
@@ -129,18 +130,8 @@ public class MainActivity extends BaseActivity {
 
 
                 File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
-                Log.d(TAG, "Generating test files in " + dir.getAbsolutePath());
-                Exception ex = null;
-                final int fileCount = 100;
-                try {
-                    GeneralUtil.generateTestFiles(dir, fileCount);
-                } catch (IOException e) {
-                    ex = e;
-                    e.printStackTrace();
-                    Toast.makeText(this, "Failed to generate test files", Toast.LENGTH_SHORT).show();
-                }
-                if (ex == null) Toast.makeText(this, fileCount + " test files generated successfully in " +
-                        dir.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                FolderGenerate folderGenerate = new FolderGenerate(dir);
+                GenieService.enqueueFolderOperation(this, null, folderGenerate);
             }
         });
     }

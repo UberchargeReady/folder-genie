@@ -7,12 +7,12 @@ import android.os.ResultReceiver;
 public class ServiceResultReceiver extends ResultReceiver {
 
     public static final int CODE_SHOW_PROGRESS = 2000;
-
     public static final int CODE_OPERATION_COMPLETION = 2001;
+    public static final int CODE_OPERATION_SUCCESS = 2002;
 
     public static final String KEY_PROGRESS_MESSAGE = "key.PROGRESS_MESSAGE";
-
     public static final String KEY_OPERATION_COMPLETED = "key.OPERATION_COMPLETED";
+    public static final String KEY_OPERATION_SUCCESS = "key.OPERATION_SUCCESS";
 
     private Receiver receiver;
 

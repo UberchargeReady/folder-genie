@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/George/AndroidStudioProjects/FolderGenie/app/src/main/res/layout/fragment_operation_progress.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/George/AndroidStudioProjects/FolderGenie/app/src/main/res/layout/fragment_sort_options.xml" value="0.36666666666666664" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="androidx.annotation.Nullable" />
     <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />

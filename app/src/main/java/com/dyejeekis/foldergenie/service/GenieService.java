@@ -7,13 +7,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
 import com.dyejeekis.foldergenie.model.operation.FolderOperation;
-import com.dyejeekis.foldergenie.util.DisplayToast;
 
 public class GenieService extends JobIntentService {
 
@@ -52,17 +50,8 @@ public class GenieService extends JobIntentService {
                     ResultReceiver resultReceiver = intent.getParcelableExtra(EXTRA_RESULT_RECEIVER);
                     FolderOperation folderOperation = (FolderOperation) intent
                             .getSerializableExtra(EXTRA_FOLDER_OPERATION);
-                    boolean success = folderOperation.startOperation(resultReceiver);
-                    if (resultReceiver == null) {
-                        String opName = folderOperation.getTag();
-                        String message = success ? "Operation (" + opName + ") completed successfully"
-                                : "Failed to complete operation (" + opName + ")";
-                        handler.post(new DisplayToast(this, message, Toast.LENGTH_SHORT));
-                    } else {
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(ServiceResultReceiver.KEY_OPERATION_COMPLETED, true);
-                        resultReceiver.send(ServiceResultReceiver.CODE_OPERATION_COMPLETION, bundle);
-                    }
+                    boolean success = folderOperation.startOperation(this, resultReceiver, handler);
+                    folderOperation.onOperationComplete(resultReceiver, success);
                     break;
             }
         }
