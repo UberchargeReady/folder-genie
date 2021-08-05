@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.model.operation.FolderClear;
 import com.dyejeekis.foldergenie.model.operation.FolderFlatten;
 import com.dyejeekis.foldergenie.model.operation.FolderGenerate;
 import com.dyejeekis.foldergenie.service.GenieService;
@@ -162,7 +163,16 @@ public class MainActivity extends BaseActivity {
     }
 
     private void clearEmptyDirs() {
-        // TODO: 7/26/2021
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
+        getActivityLauncher().launch(intent, result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Uri treeUri = result.getData().getData();
+                File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
+                FolderClear folderClear = new FolderClear(dir, true);
+                GenieService.enqueueFolderOperation(this, null, folderClear);
+            }
+        });
     }
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
