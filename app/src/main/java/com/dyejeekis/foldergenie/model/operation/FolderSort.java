@@ -82,12 +82,12 @@ public class FolderSort extends FolderOperation {
                 // move (rename) file to new directory
                 File newPath = new File(targetDir.getAbsolutePath() + File.separator +
                         f.getName());
+                boolean success = GeneralUtil.rename(f, newPath);
 
-                message = "Renaming " + f.getAbsolutePath() + " to " + newPath.getAbsolutePath();
+                message = success ? "Moved " : "Failed to move ";
+                message = message.concat(f.getAbsolutePath() + " to " + newPath.getAbsolutePath());
                 Log.d(TAG, message);
                 onOperationProgress(resultReceiver, message);
-
-                GeneralUtil.rename(f, newPath);
             }
         } catch (Exception e) {
             e.printStackTrace();

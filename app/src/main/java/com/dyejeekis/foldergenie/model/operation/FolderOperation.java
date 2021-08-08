@@ -55,19 +55,4 @@ public abstract class FolderOperation implements Serializable {
         }
     }
 
-    public void onOperationComplete(Handler handler, CompletionRunnable runnable) {
-        if (handler != null) {
-            handler.post(runnable);
-        }
-    }
-
-    public static abstract class CompletionRunnable implements Runnable {
-
-        private final boolean success;
-
-        public CompletionRunnable(boolean success) {
-            this.success = success;
-        }
-    }
-
 }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -20,9 +19,12 @@ import com.dyejeekis.foldergenie.model.operation.FolderOperation;
 import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
 
-public class OperationProgressFragment extends Fragment implements ServiceResultReceiver.Receiver {
+public abstract class OperationProgressFragment extends BaseFragment implements ServiceResultReceiver.Receiver {
 
-    private FragmentOperationProgressBinding binding;
+    public static final String KEY_FOLDER_OPERATION = "key.FOLDER_OPERATION";
+
+    protected abstract void onOperationProgress(String message);
+    protected abstract void onOperationCompleted(boolean success);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,45 +38,16 @@ public class OperationProgressFragment extends Fragment implements ServiceResult
         super.onPrepareOptionsMenu(menu);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = FragmentOperationProgressBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        binding.textViewOperationProgress.setMovementMethod(new ScrollingMovementMethod());
-
-        binding.buttonStopOperation.setOnClickListener(v -> {
-            stopOperation();
-            getActivity().onBackPressed();
-        });
-
-        startOperation();
-    }
-
-    private void startOperation() {
-        FolderOperation folderOperation = OperationProgressFragmentArgs.fromBundle(getArguments())
-                .getFolderOperation();
+    protected void startOperation() {
+        FolderOperation folderOperation = (FolderOperation) getArguments().getSerializable(KEY_FOLDER_OPERATION);
         ServiceResultReceiver serviceResultReceiver = new ServiceResultReceiver(
                 new Handler(Looper.getMainLooper()));
         serviceResultReceiver.setReceiver(this);
         GenieService.enqueueFolderOperation(getActivity(), serviceResultReceiver, folderOperation);
     }
 
-    private void stopOperation() {
+    protected void stopOperation() {
         // TODO: 7/27/2021
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     @Override
@@ -82,11 +55,12 @@ public class OperationProgressFragment extends Fragment implements ServiceResult
         if (resultCode == ServiceResultReceiver.CODE_SHOW_PROGRESS) {
             if (resultData != null) {
                 String msg = "\n" + resultData.getString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE);
-                binding.textViewOperationProgress.append(msg);
+                onOperationProgress(msg);
             }
         } else if (resultCode == ServiceResultReceiver.CODE_OPERATION_COMPLETION) {
             boolean completed = resultData.getBoolean(ServiceResultReceiver.KEY_OPERATION_COMPLETED);
-            if (completed) binding.buttonStopOperation.setText(getString(R.string.action_back));
+            boolean success = resultData.getBoolean(ServiceResultReceiver.KEY_OPERATION_SUCCESS);
+            if (completed) onOperationCompleted(success);
         }
     }
 

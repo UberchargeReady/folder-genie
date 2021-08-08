@@ -8,19 +8,18 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.fragment.OperationProgressFragment;
 import com.dyejeekis.foldergenie.model.operation.FolderClear;
 import com.dyejeekis.foldergenie.model.operation.FolderFlatten;
 import com.dyejeekis.foldergenie.model.operation.FolderGenerate;
+import com.dyejeekis.foldergenie.model.operation.FolderOperation;
 import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.util.FileUtil;
-import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
@@ -35,7 +34,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MainActivity extends BaseActivity {
 
@@ -157,7 +155,8 @@ public class MainActivity extends BaseActivity {
                 Uri treeUri = result.getData().getData();
                 File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
                 FolderFlatten folderFlatten = new FolderFlatten(dir);
-                GenieService.enqueueFolderOperation(this, null, folderFlatten);
+                //GenieService.enqueueFolderOperation(this, null, folderFlatten);
+                startFolderOperation(folderFlatten);
             }
         });
     }
@@ -170,9 +169,17 @@ public class MainActivity extends BaseActivity {
                 Uri treeUri = result.getData().getData();
                 File dir = new File(FileUtil.getFullPathFromTreeUri(treeUri, this));
                 FolderClear folderClear = new FolderClear(dir, true);
-                GenieService.enqueueFolderOperation(this, null, folderClear);
+                //GenieService.enqueueFolderOperation(this, null, folderClear);
+                startFolderOperation(folderClear);
             }
         });
+    }
+
+    private void startFolderOperation(FolderOperation operation) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(OperationProgressFragment.KEY_FOLDER_OPERATION, operation);
+        Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                .navigate(R.id.action_global_operationVerbose, bundle);
     }
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
