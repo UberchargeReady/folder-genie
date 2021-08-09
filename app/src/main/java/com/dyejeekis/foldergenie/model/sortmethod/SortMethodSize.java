@@ -2,6 +2,7 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.io.File;
@@ -10,12 +11,15 @@ import java.util.List;
 
 public class SortMethodSize extends SortMethod {
 
-    // TODO: 7/11/2021 think about how to handle overlap in size ranges
     private final List<SizeRange> sizeRanges;
 
-    public SortMethodSize(boolean addToArchive, boolean addToFilename) {
+    public SortMethodSize(@NonNull List<SizeRange> sizeRanges, boolean addToArchive, boolean addToFilename) {
         super(addToArchive, addToFilename);
-        sizeRanges = new ArrayList<>();
+        if (sizeRanges.isEmpty())
+            throw new IllegalArgumentException("Sort method must have at least one size range to be valid");
+        if (rangesOverlap(sizeRanges))
+            throw new IllegalArgumentException("Overlap detected in selected size ranges");
+        this.sizeRanges = sizeRanges;
     }
 
     @Override
@@ -43,19 +47,16 @@ public class SortMethodSize extends SortMethod {
     @Override
     public String toString() {
         String s = "Sort in folders based on file size ";
-        for (SizeRange sizeRange : sizeRanges) {
-            s = s.concat(sizeRange.toString());
-            if (sizeRanges.indexOf(sizeRange) < sizeRanges.size() - 1)
-                s = s.concat(", ");
-        }
-        return s  + super.toString();
+        s = s.concat(GeneralUtil.listToString(sizeRanges, ", "));
+        return s + super.toString();
     }
 
     public List<SizeRange> getSizeRanges() {
         return sizeRanges;
     }
 
-    public void addSizeRange(SizeRange sizeRange) {
-        sizeRanges.add(sizeRange);
+    private boolean rangesOverlap(List<SizeRange> sizeRanges) {
+        // TODO: 8/9/2021
+        return false;
     }
 }

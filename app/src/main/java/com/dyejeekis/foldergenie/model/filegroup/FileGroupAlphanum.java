@@ -10,7 +10,7 @@ public class FileGroupAlphanum extends FileGroup {
 
     private final AlphanumRange alphanumRange;
 
-    public FileGroupAlphanum(boolean includeSubdirs, AlphanumRange alphanumRange) {
+    public FileGroupAlphanum(AlphanumRange alphanumRange, boolean includeSubdirs) {
         super(includeSubdirs);
         this.alphanumRange = alphanumRange;
     }

@@ -20,7 +20,7 @@ public class SortMethodParser extends TextParser {
 
     public static final String TAG = SortMethodParser.class.getSimpleName();
 
-    public static final String SORT_METHOD_SEPARATOR = ",";
+    public static final String SORT_METHOD_SEPARATOR = COMMAND_SEPARATOR;
 
     public static class SortMethodWrapper {
         public SortMethodType sortMethodType;
@@ -87,6 +87,8 @@ public class SortMethodParser extends TextParser {
             case ALPHANUMERIC:
                 return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_START)
                         || param.equals(PARAMETER_END);
+            case FILE_EXTENSION:
+                return param.equals(PARAMETER_GROUP);
             // TODO: 8/1/2021
         }
         return false;
@@ -105,32 +107,62 @@ public class SortMethodParser extends TextParser {
                     sortMethod = new SortMethodSplit(filecount, addToArchive, addToFilename);
                     break;
                 case SIZE:
-                    sortMethod = new SortMethodSize(addToArchive, addToFilename);
+                    List<SizeRange> sizeRanges = new ArrayList<>();
                     for (int i=0; i<params.size(); i++) {
                         if (params.get(i).contains(PARAMETER_RANGE)) {
-                            String range = params.getStringParamValue(PARAMETER_RANGE, i);
+                            String range = params.getStringParamValueSafe(PARAMETER_RANGE, i);
+                            if (range == null)
+                                throw new IllegalArgumentException("Error parsing " + PARAMETER_RANGE + " param value");
                             long min = Long.parseLong(range.split(PARAMETER_RANGE_SEPARATOR)[0]);
                             long max = Long.parseLong(range.split(PARAMETER_RANGE_SEPARATOR)[1]);
-                            ((SortMethodSize) sortMethod).addSizeRange(new SizeRange(min, max));
+                            sizeRanges.add(new SizeRange(min, max));
+                        } else if (params.get(i).contains(PARAMETER_MIN)) {
+                            long min = params.getLongParamValueSafe(PARAMETER_MIN);
+                            sizeRanges.add(new SizeRange(min, -1));
+                        } else if (params.get(i).contains(PARAMETER_MAX)) {
+                            long max = params.getLongParamValueSafe(PARAMETER_MAX);
+                            sizeRanges.add(new SizeRange(-1, max));
                         }
                     }
-                    if (((SortMethodSize) sortMethod).getSizeRanges().size() == 0)
-                        throw new IllegalArgumentException("Sort method must have at least one size range to be valid");
+                    sortMethod = new SortMethodSize(sizeRanges, addToArchive, addToFilename);
                     break;
                 case FILE_EXTENSION:
-                    // TODO: 7/10/2021
-                    sortMethod = new SortMethodExtension(addToArchive, addToFilename);
+                    // TODO: 8/9/2021 add parameters for sorting by file type (audio, video, etc)
+                    List<SortMethodExtension.ExtensionGroup> extensionGroups = new ArrayList<>();
+                    for (int i=0; i<params.size(); i++) {
+                        if (params.get(i).contains(PARAMETER_GROUP)) {
+                            String group = params.getStringParamValueSafe(PARAMETER_GROUP, i);
+                            if (group == null)
+                                throw new IllegalArgumentException("Error parsing " + PARAMETER_GROUP + " param value");
+                            String[] strings = group.split(PARAMETER_GROUP_SEPARATOR);
+                            List<String> extensions = new ArrayList<>();
+                            for (String s : strings) {
+                                extensions.add(s.trim());
+                            }
+                            extensionGroups.add(new SortMethodExtension.ExtensionGroup(extensions));
+                        }
+                    }
+                    sortMethod = new SortMethodExtension(extensionGroups, addToArchive, addToFilename);
                     break;
                 case ALPHANUMERIC:
-                    sortMethod = new SortMethodAlphanum(addToArchive, addToFilename);
+                    List<AlphanumRange> alphanumRanges = new ArrayList<>();
                     for (int i=0; i<params.size(); i++) {
-                        String range = params.getStringParamValue(PARAMETER_RANGE, i);
-                        String start = range.split(PARAMETER_RANGE_SEPARATOR)[0].trim();
-                        String end = range.split(PARAMETER_RANGE_SEPARATOR)[1].trim();
-                        ((SortMethodAlphanum) sortMethod).addAlphanumRange(new AlphanumRange(start, end));
+                        if (params.get(i).contains(PARAMETER_RANGE)) {
+                            String range = params.getStringParamValueSafe(PARAMETER_RANGE, i);
+                            if (range == null)
+                                throw new IllegalArgumentException("Error parsing " + PARAMETER_RANGE + " param value");
+                            String start = range.split(PARAMETER_RANGE_SEPARATOR)[0].trim();
+                            String end = range.split(PARAMETER_RANGE_SEPARATOR)[1].trim();
+                            alphanumRanges.add(new AlphanumRange(start, end));
+                        } else if (params.get(i).contains(PARAMETER_START)) {
+                            String start = params.getStringParamValueSafe(PARAMETER_START);
+                            alphanumRanges.add(new AlphanumRange(start, null));
+                        } else if (params.get(i).contains(PARAMETER_END)) {
+                            String end = params.getStringParamValueSafe(PARAMETER_END);
+                            alphanumRanges.add(new AlphanumRange(null, end));
+                        }
                     }
-                    if (((SortMethodAlphanum) sortMethod).getAlphanumRanges().size() == 0)
-                        throw new IllegalArgumentException("Sort method must have at least one alphanum range to be valid");
+                    sortMethod = new SortMethodAlphanum(alphanumRanges, addToArchive, addToFilename);
                     break;
                 case IMAGE_RESOLUTION:
                     // TODO: 7/10/2021

@@ -35,4 +35,9 @@ public class SizeRange implements Serializable {
     public long getMaxSize() {
         return maxSize;
     }
+
+    public boolean overlapsWith(SizeRange sizeRange) {
+        // TODO: 8/9/2021
+        return false;
+    }
 }

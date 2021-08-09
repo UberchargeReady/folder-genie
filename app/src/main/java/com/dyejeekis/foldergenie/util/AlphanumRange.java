@@ -33,4 +33,9 @@ public class AlphanumRange implements Serializable {
     public String getEndStr() {
         return endStr;
     }
+
+    public boolean overlapsWith(AlphanumRange alphanumRange) {
+        // TODO: 8/9/2021
+        return false;
+    }
 }

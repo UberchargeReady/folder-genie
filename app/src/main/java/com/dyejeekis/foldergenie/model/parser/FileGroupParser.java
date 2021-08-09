@@ -73,6 +73,8 @@ public class FileGroupParser extends TextParser {
                 return param.equals(PARAMETER_MIN) || param.equals(PARAMETER_MAX);
             case ALPHANUMERIC:
                 return param.equals(PARAMETER_START) || param.equals(PARAMETER_END);
+            case FILE_EXTENSION:
+                return param.equals(PARAMETER_SELECT);
             // TODO: 8/1/2021
         }
         return false;
@@ -88,7 +90,7 @@ public class FileGroupParser extends TextParser {
             case SIZE:
                 long minSize = parameters.getLongParamValueSafe(PARAMETER_MIN);
                 long maxSize = parameters.getLongParamValueSafe(PARAMETER_MAX);
-                fileGroup = new FileGroupSize(includeSubdirs, new SizeRange(minSize, maxSize));
+                fileGroup = new FileGroupSize(new SizeRange(minSize, maxSize), includeSubdirs);
                 break;
             case AUDIO:
                 // TODO: 6/13/2021
@@ -109,11 +111,18 @@ public class FileGroupParser extends TextParser {
             case ALPHANUMERIC:
                 String start = parameters.getStringParamValueSafe(PARAMETER_START);
                 String end = parameters.getStringParamValueSafe(PARAMETER_END);
-                fileGroup = new FileGroupAlphanum(includeSubdirs, new AlphanumRange(start, end));
+                fileGroup = new FileGroupAlphanum(new AlphanumRange(start, end), includeSubdirs);
                 break;
             case FILE_EXTENSION:
-                // TODO: 6/13/2021
-                fileGroup = new FileGroupExtension(includeSubdirs);
+                String paramValue = parameters.getStringParamValueSafe(PARAMETER_SELECT);
+                if (paramValue == null)
+                    throw new IllegalArgumentException("Error parsing " + PARAMETER_SELECT + " param value");
+                String[] strings = paramValue.split(PARAMETER_SELECT_SEPARATOR);
+                List<String> extensions = new ArrayList<>();
+                for (String s : strings) {
+                    extensions.add(s.trim());
+                }
+                fileGroup = new FileGroupExtension(extensions, includeSubdirs);
                 break;
             case DATE_CREATED:
             case DATE_MODIFIED:

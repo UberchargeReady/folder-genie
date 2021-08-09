@@ -21,7 +21,7 @@ public class FileGroupVideo extends FileGroupExtension {
     };
 
     public FileGroupVideo(boolean includeSubdirs) {
-        super(includeSubdirs);
+        super(Arrays.asList(VIDEO_EXTENSIONS), includeSubdirs);
     }
 
     @Override

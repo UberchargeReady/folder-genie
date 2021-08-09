@@ -1,19 +1,25 @@
 package com.dyejeekis.foldergenie.model.parser;
 
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class TextParser {
 
     // text parser parameters, must be lower case strings
 
+    public static final String COMMAND_SEPARATOR = ";";
     public static final String PARAMETER_PREFIX = "-";
-    public static final String PARAMETER_RANGE_SEPARATOR = "to";
     public static final String PARAMETER_INCLUDE_SUBDIRECTORIES = "subdir";
     public static final String PARAMETER_ADD_TO_ARCHIVE = "archive";
     public static final String PARAMETER_ADD_TO_FILENAME = "rename";
     public static final String PARAMETER_FILES_PER_DIR = "filecount";
+    public static final String PARAMETER_SELECT = "select";
+    public static final String PARAMETER_SELECT_SEPARATOR = ",";
     public static final String PARAMETER_RANGE = "range";
+    public static final String PARAMETER_RANGE_SEPARATOR = "to";
+    public static final String PARAMETER_FOLDER = "folder";
+    public static final String PARAMETER_FOLDER_SEPARATOR = ",";
+    public static final String PARAMETER_GROUP = "group";
+    public static final String PARAMETER_GROUP_SEPARATOR = ",";
     public static final String PARAMETER_MIN = "min";
     public static final String PARAMETER_MAX = "max";
     public static final String PARAMETER_START = "start";
@@ -50,6 +56,7 @@ public abstract class TextParser {
         return "";
     }
 
+    // TODO: 8/8/2021 rewrite unit tests and remove/disable this method
     protected boolean isValidParam(String param) {
         return Arrays.asList(VALID_PARAMETERS_TEST).contains(param);
     }

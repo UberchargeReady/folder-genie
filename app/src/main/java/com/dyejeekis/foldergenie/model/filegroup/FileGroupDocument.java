@@ -21,7 +21,7 @@ public class FileGroupDocument extends FileGroupExtension {
     };
 
     public FileGroupDocument(boolean includeSubdirs) {
-        super(includeSubdirs);
+        super(Arrays.asList(DOCUMENT_EXTENSIONS), includeSubdirs);
     }
 
     @Override

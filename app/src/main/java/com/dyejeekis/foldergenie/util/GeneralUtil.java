@@ -2,40 +2,22 @@ package com.dyejeekis.foldergenie.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
-
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.FileTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Pattern;
 
 public class GeneralUtil {
 
@@ -66,6 +48,12 @@ public class GeneralUtil {
         throw new IllegalArgumentException("Argument is not a file: " + file.getAbsolutePath());
     }
 
+    public static final Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
+
+    public static boolean isValidFileExtension(@NonNull String extension) {
+        return !specialCharPattern.matcher(extension).find();
+    }
+
     public static boolean rename(File from, File to) {
         return from.getParentFile()!= null && from.getParentFile().exists()
                 && from.exists() && from.renameTo(to);
@@ -90,11 +78,11 @@ public class GeneralUtil {
         return formatter.format(date);
     }
 
-    public static String listToString(List<String> list) {
+    public static String listToString(List<?> list, String separator) {
         String string = "";
-        for (String s : list) {
-            string = string.concat(s);
-            if (list.indexOf(s) < list.size()-1) string = string.concat(", ");
+        for (Object o : list) {
+            string = string.concat(o.toString());
+            if (list.indexOf(o) < list.size() - 1) string = string.concat(separator);
         }
         return string;
     }

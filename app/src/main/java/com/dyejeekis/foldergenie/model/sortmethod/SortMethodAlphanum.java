@@ -3,6 +3,7 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.util.AlphanumRange;
+import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,12 +11,16 @@ import java.util.List;
 
 public class SortMethodAlphanum extends SortMethod {
 
-    // TODO: 7/11/2021 think about how to handle overlap in alphanumeric ranges
     private final List<AlphanumRange> alphanumRanges;
 
-    public SortMethodAlphanum(boolean addToArchive, boolean addToFilename) {
+    public SortMethodAlphanum(@NonNull List<AlphanumRange> alphanumRanges, boolean addToArchive,
+                              boolean addToFilename) {
         super(addToArchive, addToFilename);
-        alphanumRanges = new ArrayList<>();
+        if (alphanumRanges.isEmpty())
+            throw new IllegalArgumentException("Sort method must have at least one alphanumeric range to be valid");
+        if (rangesOverlap(alphanumRanges))
+            throw new IllegalArgumentException("Overlap detected in selected alphanumeric ranges");
+        this.alphanumRanges = alphanumRanges;
     }
 
     @Override
@@ -45,11 +50,7 @@ public class SortMethodAlphanum extends SortMethod {
     @Override
     public String toString() {
         String s = "Sort in folders based on alphanumeric ranges ";
-        for (AlphanumRange range : alphanumRanges) {
-            s = s.concat(range.toString());
-            if (alphanumRanges.indexOf(range) < alphanumRanges.size() - 1)
-                s = s.concat(", ");
-        }
+        s = s.concat(GeneralUtil.listToString(alphanumRanges, ", "));
         return s + super.toString();
     }
 
@@ -57,7 +58,8 @@ public class SortMethodAlphanum extends SortMethod {
         return alphanumRanges;
     }
 
-    public void addAlphanumRange(AlphanumRange alphanumRange) {
-        alphanumRanges.add(alphanumRange);
+    private boolean rangesOverlap(List<AlphanumRange> alphanumRanges) {
+        // TODO: 8/9/2021
+        return false;
     }
 }

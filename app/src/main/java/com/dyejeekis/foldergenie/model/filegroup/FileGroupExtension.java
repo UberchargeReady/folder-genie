@@ -12,13 +12,11 @@ public class FileGroupExtension extends FileGroup {
 
     private final List<String> extensions;
 
-    public FileGroupExtension(boolean includeSubdirs) {
+    public FileGroupExtension(@NonNull List<String> extensions, boolean includeSubdirs) {
         super(includeSubdirs);
-        this.extensions = new ArrayList<>();
-    }
-
-    public void addExtension(String extension) {
-        this.extensions.add(extension);
+        if (extensions.isEmpty())
+            throw new IllegalArgumentException("File group must have at least one extension to be valid");
+        this.extensions = extensions;
     }
 
     public List<String> getExtensions() {
@@ -53,7 +51,7 @@ public class FileGroupExtension extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "Files with extensions " + GeneralUtil.listToString(getExtensions());
+        return "Files with extensions " + GeneralUtil.listToString(getExtensions(), ",");
     }
 
     @Override

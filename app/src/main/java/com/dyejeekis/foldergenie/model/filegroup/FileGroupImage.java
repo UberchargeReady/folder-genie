@@ -18,10 +18,7 @@ public class FileGroupImage extends FileGroupExtension {
     };
 
     public FileGroupImage(boolean includeSubdirs) {
-        super(includeSubdirs);
-        for (String e : IMAGE_EXTENSIONS) {
-            addExtension(e);
-        }
+        super(Arrays.asList(IMAGE_EXTENSIONS), includeSubdirs);
     }
 
     @Override

@@ -5,13 +5,12 @@ import androidx.annotation.NonNull;
 import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.io.File;
-import java.io.FileFilter;
 
 public class FileGroupSize extends FileGroup {
 
     private final SizeRange sizeRange;
 
-    public FileGroupSize(boolean includeSubdirs, SizeRange sizeRange) {
+    public FileGroupSize(SizeRange sizeRange, boolean includeSubdirs) {
         super(includeSubdirs);
         this.sizeRange = sizeRange;
     }
