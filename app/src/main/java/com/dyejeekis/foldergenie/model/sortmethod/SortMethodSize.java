@@ -47,7 +47,7 @@ public class SortMethodSize extends SortMethod {
     @Override
     public String toString() {
         String s = "Sort in folders based on file size ";
-        s = s.concat(GeneralUtil.listToString(sizeRanges, ", "));
+        s = s.concat("'" + GeneralUtil.listToString(sizeRanges, "', '") + "'");
         return s + super.toString();
     }
 

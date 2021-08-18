@@ -50,7 +50,7 @@ public class SortMethodAlphanum extends SortMethod {
     @Override
     public String toString() {
         String s = "Sort in folders based on alphanumeric ranges ";
-        s = s.concat(GeneralUtil.listToString(alphanumRanges, ", "));
+        s = s.concat("'" + GeneralUtil.listToString(alphanumRanges, "', '") + "'");
         return s + super.toString();
     }
 

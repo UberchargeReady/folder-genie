@@ -2,8 +2,11 @@ package com.dyejeekis.foldergenie.util;
 
 import androidx.annotation.Nullable;
 
+import com.dyejeekis.foldergenie.model.parser.TextParser;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ParameterList extends ArrayList<String> {
@@ -34,9 +37,10 @@ public class ParameterList extends ArrayList<String> {
         super.add(index, element);
     }
 
-    private void uniqueParamCheck(String param) {
-        if (this.contains(param) && uniqueParams.contains(param))
-            throw new InvalidParameterException("Illegal attempt to add a unique parameter twice: " + param);
+    private void uniqueParamCheck(String paramString) {
+        String paramName = TextParser.getParamName(paramString);
+        if (this.contains(paramName) && uniqueParams.contains(paramName))
+            throw new InvalidParameterException("Illegal attempt to add a unique parameter twice: " + paramString);
     }
 
     public List<String> getUniqueParams() {
@@ -45,6 +49,10 @@ public class ParameterList extends ArrayList<String> {
 
     public void setUniqueParams(List<String> uniqueParams) {
         this.uniqueParams = uniqueParams;
+    }
+
+    public void setUniqueParams(String[] uniqueParams) {
+        setUniqueParams(Arrays.asList(uniqueParams));
     }
 
     public void addUniqueParam(String param) {
@@ -66,7 +74,7 @@ public class ParameterList extends ArrayList<String> {
 
     public int getIntParamValue(String param, int index) {
         String s = get(index);
-        return Integer.parseInt(s.substring(param.length() + 1));
+        return Integer.parseInt(s.substring(param.length() + 1).trim());
     }
 
     public int getIntParamValueSafe(String param, int index) {
@@ -93,7 +101,7 @@ public class ParameterList extends ArrayList<String> {
 
     public long getLongParamValue(String param, int index) {
         String s = get(index);
-        return Long.parseLong(s.substring(param.length() + 1));
+        return Long.parseLong(s.substring(param.length() + 1).trim());
     }
 
     public long getLongParamValueSafe(String param, int index) {
@@ -120,7 +128,7 @@ public class ParameterList extends ArrayList<String> {
 
     public String getStringParamValue(String param, int index) {
         String s = get(index);
-        return s.substring(param.length() + 1);
+        return s.substring(param.length() + 1).trim();
     }
 
     public String getStringParamValueSafe(String param, int index) {

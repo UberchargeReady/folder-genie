@@ -40,7 +40,7 @@ public class SortMethodExtension extends SortMethod {
     @Override
     public String toString() {
         String s = "Sort in folders based on file extension ";
-        s = s.concat(GeneralUtil.listToString(extensionGroups, ", "));
+        s = s.concat("'" + GeneralUtil.listToString(extensionGroups, "', '") + "'");
         return s + super.toString();
     }
 

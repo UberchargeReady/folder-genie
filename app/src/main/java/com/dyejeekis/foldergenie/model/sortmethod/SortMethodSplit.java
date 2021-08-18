@@ -5,10 +5,10 @@ import androidx.annotation.NonNull;
 import java.io.File;
 
 public class SortMethodSplit extends SortMethod {
+    // TODO: 8/12/2021 add various options (parameters) for split, such as random split, name, size, etc
 
     public static final int MAX_FILES_PER_DIR = 99999;
 
-    // TODO: 6/12/2021 maybe add file size as an option for split
     private final int filesPerDir;
 
     private int currentDirName;

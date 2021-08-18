@@ -24,9 +24,29 @@ public abstract class TextParser {
     public static final String PARAMETER_MAX = "max";
     public static final String PARAMETER_START = "start";
     public static final String PARAMETER_END = "end";
+    public static final String PARAMETER_AUDIO = "audio";
+    public static final String PARAMETER_VIDEO = "videos";
+    public static final String PARAMETER_IMAGE = "images";
+    public static final String PARAMETER_DOCUMENT = "documents";
+    public static final String PARAMETER_DATE_CREATED = "dateCreated";
+    public static final String PARAMETER_DATE_MODIFIED = "dateModified";
+    public static final String PARAMETER_YEAR_CREATED = "yearCreated";
+    public static final String PARAMETER_YEAR_MODIFIED = "yearModified";
+    public static final String PARAMETER_MONTH_CREATED = "monthCreated";
+    public static final String PARAMETER_MONTH_MODIFIED = "monthModified";
+    public static final String PARAMETER_RANGE_CREATED = "rangeCreated";
+    public static final String PARAMETER_RANGE_MODIFIED = "rangeModified";
+    public static final String PARAMETER_MIN_CREATED = "minCreated";
+    public static final String PARAMETER_MIN_MODIFIED = "minModified";
+    public static final String PARAMETER_MAX_CREATED = "maxCreated";
+    public static final String PARAMETER_MAX_MODIFIED = "maxModified";
 
     public static final String[] VALID_PARAMETERS_TEST = {"param1", "param2", "param3", "param4",
             "param5", "param6", "param7", "param8", "param9", "param10", "param11", "param12"};
+
+    public static final String[] UNIQUE_PARAMETERS = {PARAMETER_MIN, PARAMETER_MAX, PARAMETER_START,
+            PARAMETER_END, PARAMETER_AUDIO, PARAMETER_VIDEO, PARAMETER_IMAGE, PARAMETER_DOCUMENT,
+            PARAMETER_MIN_CREATED, PARAMETER_MIN_MODIFIED, PARAMETER_MAX_CREATED, PARAMETER_MAX_MODIFIED};
 
     protected String input;
 
@@ -38,11 +58,12 @@ public abstract class TextParser {
         return input.toLowerCase();
     }
 
-    protected String sanitizeParam(String param) {
-        return param.replace(" ", "");
+    protected String sanitizeParamString(String paramString) {
+        // TODO: 8/12/2021
+        return paramString;
     }
 
-    protected String getParamName(String paramString) {
+    public static String getParamName(String paramString) {
         try {
             String s = paramString.trim();
             if (s.startsWith(PARAMETER_PREFIX)) {

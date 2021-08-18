@@ -2,9 +2,13 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.util.DateRange;
+
 import java.io.File;
 
 public class FileGroupDate extends FileGroup {
+
+    private DateRange dateRange;
 
     public FileGroupDate(boolean includeSubdirs) {
         super(includeSubdirs);
