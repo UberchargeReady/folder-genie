@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.util;
+package com.dyejeekis.foldergenie.model.parser;
 
 import androidx.annotation.Nullable;
 

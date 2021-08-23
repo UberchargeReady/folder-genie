@@ -49,6 +49,6 @@ public class SortMethodSplit extends SortMethod {
     @NonNull
     @Override
     public String toString() {
-        return  "Split in folders of " + filesPerDir + " files" + super.toString();
+        return  "Move into folders of " + filesPerDir + " files max" + super.toString();
     }
 }

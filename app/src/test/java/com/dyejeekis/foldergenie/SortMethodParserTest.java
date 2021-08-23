@@ -12,6 +12,41 @@ import static org.junit.Assert.*;
 
 public class SortMethodParserTest {
 
+    static final String INPUT_FOLDER_VALID_1 = "";
+    static final String INPUT_FOLDER_VALID_2 = "";
+    static final String INPUT_FOLDER_INVALID_1 = "";
+    static final String INPUT_FOLDER_INVALID_2 = "";
+
+    static final String INPUT_SPLIT_VALID_1 = "";
+    static final String INPUT_SPLIT_VALID_2 = "";
+    static final String INPUT_SPLIT_INVALID_1 = "";
+    static final String INPUT_SPLIT_INVALID_2 = "";
+
+    static final String INPUT_SIZE_VALID_1 = "";
+    static final String INPUT_SIZE_VALID_2 = "";
+    static final String INPUT_SIZE_INVALID_1 = "";
+    static final String INPUT_SIZE_INVALID_2 = "";
+
+    static final String INPUT_NAME_VALID_1 = "";
+    static final String INPUT_NAME_VALID_2 = "";
+    static final String INPUT_NAME_INVALID_1 = "";
+    static final String INPUT_NAME_INVALID_2 = "";
+
+    static final String INPUT_DATE_VALID_1 = "";
+    static final String INPUT_DATE_VALID_2 = "";
+    static final String INPUT_DATE_INVALID_1 = "";
+    static final String INPUT_DATE_INVALID_2 = "";
+
+    static final String INPUT_EXTENSION_VALID_1 = "";
+    static final String INPUT_EXTENSION_VALID_2 = "";
+    static final String INPUT_EXTENSION_INVALID_1 = "";
+    static final String INPUT_EXTENSION_INVALID_2 = "";
+
+    static final String INPUT_IMAGE_RES_VALID_1 = "";
+    static final String INPUT_IMAGE_RES_VALID_2 = "";
+    static final String INPUT_IMAGE_RES_INVALID_1 = "";
+    static final String INPUT_IMAGE_RES_INVALID_2 = "";
+
     static SortMethodParser p1;
     static SortMethodParser p2;
     static SortMethodParser p3;
@@ -37,12 +72,12 @@ public class SortMethodParserTest {
 
     @Test
     public void testType() {
-        assertSame(p1.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.FILE_EXTENSION);
+        assertSame(p1.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.EXTENSION);
         assertSame(p2.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.YEAR_CREATED);
         assertSame(p2.getSortMethodWrappers().get(1).sortMethodType, SortMethodType.MONTH_CREATED);
         assertSame(p3.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.SPLIT);
         assertSame(p3.getSortMethodWrappers().get(1).sortMethodType, SortMethodType.SIZE);
-        assertSame(p4.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.ALPHANUMERIC);
+        assertSame(p4.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.NAME);
         assertSame(p4.getSortMethodWrappers().get(1).sortMethodType, SortMethodType.IMAGE_RESOLUTION);
         assertTrue(p5.getSortMethodWrappers().isEmpty());
         assertSame(p6.getSortMethodWrappers().get(0).sortMethodType, SortMethodType.SPLIT);

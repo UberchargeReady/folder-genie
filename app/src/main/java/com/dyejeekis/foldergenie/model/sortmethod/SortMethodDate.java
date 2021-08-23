@@ -1,20 +1,61 @@
 package com.dyejeekis.foldergenie.model.sortmethod;
 
+import androidx.annotation.NonNull;
+
+import com.dyejeekis.foldergenie.model.DateRange;
+import com.dyejeekis.foldergenie.util.GeneralUtil;
+
 import java.io.File;
+import java.util.List;
 
 public class SortMethodDate extends SortMethod {
-    public SortMethodDate(boolean addToArchive, boolean addToFilename) {
+
+    private final List<DateRange> dateRanges;
+
+    public SortMethodDate(List<DateRange> dateRanges, boolean addToArchive, boolean addToFilename) {
         super(addToArchive, addToFilename);
+        if (dateRanges.isEmpty())
+            throw new IllegalArgumentException("Sort method must have at least one date range to be valid");
+        if (rangesOverlap(dateRanges))
+            throw new IllegalArgumentException("Overlap detected in selected size ranges");
+        this.dateRanges = dateRanges;
+    }
+
+    private boolean belongsInRange(File file, DateRange dateRange) {
+        if (dateRange.getRangeType() == DateRange.RANGE_TYPE_CREATED) {
+            // file creation date not available in File class
+            throw new IllegalArgumentException("Range type 'created' currently unsupported");
+        }
+        return dateRange.belongsInRange(file.lastModified());
     }
 
     @Override
     public String getDirName(File file) {
-        return null;
+        for (DateRange dateRange : dateRanges) {
+            if (belongsInRange(file, dateRange)) return dateRange.toString();
+        }
+        return "";
     }
 
     @Override
     public SortMethodType getType() {
-        // TODO: 6/12/2021
-        return null;
+        return SortMethodType.DATE;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String s = "Sort in folders based on date ranges ";
+        s = s.concat("'" + GeneralUtil.listToString(dateRanges, "', '") + "'");
+        return s + super.toString();
+    }
+
+    public List<DateRange> getDateRanges() {
+        return dateRanges;
+    }
+
+    private boolean rangesOverlap(List<DateRange> dateRanges) {
+        // TODO: 8/9/2021
+        return false;
     }
 }

@@ -2,19 +2,18 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.util.AlphanumRange;
+import com.dyejeekis.foldergenie.model.AlphanumRange;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-public class SortMethodAlphanum extends SortMethod {
+public class SortMethodName extends SortMethod {
 
     private final List<AlphanumRange> alphanumRanges;
 
-    public SortMethodAlphanum(@NonNull List<AlphanumRange> alphanumRanges, boolean addToArchive,
-                              boolean addToFilename) {
+    public SortMethodName(@NonNull List<AlphanumRange> alphanumRanges, boolean addToArchive,
+                          boolean addToFilename) {
         super(addToArchive, addToFilename);
         if (alphanumRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one alphanumeric range to be valid");
@@ -43,7 +42,7 @@ public class SortMethodAlphanum extends SortMethod {
 
     @Override
     public SortMethodType getType() {
-        return SortMethodType.ALPHANUMERIC;
+        return SortMethodType.NAME;
     }
 
     @NonNull

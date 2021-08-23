@@ -5,16 +5,16 @@ import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodAlphanum;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodMonth;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodName;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodDate;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodExtension;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodFolder;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodImageRes;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSize;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSplit;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
-import com.dyejeekis.foldergenie.util.AlphanumRange;
-import com.dyejeekis.foldergenie.util.ParameterList;
-import com.dyejeekis.foldergenie.util.SizeRange;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodYear;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -53,7 +53,8 @@ public class SortMethodParser extends TextParser {
         String[] strings = input.split(SORT_METHOD_SEPARATOR);
         for (String s : strings) {
             for (SortMethodType type : SortMethodType.values()) {
-                if (s.contains(type.name.toLowerCase())) {
+                String typeStr = s.split(PARAMETER_PREFIX)[0].trim();
+                if (typeStr.equals(type.name.toLowerCase())) {
                     wrappers.add(new SortMethodWrapper(type, parseParameters(s, type)));
                     break;
                 }
@@ -86,25 +87,26 @@ public class SortMethodParser extends TextParser {
         || super.isValidParam(param)) return true;
         switch (type) {
             case SPLIT:
-                return param.equals(PARAMETER_FILES_PER_DIR);
+                return param.equals(PARAMETER_FILECOUNT);
+            case FOLDER:
+                return param.equals(PARAMETER_NAME);
             case SIZE:
                 return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_MIN)
                         || param.equals(PARAMETER_MAX);
-            case ALPHANUMERIC:
+            case NAME:
                 return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_START)
                         || param.equals(PARAMETER_END);
-            case FILE_EXTENSION:
+            case EXTENSION:
                 return param.equals(PARAMETER_GROUP) || param.equals(PARAMETER_AUDIO)
                         || param.equals(PARAMETER_VIDEO) || param.equals(PARAMETER_IMAGE)
                         || param.equals(PARAMETER_DOCUMENT);
             case DATE:
-                return param.equals(PARAMETER_DATE_CREATED) || param.equals(PARAMETER_DATE_MODIFIED)
-                        || param.equals(PARAMETER_YEAR_CREATED) || param.equals(PARAMETER_YEAR_MODIFIED)
-                        || param.equals(PARAMETER_MONTH_CREATED) || param.equals(PARAMETER_MONTH_MODIFIED)
-                        || param.equals(PARAMETER_RANGE_CREATED) || param.equals(PARAMETER_RANGE_MODIFIED)
-                        || param.equals(PARAMETER_MIN_CREATED) || param.equals(PARAMETER_MIN_MODIFIED)
-                        || param.equals(PARAMETER_MAX_CREATED) || param.equals(PARAMETER_MAX_MODIFIED);
-            // TODO: 8/1/2021
+                return param.equals(PARAMETER_DATE) || param.equals(PARAMETER_DATE_MODIFIED)
+                        || param.equals(PARAMETER_YEAR) || param.equals(PARAMETER_YEAR_MODIFIED)
+                        || param.equals(PARAMETER_MONTH) || param.equals(PARAMETER_MONTH_MODIFIED)
+                        || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_RANGE_MODIFIED)
+                        || param.equals(PARAMETER_FROM) || param.equals(PARAMETER_MIN_MODIFIED)
+                        || param.equals(PARAMETER_TO) || param.equals(PARAMETER_MAX_MODIFIED);
         }
         return false;
     }
@@ -118,36 +120,25 @@ public class SortMethodParser extends TextParser {
             final boolean addToFilename = params.contains(PARAMETER_ADD_TO_FILENAME);
             switch (sortMethodWrapper.sortMethodType) {
                 case SPLIT:
-                    int filecount = params.getIntParamValue(PARAMETER_FILES_PER_DIR);
+                    if (params.size() == 0) throw new InvalidParameterException("Missing -"
+                            + PARAMETER_FILECOUNT + " parameter");
+                    int filecount = params.getIntParamValueSafe(PARAMETER_FILECOUNT);
+                    if (filecount == -1) throw new IllegalArgumentException("Error parsing -"
+                            + PARAMETER_FILECOUNT + " parameter value");
                     sortMethod = new SortMethodSplit(filecount, addToArchive, addToFilename);
                     break;
-                case SIZE:
-                    List<SizeRange> sizeRanges = new ArrayList<>();
-                    for (int i=0; i<params.size(); i++) {
-                        String paramName = getParamName(params.get(i));
-                        switch (paramName) {
-                            case PARAMETER_RANGE:
-                                String rangeStr = params.getStringParamValueSafe(PARAMETER_RANGE, i);
-                                if (rangeStr == null)
-                                    throw new IllegalArgumentException("Error parsing " + PARAMETER_RANGE + " param value");
-                                String[] ranges = rangeStr.split(PARAMETER_RANGE_SEPARATOR);
-                                long min = Long.parseLong(ranges[0].trim());
-                                long max = Long.parseLong(ranges[1].trim());
-                                sizeRanges.add(new SizeRange(min, max));
-                                break;
-                            case PARAMETER_MIN:
-                                min = params.getLongParamValueSafe(PARAMETER_MIN);
-                                sizeRanges.add(new SizeRange(min, -1));
-                                break;
-                            case PARAMETER_MAX:
-                                max = params.getLongParamValueSafe(PARAMETER_MAX);
-                                sizeRanges.add(new SizeRange(-1, max));
-                                break;
-                        }
-                    }
-                    sortMethod = new SortMethodSize(sizeRanges, addToArchive, addToFilename);
+                case FOLDER:
+                    if (params.size() == 0) throw new InvalidParameterException("Missing -"
+                            + PARAMETER_NAME + " parameter");
+                    String name = params.getStringParamValueSafe(PARAMETER_NAME);
+                    if (name == null) throw new IllegalArgumentException("Error parsing -"
+                            + PARAMETER_NAME + " parameter value");
+                    sortMethod = new SortMethodFolder(name, addToArchive, addToFilename);
                     break;
-                case FILE_EXTENSION:
+                case SIZE:
+                    sortMethod = new SortMethodSize(parseSizeRanges(params), addToArchive, addToFilename);
+                    break;
+                case EXTENSION:
                     List<SortMethodExtension.ExtensionGroup> extensionGroups = new ArrayList<>();
                     for (int i=0; i<params.size(); i++) {
                         String paramName = getParamName(params.get(i));
@@ -155,8 +146,8 @@ public class SortMethodParser extends TextParser {
                         switch (paramName) {
                             case PARAMETER_GROUP:
                                 String groupStr = params.getStringParamValueSafe(PARAMETER_GROUP, i);
-                                if (groupStr == null)
-                                    throw new IllegalArgumentException("Error parsing " + PARAMETER_GROUP + " param value");
+                                if (groupStr == null) throw new IllegalArgumentException("Error parsing "
+                                        + PARAMETER_GROUP + " parameter value");
                                 String[] strings = groupStr.split(PARAMETER_GROUP_SEPARATOR);
                                 List<String> extensions = new ArrayList<>();
                                 for (String s : strings) {
@@ -181,39 +172,21 @@ public class SortMethodParser extends TextParser {
                     }
                     sortMethod = new SortMethodExtension(extensionGroups, addToArchive, addToFilename);
                     break;
-                case ALPHANUMERIC:
-                    List<AlphanumRange> alphanumRanges = new ArrayList<>();
-                    for (int i=0; i<params.size(); i++) {
-                        String paramName = getParamName(params.get(i));
-                        switch (paramName) {
-                            case PARAMETER_RANGE:
-                                String rangeStr = params.getStringParamValueSafe(PARAMETER_RANGE, i);
-                                if (rangeStr == null)
-                                    throw new IllegalArgumentException("Error parsing " + PARAMETER_RANGE + " param value");
-                                String[] ranges = rangeStr.split(PARAMETER_RANGE_SEPARATOR);
-                                String start = ranges[0].trim();
-                                String end = ranges[1].trim();
-                                alphanumRanges.add(new AlphanumRange(start, end));
-                                break;
-                            case PARAMETER_START:
-                                start = params.getStringParamValueSafe(PARAMETER_START);
-                                alphanumRanges.add(new AlphanumRange(start, null));
-                                break;
-                            case PARAMETER_END:
-                                end = params.getStringParamValueSafe(PARAMETER_END);
-                                alphanumRanges.add(new AlphanumRange(null, end));
-                                break;
-                        }
-                    }
-                    sortMethod = new SortMethodAlphanum(alphanumRanges, addToArchive, addToFilename);
+                case NAME:
+                    sortMethod = new SortMethodName(parseAlphanumRanges(params), addToArchive, addToFilename);
                     break;
                 case IMAGE_RESOLUTION:
                     // TODO: 7/10/2021
                     sortMethod = new SortMethodImageRes(addToArchive, addToFilename);
                     break;
                 case DATE:
-                    // TODO: 7/10/2021
-                    sortMethod = new SortMethodDate(addToArchive, addToFilename);
+                    sortMethod = new SortMethodDate(parseDateRanges(params), addToArchive, addToFilename);
+                    break;
+                case YEAR:
+                    sortMethod = new SortMethodYear(addToArchive, addToFilename);
+                    break;
+                case MONTH:
+                    sortMethod = new SortMethodMonth(addToArchive, addToFilename);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid sort method type");

@@ -12,4 +12,6 @@ import com.dyejeekis.foldergenie.R;
 
 public class SimpleProgressFragment extends Fragment {
 
+    // TODO: 8/18/2021
+
 }

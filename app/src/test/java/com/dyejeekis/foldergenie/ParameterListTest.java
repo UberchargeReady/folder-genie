@@ -1,6 +1,6 @@
 package com.dyejeekis.foldergenie;
 
-import com.dyejeekis.foldergenie.util.ParameterList;
+import com.dyejeekis.foldergenie.model.parser.ParameterList;
 
 import org.junit.Before;
 import org.junit.Test;

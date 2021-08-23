@@ -11,10 +11,10 @@ import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
-import com.dyejeekis.foldergenie.util.AlphanumRange;
-import com.dyejeekis.foldergenie.util.DateRange;
+import com.dyejeekis.foldergenie.model.AlphanumRange;
+import com.dyejeekis.foldergenie.model.DateRange;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
-import com.dyejeekis.foldergenie.util.SizeRange;
+import com.dyejeekis.foldergenie.model.SizeRange;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,13 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class FolderGenerate extends FolderOperation {
 
     public static final String TAG = FolderGenerate.class.getSimpleName();
 
-    public static final int DEFAULT_FILE_COUNT = 100;
+    public static final int DEFAULT_FILE_COUNT = 500;
     public static final SizeRange DEFAULT_SIZE_RANGE = null;
     public static final AlphanumRange DEFAULT_ALPHANUM_RANGE = null;
     public static final DateRange DEFAULT_DATE_RANGE = null;

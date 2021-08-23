@@ -7,11 +7,7 @@ import androidx.annotation.Nullable;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.text.method.ScrollingMovementMethod;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.databinding.FragmentOperationProgressBinding;

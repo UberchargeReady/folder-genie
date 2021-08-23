@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.FileFilter;
 import java.util.List;
 
 public class FileGroupExtension extends FileGroup {
@@ -25,27 +25,17 @@ public class FileGroupExtension extends FileGroup {
 
     @Override
     public File[] listFiles(File dir) {
-        if (includeSubdirs()) {
-            List<File> fileList = GeneralUtil.listFilesRecursive(dir, file -> {
-                try {
-                    String extension = GeneralUtil.getFileExtension(file);
-                    return getExtensions().contains(extension);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return false;
-            });
-            return fileList.toArray(new File[0]);
-        }
-        return dir.listFiles(file -> {
+        FileFilter filter = file -> {
             try {
                 String extension = GeneralUtil.getFileExtension(file);
                 return getExtensions().contains(extension);
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return false;
-        });
+        };
+        if (includeSubdirs()) return GeneralUtil.listFilesRecursive(dir, filter).toArray(new File[0]);
+        return dir.listFiles(filter);
     }
 
     @NonNull
@@ -56,6 +46,6 @@ public class FileGroupExtension extends FileGroup {
 
     @Override
     public FileGroupType getType() {
-        return FileGroupType.FILE_EXTENSION;
+        return FileGroupType.EXTENSION;
     }
 }

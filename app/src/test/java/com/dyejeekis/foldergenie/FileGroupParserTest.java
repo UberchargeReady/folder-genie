@@ -12,6 +12,36 @@ import static org.junit.Assert.*;
 
 public class FileGroupParserTest {
 
+    static final String INPUT_ALL_VALID_1 = "";
+    static final String INPUT_ALL_VALID_2 = "";
+    static final String INPUT_ALL_INVALID_1 = "";
+    static final String INPUT_ALL_INVALID_2 = "";
+
+    static final String INPUT_SPLIT_VALID_1 = "";
+    static final String INPUT_SPLIT_VALID_2 = "";
+    static final String INPUT_SPLIT_INVALID_1 = "";
+    static final String INPUT_SPLIT_INVALID_2 = "";
+
+    static final String INPUT_SIZE_VALID_1 = "";
+    static final String INPUT_SIZE_VALID_2 = "";
+    static final String INPUT_SIZE_INVALID_1 = "";
+    static final String INPUT_SIZE_INVALID_2 = "";
+
+    static final String INPUT_NAME_VALID_1 = "";
+    static final String INPUT_NAME_VALID_2 = "";
+    static final String INPUT_NAME_INVALID_1 = "";
+    static final String INPUT_NAME_INVALID_2 = "";
+
+    static final String INPUT_DATE_VALID_1 = "";
+    static final String INPUT_DATE_VALID_2 = "";
+    static final String INPUT_DATE_INVALID_1 = "";
+    static final String INPUT_DATE_INVALID_2 = "";
+
+    static final String INPUT_EXTENSION_VALID_1 = "";
+    static final String INPUT_EXTENSION_VALID_2 = "";
+    static final String INPUT_EXTENSION_INVALID_1 = "";
+    static final String INPUT_EXTENSION_INVALID_2 = "";
+
     static FileGroupParser p1;
     static FileGroupParser p2;
     static FileGroupParser p3;
@@ -39,7 +69,7 @@ public class FileGroupParserTest {
 
     @Test
     public void testType() {
-        assertSame(p1.getType(), FileGroupType.ALPHANUMERIC);
+        assertSame(p1.getType(), FileGroupType.NAME);
         assertSame(p2.getType(), FileGroupType.SIZE);
         assertSame(p3.getType(), FileGroupType.MONTH_CREATED);
         assertNull(p4);

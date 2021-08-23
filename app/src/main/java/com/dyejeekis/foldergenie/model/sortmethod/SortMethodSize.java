@@ -3,10 +3,9 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.util.GeneralUtil;
-import com.dyejeekis.foldergenie.util.SizeRange;
+import com.dyejeekis.foldergenie.model.SizeRange;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SortMethodSize extends SortMethod {

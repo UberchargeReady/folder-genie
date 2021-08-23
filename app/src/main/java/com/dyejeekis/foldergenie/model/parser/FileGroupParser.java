@@ -2,7 +2,7 @@ package com.dyejeekis.foldergenie.model.parser;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAll;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupAlphanum;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupName;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDate;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
@@ -11,9 +11,6 @@ import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupSize;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
-import com.dyejeekis.foldergenie.util.AlphanumRange;
-import com.dyejeekis.foldergenie.util.ParameterList;
-import com.dyejeekis.foldergenie.util.SizeRange;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -73,20 +70,19 @@ public class FileGroupParser extends TextParser {
         switch (fileGroupType) {
             case SIZE:
                 return param.equals(PARAMETER_MIN) || param.equals(PARAMETER_MAX);
-            case ALPHANUMERIC:
+            case NAME:
                 return param.equals(PARAMETER_START) || param.equals(PARAMETER_END);
-            case FILE_EXTENSION:
+            case EXTENSION:
                 return param.equals(PARAMETER_SELECT) || param.equals(PARAMETER_AUDIO)
                         || param.equals(PARAMETER_VIDEO) || param.equals(PARAMETER_IMAGE)
                         || param.equals(PARAMETER_DOCUMENT);
             case DATE:
-                return param.equals(PARAMETER_DATE_CREATED) || param.equals(PARAMETER_DATE_MODIFIED)
-                        || param.equals(PARAMETER_YEAR_CREATED) || param.equals(PARAMETER_YEAR_MODIFIED)
-                        || param.equals(PARAMETER_MONTH_CREATED) || param.equals(PARAMETER_MONTH_MODIFIED)
-                        || param.equals(PARAMETER_RANGE_CREATED) || param.equals(PARAMETER_RANGE_MODIFIED)
-                        || param.equals(PARAMETER_MIN_CREATED) || param.equals(PARAMETER_MIN_MODIFIED)
-                        || param.equals(PARAMETER_MAX_CREATED) || param.equals(PARAMETER_MAX_MODIFIED);
-            // TODO: 8/1/2021
+                return param.equals(PARAMETER_DATE) || param.equals(PARAMETER_DATE_MODIFIED)
+                        || param.equals(PARAMETER_YEAR) || param.equals(PARAMETER_YEAR_MODIFIED)
+                        || param.equals(PARAMETER_MONTH) || param.equals(PARAMETER_MONTH_MODIFIED)
+                        || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_RANGE_MODIFIED)
+                        || param.equals(PARAMETER_FROM) || param.equals(PARAMETER_MIN_MODIFIED)
+                        || param.equals(PARAMETER_TO) || param.equals(PARAMETER_MAX_MODIFIED);
         }
         return false;
     }
@@ -99,40 +95,32 @@ public class FileGroupParser extends TextParser {
                 fileGroup = new FileGroupAll(includeSubdirs);
                 break;
             case SIZE:
-                long minSize = parameters.getLongParamValueSafe(PARAMETER_MIN);
-                long maxSize = parameters.getLongParamValueSafe(PARAMETER_MAX);
-                fileGroup = new FileGroupSize(new SizeRange(minSize, maxSize), includeSubdirs);
+                fileGroup = new FileGroupSize(parseSizeRanges(parameters), includeSubdirs);
                 break;
             case AUDIO:
-                // TODO: 6/13/2021
                 fileGroup = new FileGroupAudio(includeSubdirs);
                 break;
             case IMAGE:
-                // TODO: 6/13/2021
                 fileGroup = new FileGroupImage(includeSubdirs);
                 break;
             case VIDEO:
-                // TODO: 6/13/2021
                 fileGroup = new FileGroupVideo(includeSubdirs);
                 break;
             case DOCUMENT:
-                // TODO: 6/13/2021
                 fileGroup = new FileGroupDocument(includeSubdirs);
                 break;
-            case ALPHANUMERIC:
-                String start = parameters.getStringParamValueSafe(PARAMETER_START);
-                String end = parameters.getStringParamValueSafe(PARAMETER_END);
-                fileGroup = new FileGroupAlphanum(new AlphanumRange(start, end), includeSubdirs);
+            case NAME:
+                fileGroup = new FileGroupName(parseAlphanumRanges(parameters), includeSubdirs);
                 break;
-            case FILE_EXTENSION:
+            case EXTENSION:
                 List<String> extensions = new ArrayList<>();
                 for (int i=0; i<parameters.size(); i++) {
                     String paramName = getParamName(parameters.get(i));
                     switch (paramName) {
                         case PARAMETER_SELECT:
                             String paramValue = parameters.getStringParamValueSafe(PARAMETER_SELECT, i);
-                            if (paramValue == null)
-                                throw new IllegalArgumentException("Error parsing " + PARAMETER_SELECT + " param value");
+                            if (paramValue == null) throw new IllegalArgumentException("Error parsing "
+                                    + PARAMETER_SELECT + " parameter value");
                             String[] strings = paramValue.split(PARAMETER_SELECT_SEPARATOR);
                             for (String s : strings) {
                                 extensions.add(s.trim());
@@ -155,8 +143,7 @@ public class FileGroupParser extends TextParser {
                 fileGroup = new FileGroupExtension(extensions, includeSubdirs);
                 break;
             case DATE:
-                // TODO: 6/13/2021
-                fileGroup = new FileGroupDate(includeSubdirs);
+                fileGroup = new FileGroupDate(parseDateRanges(parameters), includeSubdirs);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid file group type");

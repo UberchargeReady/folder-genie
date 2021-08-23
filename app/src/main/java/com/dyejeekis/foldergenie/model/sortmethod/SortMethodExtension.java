@@ -46,7 +46,7 @@ public class SortMethodExtension extends SortMethod {
 
     @Override
     public SortMethodType getType() {
-        return SortMethodType.FILE_EXTENSION;
+        return SortMethodType.EXTENSION;
     }
 
     public List<ExtensionGroup> getExtensionGroups() {

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.databinding.FragmentVerboseSortOptionsBinding;
-import com.dyejeekis.foldergenie.model.operation.FolderSort;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.parser.FileGroupParser;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;

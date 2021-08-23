@@ -68,7 +68,7 @@ public class FolderSort extends FolderOperation {
             for (File f : files) {
 
                 // calculate new directory based on sort methods
-                File targetDir = f.getParentFile();
+                File targetDir = rootDir;//f.getParentFile();
                 for (SortMethod m : sortMethods) {
                     targetDir = m.getTargetDir(f, targetDir);
                 }
