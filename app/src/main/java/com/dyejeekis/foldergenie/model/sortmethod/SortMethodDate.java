@@ -21,6 +21,11 @@ public class SortMethodDate extends SortMethod {
         this.dateRanges = dateRanges;
     }
 
+    @Override
+    public boolean addToFilename() {
+        return false;
+    }
+
     private boolean belongsInRange(File file, DateRange dateRange) {
         if (dateRange.getRangeType() == DateRange.RANGE_TYPE_CREATED) {
             // file creation date not available in File class
@@ -45,7 +50,7 @@ public class SortMethodDate extends SortMethod {
     @NonNull
     @Override
     public String toString() {
-        String s = "Sort in folders based on date ranges ";
+        String s = "Sort in folders based on date modified ";
         s = s.concat("'" + GeneralUtil.listToString(dateRanges, "', '") + "'");
         return s + super.toString();
     }

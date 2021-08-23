@@ -14,6 +14,11 @@ public class SortMethodMonth extends SortMethod {
     }
 
     @Override
+    public boolean addToFilename() {
+        return false;
+    }
+
+    @Override
     public String getDirName(File file) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(file.lastModified());

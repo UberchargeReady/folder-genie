@@ -54,14 +54,12 @@ public abstract class TextParser {
     public static final String PARAMETER_MAX_CREATED = "maxCreated";
     public static final String PARAMETER_MAX_MODIFIED = "maxModified";
     public static final String PARAMETER_NAME = "name";
-
-    public static final String[] VALID_PARAMETERS_TEST = {"param1", "param2", "param3", "param4",
-            "param5", "param6", "param7", "param8", "param9", "param10", "param11", "param12"};
+    public static final String PARAMETER_CASE_SENSITIVE = ""; // TODO: 8/23/2021
 
     public static final String[] UNIQUE_PARAMETERS = {PARAMETER_MIN, PARAMETER_MAX, PARAMETER_START,
             PARAMETER_END, PARAMETER_FROM, PARAMETER_TO, PARAMETER_AUDIO, PARAMETER_VIDEO, PARAMETER_IMAGE,
             PARAMETER_DOCUMENT, PARAMETER_MIN_CREATED, PARAMETER_MIN_MODIFIED, PARAMETER_MAX_CREATED,
-            PARAMETER_MAX_MODIFIED, PARAMETER_NAME};
+            PARAMETER_MAX_MODIFIED, PARAMETER_NAME, PARAMETER_CASE_SENSITIVE};
 
     protected String input;
 
@@ -70,7 +68,8 @@ public abstract class TextParser {
     }
 
     protected String sanitizeInput(String input) {
-        return input.toLowerCase(); // TODO: 8/23/2021 shouldn't lowercase here, lowercase only when needed
+        // TODO: 8/23/2021
+        return input;
     }
 
     protected String sanitizeParamString(String paramString) {
@@ -84,17 +83,12 @@ public abstract class TextParser {
             if (s.startsWith(PARAMETER_PREFIX)) {
                 int end = s.indexOf(" ", 1);
                 if (end == -1) end = s.length();
-                return s.substring(1, end);
+                return s.substring(1, end).toLowerCase();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
-    }
-
-    // TODO: 8/8/2021 rewrite unit tests and remove/disable this method
-    protected boolean isValidParam(String param) {
-        return Arrays.asList(VALID_PARAMETERS_TEST).contains(param);
     }
 
     protected List<SizeRange> parseSizeRanges(ParameterList params) {
@@ -138,13 +132,16 @@ public abstract class TextParser {
                     String end = ranges[1].trim();
                     alphanumRanges.add(new AlphanumRange(start, end));
                     break;
-                case PARAMETER_START:
+                case PARAMETER_FROM:
                     start = params.getStringParamValueSafe(paramName);
                     alphanumRanges.add(new AlphanumRange(start, null));
                     break;
-                case PARAMETER_END:
+                case PARAMETER_TO:
                     end = params.getStringParamValueSafe(paramName);
                     alphanumRanges.add(new AlphanumRange(null, end));
+                    break;
+                case PARAMETER_CASE_SENSITIVE:
+                    // TODO: 8/23/2021
                     break;
             }
         }

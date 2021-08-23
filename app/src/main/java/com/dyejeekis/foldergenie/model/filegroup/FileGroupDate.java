@@ -30,7 +30,7 @@ public class FileGroupDate extends FileGroup {
     public File[] listFiles(File dir) {
         FileFilter filter = file -> {
             for (DateRange dateRange : dateRanges) {
-                if (belongsInRange(file, dateRange)) return true;
+                if (file.isFile() && belongsInRange(file, dateRange)) return true;
             }
             return false;
         };
@@ -41,7 +41,7 @@ public class FileGroupDate extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        String s = "Files ranging in date " + GeneralUtil.listToString(dateRanges, ", ");
+        String s = "Files ranging in date modified " + GeneralUtil.listToString(dateRanges, ", ");
         return s + super.toString();
     }
 

@@ -53,13 +53,14 @@ public class SortMethodParser extends TextParser {
         String[] strings = input.split(SORT_METHOD_SEPARATOR);
         for (String s : strings) {
             for (SortMethodType type : SortMethodType.values()) {
-                String typeStr = s.split(PARAMETER_PREFIX)[0].trim();
+                String typeStr = s.split(PARAMETER_PREFIX)[0].trim().toLowerCase();
                 if (typeStr.equals(type.name.toLowerCase())) {
                     wrappers.add(new SortMethodWrapper(type, parseParameters(s, type)));
                     break;
                 }
             }
         }
+        if (wrappers.isEmpty()) throw new IllegalArgumentException("Invalid sort method type");
         return wrappers;
     }
 
@@ -83,8 +84,8 @@ public class SortMethodParser extends TextParser {
     }
 
     private boolean isValidParam(String param, SortMethodType type) {
-        if (param.equals(PARAMETER_ADD_TO_ARCHIVE) || param.equals(PARAMETER_ADD_TO_FILENAME)
-        || super.isValidParam(param)) return true;
+        if (param.equals(PARAMETER_ADD_TO_ARCHIVE) || param.equals(PARAMETER_ADD_TO_FILENAME))
+            return true;
         switch (type) {
             case SPLIT:
                 return param.equals(PARAMETER_FILECOUNT);
@@ -94,8 +95,8 @@ public class SortMethodParser extends TextParser {
                 return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_MIN)
                         || param.equals(PARAMETER_MAX);
             case NAME:
-                return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_START)
-                        || param.equals(PARAMETER_END);
+                return param.equals(PARAMETER_FROM) || param.equals(PARAMETER_TO)
+                        || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_CASE_SENSITIVE);
             case EXTENSION:
                 return param.equals(PARAMETER_GROUP) || param.equals(PARAMETER_AUDIO)
                         || param.equals(PARAMETER_VIDEO) || param.equals(PARAMETER_IMAGE)

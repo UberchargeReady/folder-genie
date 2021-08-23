@@ -40,9 +40,10 @@ public class FileGroupParser extends TextParser {
 
     private FileGroupType parseType() {
         for (FileGroupType type : FileGroupType.values()) {
-            if (input.contains(type.name.toLowerCase())) return type;
+            String typeStr = input.split(PARAMETER_PREFIX)[0].trim().toLowerCase();
+            if (typeStr.equals(type.name.toLowerCase())) return type;
         }
-        return null;
+        throw new IllegalArgumentException("Invalid file group type");
     }
 
     private ParameterList parseParameters() {
@@ -65,13 +66,14 @@ public class FileGroupParser extends TextParser {
     }
 
     protected boolean isValidParam(String param) {
-        if (param.equals(PARAMETER_INCLUDE_SUBDIRECTORIES) || super.isValidParam(param))
+        if (param.equals(PARAMETER_INCLUDE_SUBDIRECTORIES))
             return true;
         switch (fileGroupType) {
             case SIZE:
                 return param.equals(PARAMETER_MIN) || param.equals(PARAMETER_MAX);
             case NAME:
-                return param.equals(PARAMETER_START) || param.equals(PARAMETER_END);
+                return param.equals(PARAMETER_FROM) || param.equals(PARAMETER_TO)
+                        || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_CASE_SENSITIVE);
             case EXTENSION:
                 return param.equals(PARAMETER_SELECT) || param.equals(PARAMETER_AUDIO)
                         || param.equals(PARAMETER_VIDEO) || param.equals(PARAMETER_IMAGE)

@@ -48,7 +48,7 @@ public class SortMethodName extends SortMethod {
     @NonNull
     @Override
     public String toString() {
-        String s = "Sort in folders based on alphanumeric ranges ";
+        String s = "Sort in folders based on name ";
         s = s.concat("'" + GeneralUtil.listToString(alphanumRanges, "', '") + "'");
         return s + super.toString();
     }

@@ -18,7 +18,7 @@ public class ParameterList extends ArrayList<String> {
         if (o instanceof String) {
             String s = (String) o;
             for (int i=0; i < size(); i++) {
-                if (get(i).contains(s))
+                if (get(i).toLowerCase().contains(s))
                     return i;
             }
         }

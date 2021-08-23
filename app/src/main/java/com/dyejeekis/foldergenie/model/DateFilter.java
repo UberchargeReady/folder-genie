@@ -6,7 +6,6 @@ import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateFilter implements Serializable {
@@ -116,7 +115,7 @@ public class DateFilter implements Serializable {
     public String toString() {
         // exact date
         if (isExactDate()) {
-            return new Date(getTimestamp()).toString();
+            return day + "/" + month + "/" + year;
         }
         // year
         if (isYear()) {

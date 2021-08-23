@@ -14,6 +14,11 @@ public class SortMethodFolder extends SortMethod{
     }
 
     @Override
+    public boolean addToFilename() {
+        return false;
+    }
+
+    @Override
     public String getDirName(File file) {
         return name;
     }
