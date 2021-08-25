@@ -15,12 +15,16 @@ public class FileGroupName extends FileGroup {
 
     public FileGroupName(List<AlphanumRange> alphanumRanges, boolean includeSubdirs) {
         super(includeSubdirs);
+        if (alphanumRanges.isEmpty())
+            throw new IllegalArgumentException("File group must have at least one alphanumeric range to be valid");
+        if (AlphanumRange.rangesOverlap(alphanumRanges))
+            throw new IllegalArgumentException("Overlap detected in selected alphanumeric ranges");
         this.alphanumRanges = alphanumRanges;
     }
 
     private boolean belongsInRange(File file, AlphanumRange alphanumRange) {
-        String start = alphanumRange.getStartStr();
-        String end = alphanumRange.getEndStr();
+        String start = alphanumRange.getFrom();
+        String end = alphanumRange.getTo();
         if (start == null || file.getName().compareTo(start) >= 0)
             return end == null || file.getName().compareTo(end) <= 0;
         return false;

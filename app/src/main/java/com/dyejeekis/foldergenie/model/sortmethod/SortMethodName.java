@@ -17,7 +17,7 @@ public class SortMethodName extends SortMethod {
         super(addToArchive, addToFilename);
         if (alphanumRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one alphanumeric range to be valid");
-        if (rangesOverlap(alphanumRanges))
+        if (AlphanumRange.rangesOverlap(alphanumRanges))
             throw new IllegalArgumentException("Overlap detected in selected alphanumeric ranges");
         this.alphanumRanges = alphanumRanges;
     }
@@ -30,8 +30,8 @@ public class SortMethodName extends SortMethod {
     @Override
     public String getDirName(File file) {
         for (AlphanumRange range : alphanumRanges) {
-            String start = range.getStartStr();
-            String end = range.getEndStr();
+            String start = range.getFrom();
+            String end = range.getTo();
             if (start == null || file.getName().compareTo(start) >= 0) {
                 if (end == null || file.getName().compareTo(end) <= 0)
                     return range.toString();
@@ -55,10 +55,5 @@ public class SortMethodName extends SortMethod {
 
     public List<AlphanumRange> getAlphanumRanges() {
         return alphanumRanges;
-    }
-
-    private boolean rangesOverlap(List<AlphanumRange> alphanumRanges) {
-        // TODO: 8/9/2021
-        return false;
     }
 }

@@ -16,7 +16,7 @@ public class SortMethodDate extends SortMethod {
         super(addToArchive, addToFilename);
         if (dateRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one date range to be valid");
-        if (rangesOverlap(dateRanges))
+        if (DateRange.rangesOverlap(dateRanges))
             throw new IllegalArgumentException("Overlap detected in selected size ranges");
         this.dateRanges = dateRanges;
     }
@@ -57,10 +57,5 @@ public class SortMethodDate extends SortMethod {
 
     public List<DateRange> getDateRanges() {
         return dateRanges;
-    }
-
-    private boolean rangesOverlap(List<DateRange> dateRanges) {
-        // TODO: 8/9/2021
-        return false;
     }
 }

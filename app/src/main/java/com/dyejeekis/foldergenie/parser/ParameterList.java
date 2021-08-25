@@ -1,8 +1,6 @@
-package com.dyejeekis.foldergenie.model.parser;
+package com.dyejeekis.foldergenie.parser;
 
 import androidx.annotation.Nullable;
-
-import com.dyejeekis.foldergenie.model.parser.TextParser;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ public class ParameterList extends ArrayList<String> {
 
     private void uniqueParamCheck(String paramString) {
         String paramName = TextParser.getParamName(paramString);
-        if (this.contains(paramName) && uniqueParams.contains(paramName))
+        if (this.contains(TextParser.PARAMETER_PREFIX + paramName) && uniqueParams.contains(paramName))
             throw new InvalidParameterException("Illegal attempt to add a unique parameter twice: " + paramString);
     }
 

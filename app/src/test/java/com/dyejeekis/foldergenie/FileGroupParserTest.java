@@ -1,14 +1,6 @@
 package com.dyejeekis.foldergenie;
 
-import com.dyejeekis.foldergenie.model.parser.FileGroupParser;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.security.InvalidParameterException;
-
-import static org.junit.Assert.*;
 
 public class FileGroupParserTest {
 

@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.model.parser;
+package com.dyejeekis.foldergenie.parser;
 
 import com.dyejeekis.foldergenie.model.AlphanumRange;
 import com.dyejeekis.foldergenie.model.DateFilter;
@@ -6,7 +6,6 @@ import com.dyejeekis.foldergenie.model.DateRange;
 import com.dyejeekis.foldergenie.model.SizeRange;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class TextParser {
@@ -22,7 +21,7 @@ public abstract class TextParser {
     public static final String PARAMETER_SELECT = "select";
     public static final String PARAMETER_SELECT_SEPARATOR = ",";
     public static final String PARAMETER_RANGE = "range";
-    public static final String PARAMETER_RANGE_SEPARATOR = "to";
+    public static final String PARAMETER_RANGE_SEPARATOR = ":";
     public static final String PARAMETER_FOLDER = "folder";
     public static final String PARAMETER_FOLDER_SEPARATOR = ",";
     public static final String PARAMETER_GROUP = "group";
@@ -68,12 +67,18 @@ public abstract class TextParser {
     }
 
     protected String sanitizeInput(String input) {
-        // TODO: 8/23/2021
         return input;
     }
 
     protected String sanitizeParamString(String paramString) {
-        // TODO: 8/12/2021
+        //String paramName = getParamName(paramString);
+        //switch (paramName) {
+        //    case PARAMETER_RANGE:
+        //    case PARAMETER_RANGE_CREATED:
+        //    case PARAMETER_RANGE_MODIFIED:
+        //        paramString = paramString.replaceAll("(?i)" + PARAMETER_RANGE_SEPARATOR,
+        //                PARAMETER_RANGE_SEPARATOR);
+        //}
         return paramString;
     }
 
@@ -107,11 +112,11 @@ public abstract class TextParser {
                     break;
                 case PARAMETER_MIN:
                     min = params.getLongParamValueSafe(paramName);
-                    sizeRanges.add(new SizeRange(min, -1));
+                    sizeRanges.add(new SizeRange(min, SizeRange.UNUSED));
                     break;
                 case PARAMETER_MAX:
                     max = params.getLongParamValueSafe(paramName);
-                    sizeRanges.add(new SizeRange(-1, max));
+                    sizeRanges.add(new SizeRange(SizeRange.UNUSED, max));
                     break;
             }
         }

@@ -15,6 +15,10 @@ public class FileGroupDate extends FileGroup {
 
     public FileGroupDate(List<DateRange> dateRanges, boolean includeSubdirs) {
         super(includeSubdirs);
+        if (dateRanges.isEmpty())
+            throw new IllegalArgumentException("File group must have at least one date range to be valid");
+        if (DateRange.rangesOverlap(dateRanges))
+            throw new IllegalArgumentException("Overlap detected in selected size ranges");
         this.dateRanges = dateRanges;
     }
 

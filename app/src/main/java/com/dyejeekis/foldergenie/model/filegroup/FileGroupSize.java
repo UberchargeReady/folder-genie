@@ -15,12 +15,16 @@ public class FileGroupSize extends FileGroup {
 
     public FileGroupSize(List<SizeRange> sizeRanges, boolean includeSubdirs) {
         super(includeSubdirs);
+        if (sizeRanges.isEmpty())
+            throw new IllegalArgumentException("File group must have at least one size range to be valid");
+        if (SizeRange.rangesOverlap(sizeRanges))
+            throw new IllegalArgumentException("Overlap detected in selected size ranges");
         this.sizeRanges = sizeRanges;
     }
 
     private boolean belongsInRange(File file, SizeRange sizeRange) {
-        if (file.length() >= sizeRange.getMinSize())
-            return sizeRange.getMaxSize() <= 0 || file.length() <= sizeRange.getMaxSize();
+        if (file.length() >= sizeRange.getMin())
+            return sizeRange.getMax() <= 0 || file.length() <= sizeRange.getMax();
         return false;
     }
 

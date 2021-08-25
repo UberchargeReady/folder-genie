@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.model.parser;
+package com.dyejeekis.foldergenie.parser;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;

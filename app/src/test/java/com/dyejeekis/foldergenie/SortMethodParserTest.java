@@ -1,14 +1,6 @@
 package com.dyejeekis.foldergenie;
 
-import com.dyejeekis.foldergenie.model.parser.SortMethodParser;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.security.InvalidParameterException;
-
-import static org.junit.Assert.*;
 
 public class SortMethodParserTest {
 

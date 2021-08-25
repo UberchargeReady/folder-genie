@@ -16,7 +16,7 @@ public class SortMethodSize extends SortMethod {
         super(addToArchive, addToFilename);
         if (sizeRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one size range to be valid");
-        if (rangesOverlap(sizeRanges))
+        if (SizeRange.rangesOverlap(sizeRanges))
             throw new IllegalArgumentException("Overlap detected in selected size ranges");
         this.sizeRanges = sizeRanges;
     }
@@ -24,8 +24,8 @@ public class SortMethodSize extends SortMethod {
     @Override
     public String getDirName(File file) {
         for (SizeRange range : sizeRanges) {
-            if (file.length() >= range.getMinSize()) {
-                if (range.getMaxSize() <= 0 || file.length() <= range.getMaxSize())
+            if (file.length() >= range.getMin()) {
+                if (range.getMax() <= 0 || file.length() <= range.getMax())
                     return range.toString();
             }
         }
@@ -52,10 +52,5 @@ public class SortMethodSize extends SortMethod {
 
     public List<SizeRange> getSizeRanges() {
         return sizeRanges;
-    }
-
-    private boolean rangesOverlap(List<SizeRange> sizeRanges) {
-        // TODO: 8/9/2021
-        return false;
     }
 }
