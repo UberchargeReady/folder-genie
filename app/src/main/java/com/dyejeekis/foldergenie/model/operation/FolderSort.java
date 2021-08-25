@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAll;
+import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
@@ -66,6 +67,13 @@ public class FolderSort extends FolderOperation {
         try {
             File[] files = fileGroup.listFiles(rootDir);
             for (File f : files) {
+                if (GenieService.folderOperationStopped()) {
+                    message = "Folder sort operation cancelled";
+                    Log.d(TAG, message);
+                    onOperationProgress(resultReceiver, message);
+                    return false;
+                }
+                //Thread.sleep(1000);
 
                 // calculate new directory based on sort methods
                 File targetDir = rootDir;//f.getParentFile();

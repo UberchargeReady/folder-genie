@@ -10,7 +10,6 @@ import android.os.Looper;
 import android.view.Menu;
 
 import com.dyejeekis.foldergenie.R;
-import com.dyejeekis.foldergenie.databinding.FragmentOperationProgressBinding;
 import com.dyejeekis.foldergenie.model.operation.FolderOperation;
 import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.service.ServiceResultReceiver;
@@ -43,7 +42,7 @@ public abstract class OperationProgressFragment extends BaseFragment implements 
     }
 
     protected void stopOperation() {
-        // TODO: 7/27/2021
+        GenieService.stopFolderOperation();
     }
 
     @Override
@@ -59,5 +58,4 @@ public abstract class OperationProgressFragment extends BaseFragment implements 
             if (completed) onOperationCompleted(success);
         }
     }
-
 }

@@ -104,9 +104,28 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        if (canNavigateAway()) {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            return NavigationUI.navigateUp(navController, appBarConfiguration)
+                    || super.onSupportNavigateUp();
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canNavigateAway()) {
+            super.onBackPressed();
+        }
+    }
+
+    private boolean canNavigateAway() {
+        if (GenieService.folderOperationRunning()) {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            int id = navController.getCurrentDestination().getId();
+            return id != R.id.VerboseProgressFragment && id != R.id.SimpleProgressFragment;
+        }
+        return true;
     }
 
     public BetterActivityResult<Intent, ActivityResult> getActivityLauncher() {

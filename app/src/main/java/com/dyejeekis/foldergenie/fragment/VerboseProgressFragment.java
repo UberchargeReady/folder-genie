@@ -11,17 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dyejeekis.foldergenie.R;
-import com.dyejeekis.foldergenie.databinding.FragmentOperationProgressBinding;
+import com.dyejeekis.foldergenie.databinding.FragmentProgressVerboseBinding;
 
 public class VerboseProgressFragment extends OperationProgressFragment {
 
-    private FragmentOperationProgressBinding binding;
+    private FragmentProgressVerboseBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentOperationProgressBinding.inflate(inflater, container, false);
+        binding = FragmentProgressVerboseBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -33,7 +33,6 @@ public class VerboseProgressFragment extends OperationProgressFragment {
 
         binding.buttonStopOperation.setOnClickListener(v -> {
             stopOperation();
-            getActivity().onBackPressed();
         });
 
         startOperation();
@@ -53,5 +52,8 @@ public class VerboseProgressFragment extends OperationProgressFragment {
     @Override
     protected void onOperationCompleted(boolean success) {
         binding.buttonStopOperation.setText(getString(R.string.action_back));
+        binding.buttonStopOperation.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
     }
 }

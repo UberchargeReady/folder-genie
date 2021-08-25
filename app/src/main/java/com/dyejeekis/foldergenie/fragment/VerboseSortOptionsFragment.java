@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.dyejeekis.foldergenie.R;
 import com.dyejeekis.foldergenie.activity.MainActivity;
-import com.dyejeekis.foldergenie.databinding.FragmentVerboseSortOptionsBinding;
+import com.dyejeekis.foldergenie.databinding.FragmentSortOptionsVerboseBinding;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.parser.FileGroupParser;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
@@ -27,12 +27,12 @@ import java.util.List;
 
 public class VerboseSortOptionsFragment extends SortOptionsFragment {
 
-    private FragmentVerboseSortOptionsBinding binding;
+    private FragmentSortOptionsVerboseBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentVerboseSortOptionsBinding.inflate(inflater, container, false);
+        binding = FragmentSortOptionsVerboseBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

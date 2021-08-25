@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAll;
+import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
@@ -44,6 +45,13 @@ public class FolderFlatten extends FolderOperation {
         try {
             File[] files = fileGroup.listFiles(rootDir);
             for (File f : files) {
+                if (GenieService.folderOperationStopped()) {
+                    message = "Folder flatten operation cancelled";
+                    Log.d(TAG, message);
+                    onOperationProgress(resultReceiver, message);
+                    return false;
+                }
+
                 // move (rename) file to root directory
                 File newPath = new File(rootDir.getAbsolutePath() + File.separator +
                         f.getName());

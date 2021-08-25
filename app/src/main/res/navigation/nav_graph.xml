@@ -9,7 +9,7 @@
         android:id="@+id/VerboseSortOptionsFragment"
         android:name="com.dyejeekis.foldergenie.fragment.VerboseSortOptionsFragment"
         android:label="@string/fragment_label_sort_options"
-        tools:layout="@layout/fragment_verbose_sort_options">
+        tools:layout="@layout/fragment_sort_options_verbose">
 
         <action
             android:id="@+id/action_beginSortVerbose"
@@ -21,12 +21,22 @@
         android:id="@+id/VerboseProgressFragment"
         android:name="com.dyejeekis.foldergenie.fragment.VerboseProgressFragment"
         android:label="@string/fragment_label_operation_progress"
-        tools:layout="@layout/fragment_operation_progress">
-
+        tools:layout="@layout/fragment_progress_verbose">
     </fragment>
 
     <action
         android:id="@+id/action_global_operationVerbose"
         app:destination="@id/VerboseProgressFragment"/>
+
+    <fragment
+        android:id="@+id/SimpleProgressFragment"
+        android:name="com.dyejeekis.foldergenie.fragment.SimpleProgressFragment"
+        android:label="@string/fragment_label_operation_progress"
+        tools:layout="@layout/fragment_progress_simple">
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_operationSimple"
+        app:destination="@id/SimpleProgressFragment"/>
 
 </navigation>

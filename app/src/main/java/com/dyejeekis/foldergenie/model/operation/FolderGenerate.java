@@ -13,6 +13,7 @@ import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
 import com.dyejeekis.foldergenie.model.AlphanumRange;
 import com.dyejeekis.foldergenie.model.DateRange;
+import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.model.SizeRange;
 
@@ -79,6 +80,13 @@ public class FolderGenerate extends FolderOperation {
 
         try {
             for (int i = 0; i < fileCount; i++) {
+                if (GenieService.folderOperationStopped()) {
+                    message = "Folder generate operation cancelled";
+                    Log.d(TAG, message);
+                    onOperationProgress(resultReceiver, message);
+                    return false;
+                }
+
                 String filename = getRandomName() + "." + getRandomExtension();
                 File file = new File(rootDir.getAbsolutePath() + File.separator + filename);
                 boolean success = file.createNewFile();

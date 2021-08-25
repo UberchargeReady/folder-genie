@@ -2,7 +2,6 @@ package com.dyejeekis.foldergenie.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
@@ -24,6 +23,9 @@ public class GenieService extends JobIntentService {
     public static final String EXTRA_RESULT_RECEIVER = "extra.RESULT_RECEIVER";
     public static final String EXTRA_FOLDER_OPERATION = "extra.FOLDER_OPERATION";
 
+    private static boolean folderOperationRunning = false;
+    private static boolean folderOperationStopped = false;
+
     public static void enqueueFolderOperation(Context context, ServiceResultReceiver resultReceiver,
                                               FolderOperation folderOperation) {
         Intent intent = new Intent(context, GenieService.class);
@@ -31,6 +33,18 @@ public class GenieService extends JobIntentService {
         intent.putExtra(EXTRA_FOLDER_OPERATION, folderOperation);
         intent.setAction(ACTION_FOLDER_OPERATION);
         enqueueWork(context, GenieService.class, JOB_ID, intent);
+    }
+
+    public static boolean folderOperationRunning() {
+        return folderOperationRunning;
+    }
+
+    public static boolean folderOperationStopped() {
+        return folderOperationStopped;
+    }
+
+    public static void stopFolderOperation() {
+        folderOperationStopped = true;
     }
 
     private Handler handler;
@@ -47,11 +61,14 @@ public class GenieService extends JobIntentService {
         if (intent.getAction() != null) {
             switch (intent.getAction()) {
                 case ACTION_FOLDER_OPERATION:
+                    folderOperationStopped = false;
+                    folderOperationRunning = true;
                     ResultReceiver resultReceiver = intent.getParcelableExtra(EXTRA_RESULT_RECEIVER);
                     FolderOperation folderOperation = (FolderOperation) intent
                             .getSerializableExtra(EXTRA_FOLDER_OPERATION);
                     boolean success = folderOperation.startOperation(this, resultReceiver, handler);
                     folderOperation.onOperationComplete(resultReceiver, success);
+                    folderOperationRunning = false;
                     break;
             }
         }

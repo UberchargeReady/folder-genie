@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.service.GenieService;
+
 import java.io.File;
 
 public class FolderClear extends FolderOperation {
@@ -32,7 +34,8 @@ public class FolderClear extends FolderOperation {
         onOperationProgress(resultReceiver, message);
 
         try {
-            deleteEmptyDirs(this.rootDir, resultReceiver);
+            boolean success = deleteEmptyDirs(this.rootDir, resultReceiver);
+            if (!success) return false;
         } catch (Exception e) {
             e.printStackTrace();
             message = "Failed to delete empty folders in " + rootDir.getAbsolutePath();
@@ -56,11 +59,20 @@ public class FolderClear extends FolderOperation {
         return super.toString();
     }
 
-    private void deleteEmptyDirs(File rootDir, ResultReceiver resultReceiver) {
+    private boolean deleteEmptyDirs(File rootDir, ResultReceiver resultReceiver) {
         File[] dirs = rootDir.listFiles(File::isDirectory);
         if (dirs != null) {
             for (File dir : dirs) {
-                if (includeSubdirs) deleteEmptyDirs(dir, resultReceiver);
+                if (GenieService.folderOperationStopped()) {
+                    String message = "Folder clear operation cancelled";
+                    Log.d(TAG, message);
+                    onOperationProgress(resultReceiver, message);
+                    return false;
+                }
+                if (includeSubdirs) {
+                    boolean success = deleteEmptyDirs(dir, resultReceiver);
+                    if (!success) return false;
+                }
                 File[] files = dir.listFiles();
                 if (files != null && files.length == 0) {
                     boolean success = dir.delete();
@@ -70,5 +82,6 @@ public class FolderClear extends FolderOperation {
                 }
             }
         }
+        return true;
     }
 }
