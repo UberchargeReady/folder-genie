@@ -58,7 +58,7 @@ public class ParameterList extends ArrayList<String> {
     }
 
     public int getIntParamValue(String param) {
-        return getIntParamValue(param, indexOf(param));
+        return getIntParamValue(param, indexOf(TextParser.PARAMETER_PREFIX + param));
     }
 
     public int getIntParamValueSafe(String param) {
@@ -85,7 +85,7 @@ public class ParameterList extends ArrayList<String> {
     }
 
     public long getLongParamValue(String param) {
-        return getLongParamValue(param, indexOf(param));
+        return getLongParamValue(param, indexOf(TextParser.PARAMETER_PREFIX + param));
     }
 
     public long getLongParamValueSafe(String param) {
@@ -112,7 +112,7 @@ public class ParameterList extends ArrayList<String> {
     }
 
     public String getStringParamValue(String param) {
-        return getStringParamValue(param, indexOf(param));
+        return getStringParamValue(param, indexOf(TextParser.PARAMETER_PREFIX + param));
     }
 
     public String getStringParamValueSafe(String param) {
