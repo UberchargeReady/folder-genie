@@ -49,8 +49,4 @@ public class SortMethodExtension extends SortMethod {
         return SortMethodType.EXTENSION;
     }
 
-    public List<ExtensionGroup> getExtensionGroups() {
-        return extensionGroups;
-    }
-
 }

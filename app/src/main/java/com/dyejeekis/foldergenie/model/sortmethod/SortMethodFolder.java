@@ -35,8 +35,4 @@ public class SortMethodFolder extends SortMethod{
         String s = "Move files into '" + name + "'";
         return s + super.toString();
     }
-
-    public String getName() {
-        return name;
-    }
 }

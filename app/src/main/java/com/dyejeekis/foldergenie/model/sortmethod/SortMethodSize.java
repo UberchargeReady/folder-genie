@@ -49,8 +49,4 @@ public class SortMethodSize extends SortMethod {
         s = s.concat("'" + GeneralUtil.listToString(sizeRanges, "', '") + "'");
         return s + super.toString();
     }
-
-    public List<SizeRange> getSizeRanges() {
-        return sizeRanges;
-    }
 }

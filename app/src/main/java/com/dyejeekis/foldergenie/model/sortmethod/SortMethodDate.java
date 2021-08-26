@@ -54,8 +54,4 @@ public class SortMethodDate extends SortMethod {
         s = s.concat("'" + GeneralUtil.listToString(dateRanges, "', '") + "'");
         return s + super.toString();
     }
-
-    public List<DateRange> getDateRanges() {
-        return dateRanges;
-    }
 }

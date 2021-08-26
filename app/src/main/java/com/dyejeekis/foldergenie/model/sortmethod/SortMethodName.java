@@ -52,8 +52,4 @@ public class SortMethodName extends SortMethod {
         s = s.concat("'" + GeneralUtil.listToString(alphanumRanges, "', '") + "'");
         return s + super.toString();
     }
-
-    public List<AlphanumRange> getAlphanumRanges() {
-        return alphanumRanges;
-    }
 }
