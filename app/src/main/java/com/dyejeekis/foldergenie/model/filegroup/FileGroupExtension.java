@@ -47,7 +47,7 @@ public class FileGroupExtension extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "Files with extensions " + GeneralUtil.listToString(extensionGroups, ",");
+        return "Files with extensions " + GeneralUtil.listToString(extensionGroups, " ");
     }
 
     @Override
