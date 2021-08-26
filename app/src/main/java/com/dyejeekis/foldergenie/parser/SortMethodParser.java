@@ -1,15 +1,10 @@
 package com.dyejeekis.foldergenie.parser;
 
-import com.dyejeekis.foldergenie.model.ExtensionGroup;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodMonth;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodName;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodDate;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodExtension;
+import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodExtension;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodFolder;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodImageRes;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSize;
@@ -19,7 +14,6 @@ import com.dyejeekis.foldergenie.model.sortmethod.SortMethodYear;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SortMethodParser extends TextParser {

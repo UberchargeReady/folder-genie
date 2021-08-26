@@ -5,10 +5,10 @@ import com.dyejeekis.foldergenie.model.DateFilter;
 import com.dyejeekis.foldergenie.model.DateRange;
 import com.dyejeekis.foldergenie.model.ExtensionGroup;
 import com.dyejeekis.foldergenie.model.SizeRange;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupAudio;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupDocument;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupImage;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupVideo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +39,9 @@ public abstract class TextParser {
     public static final String PARAMETER_FROM = "from";
     public static final String PARAMETER_TO = "to";
     public static final String PARAMETER_AUDIO = "audio";
-    public static final String PARAMETER_VIDEO = "videos";
-    public static final String PARAMETER_IMAGE = "images";
-    public static final String PARAMETER_DOCUMENT = "documents";
+    public static final String PARAMETER_VIDEO = "video";
+    public static final String PARAMETER_IMAGE = "image";
+    public static final String PARAMETER_DOCUMENT = "document";
     public static final String PARAMETER_DATE = "date";
     public static final String PARAMETER_DATE_SEPARATOR = "/";
     public static final String PARAMETER_DATE_CREATED = "dateCreated";

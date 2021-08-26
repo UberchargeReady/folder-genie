@@ -6,10 +6,10 @@ public enum FileGroupType {
     SIZE("size", "Files in size range"),
     NAME("name", "Files in alphanumeric range"),
     EXTENSION("extension", "Files with the extension"),
-    IMAGE("images", "All images"),
-    VIDEO("videos", "All videos"),
+    IMAGE("image", "All images"),
+    VIDEO("video", "All videos"),
     AUDIO("audio", "All audio files"),
-    DOCUMENT("documents", "All documents");
+    DOCUMENT("document", "All documents");
 
     public final String name, label;
 

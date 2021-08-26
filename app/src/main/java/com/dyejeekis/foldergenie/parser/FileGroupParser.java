@@ -3,18 +3,16 @@ package com.dyejeekis.foldergenie.parser;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAll;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupName;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDate;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupExtension;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupDocument;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupExtension;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupImage;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupSize;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupVideo;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileGroupParser extends TextParser {

@@ -1,11 +1,11 @@
-package com.dyejeekis.foldergenie.model.filegroup;
+package com.dyejeekis.foldergenie.model.filegroup.extension;
 
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.ExtensionGroup;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class FileGroupImage extends FileGroupExtension {
 

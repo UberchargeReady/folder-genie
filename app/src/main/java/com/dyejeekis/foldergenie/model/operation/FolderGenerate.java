@@ -7,10 +7,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
-import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupAudio;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupDocument;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupImage;
+import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupVideo;
 import com.dyejeekis.foldergenie.model.AlphanumRange;
 import com.dyejeekis.foldergenie.model.DateRange;
 import com.dyejeekis.foldergenie.service.GenieService;

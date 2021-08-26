@@ -1,8 +1,10 @@
-package com.dyejeekis.foldergenie.model.filegroup;
+package com.dyejeekis.foldergenie.model.filegroup.extension;
 
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.ExtensionGroup;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
