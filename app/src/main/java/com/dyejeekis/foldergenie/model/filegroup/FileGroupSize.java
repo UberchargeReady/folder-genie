@@ -51,8 +51,4 @@ public class FileGroupSize extends FileGroup {
         String s = "Files ranging in size " + GeneralUtil.listToString(sizeRanges, ", ");
         return s + super.toString();
     }
-
-    public List<SizeRange> getSizeRanges() {
-        return sizeRanges;
-    }
 }

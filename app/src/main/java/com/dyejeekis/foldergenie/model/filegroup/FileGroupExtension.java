@@ -27,16 +27,12 @@ public class FileGroupExtension extends FileGroup {
         extensionGroups.add(extensionGroup);
     }
 
-    public List<ExtensionGroup> getExtensionGroups() {
-        return extensionGroups;
-    }
-
     @Override
     public File[] listFiles(File dir) {
         FileFilter filter = file -> {
             try {
                 String extension = GeneralUtil.getFileExtension(file);
-                for (ExtensionGroup group : getExtensionGroups()) {
+                for (ExtensionGroup group : extensionGroups) {
                     if (group.contains(extension)) return true;
                 }
             } catch (Exception e) {
@@ -51,7 +47,7 @@ public class FileGroupExtension extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "Files with extensions " + GeneralUtil.listToString(getExtensionGroups(), ",");
+        return "Files with extensions " + GeneralUtil.listToString(extensionGroups, ",");
     }
 
     @Override

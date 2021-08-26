@@ -53,8 +53,4 @@ public class FileGroupDate extends FileGroup {
     public FileGroupType getType() {
         return FileGroupType.DATE;
     }
-
-    public List<DateRange> getDateRanges() {
-        return dateRanges;
-    }
 }

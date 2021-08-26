@@ -53,8 +53,4 @@ public class FileGroupName extends FileGroup {
         String s = "Files with names " + GeneralUtil.listToString(alphanumRanges, ", ");
         return s + super.toString();
     }
-
-    public List<AlphanumRange> getAlphanumRanges() {
-        return alphanumRanges;
-    }
 }
