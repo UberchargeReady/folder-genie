@@ -48,10 +48,14 @@ public class GeneralUtil {
         throw new IllegalArgumentException("Argument is not a file: " + file.getAbsolutePath());
     }
 
-    public static final Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
+    public static boolean isALphanumeric(String str) {
+        // TODO: 8/26/2021
+        return str != null;
+    }
 
-    public static boolean isValidFileExtension(@NonNull String extension) {
-        return !specialCharPattern.matcher(extension).find();
+    public static boolean isValidFilename(String str) {
+        // TODO: 8/26/2021
+        return str != null;
     }
 
     public static boolean rename(File from, File to) {

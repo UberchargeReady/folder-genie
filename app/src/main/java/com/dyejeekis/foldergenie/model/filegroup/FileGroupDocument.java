@@ -2,6 +2,8 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.ExtensionGroup;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -21,12 +23,7 @@ public class FileGroupDocument extends FileGroupExtension {
     };
 
     public FileGroupDocument(boolean includeSubdirs) {
-        super(Arrays.asList(DOCUMENT_EXTENSIONS), includeSubdirs);
-    }
-
-    @Override
-    public List<String> getExtensions() {
-        return Arrays.asList(DOCUMENT_EXTENSIONS);
+        super(new ExtensionGroup(Arrays.asList(DOCUMENT_EXTENSIONS)), includeSubdirs);
     }
 
     @NonNull

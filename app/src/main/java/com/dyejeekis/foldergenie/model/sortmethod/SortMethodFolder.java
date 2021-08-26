@@ -8,6 +8,7 @@ public class SortMethodFolder extends SortMethod{
 
     private final String name;
 
+    // TODO: 8/25/2021 validate that name is valid file name
     public SortMethodFolder(String name, boolean addToArchive, boolean addToFilename) {
         super(addToArchive, addToFilename);
         this.name = name;

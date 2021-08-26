@@ -75,9 +75,9 @@ public class FileGroupParser extends TextParser {
                 return param.equals(PARAMETER_FROM) || param.equals(PARAMETER_TO)
                         || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_CASE_SENSITIVE);
             case EXTENSION:
-                return param.equals(PARAMETER_SELECT) || param.equals(PARAMETER_AUDIO)
-                        || param.equals(PARAMETER_VIDEO) || param.equals(PARAMETER_IMAGE)
-                        || param.equals(PARAMETER_DOCUMENT);
+                return param.equals(PARAMETER_GROUP) || param.equals(PARAMETER_SELECT)
+                        || param.equals(PARAMETER_AUDIO) || param.equals(PARAMETER_VIDEO)
+                        || param.equals(PARAMETER_IMAGE) || param.equals(PARAMETER_DOCUMENT);
             case DATE:
                 return param.equals(PARAMETER_DATE) || param.equals(PARAMETER_DATE_MODIFIED)
                         || param.equals(PARAMETER_YEAR) || param.equals(PARAMETER_YEAR_MODIFIED)
@@ -115,34 +115,7 @@ public class FileGroupParser extends TextParser {
                 fileGroup = new FileGroupName(parseAlphanumRanges(parameters), includeSubdirs);
                 break;
             case EXTENSION:
-                List<String> extensions = new ArrayList<>();
-                for (int i=0; i<parameters.size(); i++) {
-                    String paramName = getParamName(parameters.get(i));
-                    switch (paramName) {
-                        case PARAMETER_SELECT:
-                            String paramValue = parameters.getStringParamValueSafe(PARAMETER_SELECT, i);
-                            if (paramValue == null) throw new IllegalArgumentException("Error parsing "
-                                    + PARAMETER_SELECT + " parameter value");
-                            String[] strings = paramValue.split(PARAMETER_SELECT_SEPARATOR);
-                            for (String s : strings) {
-                                extensions.add(s.trim());
-                            }
-                            break;
-                        case PARAMETER_AUDIO:
-                            extensions.addAll(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
-                            break;
-                        case PARAMETER_VIDEO:
-                            extensions.addAll(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
-                            break;
-                        case PARAMETER_IMAGE:
-                            extensions.addAll(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
-                            break;
-                        case PARAMETER_DOCUMENT:
-                            extensions.addAll(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
-                            break;
-                    }
-                }
-                fileGroup = new FileGroupExtension(extensions, includeSubdirs);
+                fileGroup = new FileGroupExtension(parseExtensionGroups(parameters), includeSubdirs);
                 break;
             case DATE:
                 fileGroup = new FileGroupDate(parseDateRanges(parameters), includeSubdirs);

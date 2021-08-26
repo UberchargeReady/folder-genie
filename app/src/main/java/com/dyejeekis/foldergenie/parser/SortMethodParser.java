@@ -1,5 +1,6 @@
 package com.dyejeekis.foldergenie.parser;
 
+import com.dyejeekis.foldergenie.model.ExtensionGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
@@ -98,9 +99,9 @@ public class SortMethodParser extends TextParser {
                 return param.equals(PARAMETER_FROM) || param.equals(PARAMETER_TO)
                         || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_CASE_SENSITIVE);
             case EXTENSION:
-                return param.equals(PARAMETER_GROUP) || param.equals(PARAMETER_AUDIO)
-                        || param.equals(PARAMETER_VIDEO) || param.equals(PARAMETER_IMAGE)
-                        || param.equals(PARAMETER_DOCUMENT);
+                return param.equals(PARAMETER_GROUP) || param.equals(PARAMETER_SELECT)
+                        || param.equals(PARAMETER_AUDIO) || param.equals(PARAMETER_VIDEO)
+                        || param.equals(PARAMETER_IMAGE) || param.equals(PARAMETER_DOCUMENT);
             case DATE:
                 return param.equals(PARAMETER_DATE) || param.equals(PARAMETER_DATE_MODIFIED)
                         || param.equals(PARAMETER_YEAR) || param.equals(PARAMETER_YEAR_MODIFIED)
@@ -140,38 +141,7 @@ public class SortMethodParser extends TextParser {
                     sortMethod = new SortMethodSize(parseSizeRanges(params), addToArchive, addToFilename);
                     break;
                 case EXTENSION:
-                    List<SortMethodExtension.ExtensionGroup> extensionGroups = new ArrayList<>();
-                    for (int i=0; i<params.size(); i++) {
-                        String paramName = getParamName(params.get(i));
-                        SortMethodExtension.ExtensionGroup group = null;
-                        switch (paramName) {
-                            case PARAMETER_GROUP:
-                                String groupStr = params.getStringParamValueSafe(PARAMETER_GROUP, i);
-                                if (groupStr == null) throw new IllegalArgumentException("Error parsing "
-                                        + PARAMETER_GROUP + " parameter value");
-                                String[] strings = groupStr.split(PARAMETER_GROUP_SEPARATOR);
-                                List<String> extensions = new ArrayList<>();
-                                for (String s : strings) {
-                                    extensions.add(s.trim());
-                                }
-                                group = new SortMethodExtension.ExtensionGroup(extensions);
-                                break;
-                            case PARAMETER_AUDIO:
-                                group = new SortMethodExtension.ExtensionGroup(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
-                                break;
-                            case PARAMETER_VIDEO:
-                                group = new SortMethodExtension.ExtensionGroup(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
-                                break;
-                            case PARAMETER_IMAGE:
-                                group = new SortMethodExtension.ExtensionGroup(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
-                                break;
-                            case PARAMETER_DOCUMENT:
-                                group = new SortMethodExtension.ExtensionGroup(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
-                                break;
-                        }
-                        if (group != null) extensionGroups.add(group);
-                    }
-                    sortMethod = new SortMethodExtension(extensionGroups, addToArchive, addToFilename);
+                    sortMethod = new SortMethodExtension(parseExtensionGroups(params), addToArchive, addToFilename);
                     break;
                 case NAME:
                     sortMethod = new SortMethodName(parseAlphanumRanges(params), addToArchive, addToFilename);

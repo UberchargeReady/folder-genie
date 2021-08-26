@@ -2,6 +2,8 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.ExtensionGroup;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,12 +20,7 @@ public class FileGroupImage extends FileGroupExtension {
     };
 
     public FileGroupImage(boolean includeSubdirs) {
-        super(Arrays.asList(IMAGE_EXTENSIONS), includeSubdirs);
-    }
-
-    @Override
-    public List<String> getExtensions() {
-        return Arrays.asList(IMAGE_EXTENSIONS);
+        super(new ExtensionGroup(Arrays.asList(IMAGE_EXTENSIONS)), includeSubdirs);
     }
 
     @NonNull

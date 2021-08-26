@@ -3,9 +3,15 @@ package com.dyejeekis.foldergenie.parser;
 import com.dyejeekis.foldergenie.model.AlphanumRange;
 import com.dyejeekis.foldergenie.model.DateFilter;
 import com.dyejeekis.foldergenie.model.DateRange;
+import com.dyejeekis.foldergenie.model.ExtensionGroup;
 import com.dyejeekis.foldergenie.model.SizeRange;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupAudio;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupDocument;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupImage;
+import com.dyejeekis.foldergenie.model.filegroup.FileGroupVideo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class TextParser {
@@ -25,7 +31,7 @@ public abstract class TextParser {
     public static final String PARAMETER_FOLDER = "folder";
     public static final String PARAMETER_FOLDER_SEPARATOR = ",";
     public static final String PARAMETER_GROUP = "group";
-    public static final String PARAMETER_GROUP_SEPARATOR = ",";
+    public static final String PARAMETER_GROUP_SEPARATOR = PARAMETER_SELECT_SEPARATOR;
     public static final String PARAMETER_MIN = "min";
     public static final String PARAMETER_MAX = "max";
     public static final String PARAMETER_START = "start";
@@ -151,6 +157,42 @@ public abstract class TextParser {
             }
         }
         return alphanumRanges;
+    }
+
+    protected List<ExtensionGroup> parseExtensionGroups(ParameterList params) {
+        List<ExtensionGroup> extensionGroups = new ArrayList<>();
+        for (int i=0; i<params.size(); i++) {
+            String paramName = getParamName(params.get(i));
+            ExtensionGroup group = null;
+            switch (paramName) {
+                case PARAMETER_GROUP:
+                case PARAMETER_SELECT:
+                    String groupStr = params.getStringParamValueSafe(paramName, i);
+                    if (groupStr == null) throw new IllegalArgumentException("Error parsing "
+                            + paramName + " parameter value");
+                    String[] strings = groupStr.split(PARAMETER_SELECT_SEPARATOR);
+                    List<String> extensions = new ArrayList<>();
+                    for (String s : strings) {
+                        extensions.add(s.trim());
+                    }
+                    group = new ExtensionGroup(extensions);
+                    break;
+                case PARAMETER_AUDIO:
+                    group = new ExtensionGroup(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
+                    break;
+                case PARAMETER_VIDEO:
+                    group = new ExtensionGroup(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
+                    break;
+                case PARAMETER_IMAGE:
+                    group = new ExtensionGroup(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
+                    break;
+                case PARAMETER_DOCUMENT:
+                    group = new ExtensionGroup(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
+                    break;
+            }
+            if (group != null) extensionGroups.add(group);
+        }
+        return extensionGroups;
     }
 
     protected List<DateRange> parseDateRanges(ParameterList params) {

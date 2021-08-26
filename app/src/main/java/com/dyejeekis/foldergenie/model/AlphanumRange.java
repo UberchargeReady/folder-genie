@@ -2,6 +2,8 @@ package com.dyejeekis.foldergenie.model;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.util.GeneralUtil;
+
 import java.io.Serializable;
 import java.util.List;
 

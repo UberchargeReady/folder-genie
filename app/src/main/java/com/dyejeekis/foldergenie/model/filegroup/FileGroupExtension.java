@@ -2,25 +2,33 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.ExtensionGroup;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileGroupExtension extends FileGroup {
 
-    private final List<String> extensions;
+    private final List<ExtensionGroup> extensionGroups;
 
-    public FileGroupExtension(@NonNull List<String> extensions, boolean includeSubdirs) {
+    public FileGroupExtension(@NonNull List<ExtensionGroup> extensionGroups, boolean includeSubdirs) {
         super(includeSubdirs);
-        if (extensions.isEmpty())
-            throw new IllegalArgumentException("File group must have at least one extension to be valid");
-        this.extensions = extensions;
+        if (extensionGroups.isEmpty())
+            throw new IllegalArgumentException("File group must have at least one extension group to be valid");
+        this.extensionGroups = extensionGroups;
     }
 
-    public List<String> getExtensions() {
-        return extensions;
+    public FileGroupExtension(@NonNull ExtensionGroup extensionGroup, boolean includeSubdirs) {
+        super(includeSubdirs);
+        this.extensionGroups = new ArrayList<>();
+        extensionGroups.add(extensionGroup);
+    }
+
+    public List<ExtensionGroup> getExtensionGroups() {
+        return extensionGroups;
     }
 
     @Override
@@ -28,7 +36,9 @@ public class FileGroupExtension extends FileGroup {
         FileFilter filter = file -> {
             try {
                 String extension = GeneralUtil.getFileExtension(file);
-                return getExtensions().contains(extension);
+                for (ExtensionGroup group : getExtensionGroups()) {
+                    if (group.contains(extension)) return true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,7 +51,7 @@ public class FileGroupExtension extends FileGroup {
     @NonNull
     @Override
     public String toString() {
-        return "Files with extensions " + GeneralUtil.listToString(getExtensions(), ",");
+        return "Files with extensions " + GeneralUtil.listToString(getExtensionGroups(), ",");
     }
 
     @Override
