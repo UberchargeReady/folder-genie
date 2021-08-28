@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class FileGroupVideo extends FileGroupExtension {
 
-    public static String[] VIDEO_EXTENSIONS = {
+    public static String[] EXTENSIONS = {
             "mp4",
             "mov",
             "avi",
@@ -23,7 +23,7 @@ public class FileGroupVideo extends FileGroupExtension {
     };
 
     public FileGroupVideo(boolean includeSubdirs) {
-        super(new ExtensionGroup(Arrays.asList(VIDEO_EXTENSIONS)), includeSubdirs);
+        super(new ExtensionGroup(Arrays.asList(EXTENSIONS)), includeSubdirs);
     }
 
     @NonNull

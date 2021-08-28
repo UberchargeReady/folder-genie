@@ -37,10 +37,10 @@ public abstract class SortMethod implements Serializable {
         if (addToArchive() || addToFilename()) {
             String s = " (";
             if (addToArchive()) {
-                s = s.concat("use archives");
+                s = s.concat("use archives"); // TODO: 8/28/2021 change description
                 if (addToFilename()) s = s.concat(", ");
             }
-            if (addToFilename()) s = s.concat("include in filename");
+            if (addToFilename()) s = s.concat("include in filename"); // TODO: 8/28/2021 change description
             s = s.concat(")");
             return s;
         }

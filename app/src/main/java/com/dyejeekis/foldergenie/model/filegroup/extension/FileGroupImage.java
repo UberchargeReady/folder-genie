@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class FileGroupImage extends FileGroupExtension {
 
-    public static String[] IMAGE_EXTENSIONS = {
+    public static String[] EXTENSIONS = {
             "tif", "tiff",
             "bmp",
             "jpg", "jpeg",
@@ -20,7 +20,7 @@ public class FileGroupImage extends FileGroupExtension {
     };
 
     public FileGroupImage(boolean includeSubdirs) {
-        super(new ExtensionGroup(Arrays.asList(IMAGE_EXTENSIONS)), includeSubdirs);
+        super(new ExtensionGroup(Arrays.asList(EXTENSIONS)), includeSubdirs);
     }
 
     @NonNull

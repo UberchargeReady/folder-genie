@@ -1,15 +1,16 @@
-package com.dyejeekis.foldergenie.model.sortmethod;
+package com.dyejeekis.foldergenie.model.sortmethod.date;
 
 import androidx.annotation.NonNull;
 
-import com.dyejeekis.foldergenie.util.GeneralUtil;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 
 import java.io.File;
 import java.util.Calendar;
 
-public class SortMethodMonth extends SortMethod {
+public class SortMethodYear extends SortMethod {
 
-    public SortMethodMonth(boolean addToArchive, boolean addToFilename) {
+    public SortMethodYear(boolean addToArchive, boolean addToFilename) {
         super(addToArchive, addToFilename);
     }
 
@@ -22,18 +23,19 @@ public class SortMethodMonth extends SortMethod {
     public String getDirName(File file) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(file.lastModified());
-        return GeneralUtil.getMonthString(cal.get(Calendar.MONTH) + 1);
+        return String.valueOf(cal.get(Calendar.YEAR));
     }
 
     @Override
     public SortMethodType getType() {
-        return SortMethodType.MONTH;
+        return SortMethodType.YEAR;
     }
 
     @NonNull
     @Override
     public String toString() {
-        String s = "Sort in folders based on month";
+        String s = "Sort in folders based on year";
         return s + super.toString();
     }
+
 }

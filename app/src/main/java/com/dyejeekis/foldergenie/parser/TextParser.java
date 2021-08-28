@@ -173,21 +173,22 @@ public abstract class TextParser {
                     String[] strings = groupStr.split(PARAMETER_SELECT_SEPARATOR);
                     List<String> extensions = new ArrayList<>();
                     for (String s : strings) {
-                        extensions.add(s.trim());
+                        s = s.trim();
+                        if (!s.isEmpty()) extensions.add(s);
                     }
                     group = new ExtensionGroup(extensions);
                     break;
                 case PARAMETER_AUDIO:
-                    group = new ExtensionGroup(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
+                    group = new ExtensionGroup(Arrays.asList(FileGroupAudio.EXTENSIONS));
                     break;
                 case PARAMETER_VIDEO:
-                    group = new ExtensionGroup(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
+                    group = new ExtensionGroup(Arrays.asList(FileGroupVideo.EXTENSIONS));
                     break;
                 case PARAMETER_IMAGE:
-                    group = new ExtensionGroup(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
+                    group = new ExtensionGroup(Arrays.asList(FileGroupImage.EXTENSIONS));
                     break;
                 case PARAMETER_DOCUMENT:
-                    group = new ExtensionGroup(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
+                    group = new ExtensionGroup(Arrays.asList(FileGroupDocument.EXTENSIONS));
                     break;
             }
             if (group != null) extensionGroups.add(group);

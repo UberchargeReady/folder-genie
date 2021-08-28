@@ -6,7 +6,9 @@ import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExtensionGroup extends ArrayList<String> implements Serializable {
 
@@ -21,13 +23,19 @@ public class ExtensionGroup extends ArrayList<String> implements Serializable {
         this.addAll(extensions);
     }
 
-    public boolean overlapsWith(ExtensionGroup extensionGroup) {
-        // TODO: 8/9/2021
+    public boolean overlapsWith(ExtensionGroup group) {
+        for (String s : group) {
+            if (this.contains(s)) return true;
+        }
         return false;
     }
 
     public static boolean groupsOverlap(List<ExtensionGroup> groups) {
-        // TODO: 8/25/2021
+        for (int i = 0; i < groups.size(); i++) {
+            for (int j = i+1; j < groups.size(); j++) {
+                if (groups.get(i).overlapsWith(groups.get(j))) return true;
+            }
+        }
         return false;
     }
 
@@ -38,9 +46,9 @@ public class ExtensionGroup extends ArrayList<String> implements Serializable {
         return true;
     }
 
-    private boolean containsDuplicates(List<String> extensions) {
-        // TODO: 8/8/2021
-        return false;
+    private boolean containsDuplicates(List<String> list) {
+        Set<String> set = new HashSet<>(list);
+        return set.size() < list.size();
     }
 
     @NonNull

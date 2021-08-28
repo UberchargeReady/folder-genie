@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class FileGroupDocument extends FileGroupExtension {
 
-    public static String[] DOCUMENT_EXTENSIONS = {
+    public static String[] EXTENSIONS = {
             "doc", "docx",
             "html", "htm",
             "odt",
@@ -22,7 +22,7 @@ public class FileGroupDocument extends FileGroupExtension {
     };
 
     public FileGroupDocument(boolean includeSubdirs) {
-        super(new ExtensionGroup(Arrays.asList(DOCUMENT_EXTENSIONS)), includeSubdirs);
+        super(new ExtensionGroup(Arrays.asList(EXTENSIONS)), includeSubdirs);
     }
 
     @NonNull

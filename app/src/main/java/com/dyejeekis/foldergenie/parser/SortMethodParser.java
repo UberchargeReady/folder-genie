@@ -1,16 +1,21 @@
 package com.dyejeekis.foldergenie.parser;
 
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodMonth;
+import com.dyejeekis.foldergenie.model.sortmethod.date.SortMethodMonth;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodName;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodDate;
+import com.dyejeekis.foldergenie.model.sortmethod.date.SortMethodDate;
+import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodAudio;
+import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodDocument;
 import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodExtension;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodFolder;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodImageRes;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSize;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodSplit;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
-import com.dyejeekis.foldergenie.model.sortmethod.SortMethodYear;
+import com.dyejeekis.foldergenie.model.sortmethod.date.SortMethodYear;
+import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodFiletype;
+import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodImage;
+import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodVideo;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -136,6 +141,21 @@ public class SortMethodParser extends TextParser {
                     break;
                 case EXTENSION:
                     sortMethod = new SortMethodExtension(parseExtensionGroups(params), addToArchive, addToFilename);
+                    break;
+                case AUDIO:
+                    sortMethod = new SortMethodAudio(addToArchive, addToFilename);
+                    break;
+                case VIDEO:
+                    sortMethod = new SortMethodVideo(addToArchive, addToFilename);
+                    break;
+                case IMAGE:
+                    sortMethod = new SortMethodImage(addToArchive, addToFilename);
+                    break;
+                case DOCUMENT:
+                    sortMethod = new SortMethodDocument(addToArchive, addToFilename);
+                    break;
+                case FILETYPE:
+                    sortMethod = new SortMethodFiletype(addToArchive, addToFilename);
                     break;
                 case NAME:
                     sortMethod = new SortMethodName(parseAlphanumRanges(params), addToArchive, addToFilename);

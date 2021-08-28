@@ -1,8 +1,10 @@
-package com.dyejeekis.foldergenie.model.sortmethod;
+package com.dyejeekis.foldergenie.model.sortmethod.date;
 
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.DateRange;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;

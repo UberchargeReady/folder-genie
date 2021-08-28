@@ -45,14 +45,6 @@ public class FolderSort extends FolderOperation {
         return sortMethods;
     }
 
-    // rename each sorted file based on sort method (ignore for alphanumeric sorting?)
-    public boolean renameFiles() {
-        for (SortMethod sortMethod : this.sortMethods) {
-            if (sortMethod.addToFilename()) return true;
-        }
-        return false;
-    }
-
     @Override
     public String getTag() {
         return TAG;
@@ -90,6 +82,7 @@ public class FolderSort extends FolderOperation {
                 // move (rename) file to new directory
                 File newPath = new File(targetDir.getAbsolutePath() + File.separator +
                         f.getName());
+                if (newPath.getAbsolutePath().equals(f.getAbsolutePath())) continue;
                 boolean success = GeneralUtil.rename(f, newPath);
 
                 message = success ? "Moved " : "Failed to move ";
@@ -116,8 +109,7 @@ public class FolderSort extends FolderOperation {
         File[] filegroupFiles = fileGroup.listFiles(rootDir);
         int filegroupCount = filegroupFiles == null ? 0 : filegroupFiles.length;
         String s = "Root directory: " + rootDir.getAbsolutePath() + "\nTarget file group: " +
-                fileGroup.toString() + " (" + filegroupCount + ")\nRename files: " + renameFiles()
-                + "\nSort methods: ";
+                fileGroup.toString() + " (" + filegroupCount + ")\nSort methods: ";
         for (int i=0; i<sortMethods.size(); i++) {
             s = s.concat(sortMethods.get(i).toString());
             if (i < sortMethods.size()-1) s = s.concat(" -THEN- ");

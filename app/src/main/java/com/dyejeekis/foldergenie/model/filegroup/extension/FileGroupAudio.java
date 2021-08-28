@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class FileGroupAudio extends FileGroupExtension {
 
-    public static String[] AUDIO_EXTENSIONS = {
+    public static String[] EXTENSIONS = {
             "pcm",
             "wav",
             "aiff",
@@ -22,7 +22,7 @@ public class FileGroupAudio extends FileGroupExtension {
     };
 
     public FileGroupAudio(boolean includeSubdirs) {
-        super(new ExtensionGroup(Arrays.asList(AUDIO_EXTENSIONS)), includeSubdirs);
+        super(new ExtensionGroup(Arrays.asList(EXTENSIONS)), includeSubdirs);
     }
 
     @NonNull

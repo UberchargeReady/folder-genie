@@ -36,10 +36,10 @@ public class FolderGenerate extends FolderOperation {
 
     public static List<String> getCompleteExtensionsList() {
         List<String> extensions = new ArrayList<>();
-        extensions.addAll(Arrays.asList(FileGroupImage.IMAGE_EXTENSIONS));
-        extensions.addAll(Arrays.asList(FileGroupVideo.VIDEO_EXTENSIONS));
-        extensions.addAll(Arrays.asList(FileGroupAudio.AUDIO_EXTENSIONS));
-        extensions.addAll(Arrays.asList(FileGroupDocument.DOCUMENT_EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupImage.EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupVideo.EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupAudio.EXTENSIONS));
+        extensions.addAll(Arrays.asList(FileGroupDocument.EXTENSIONS));
         return extensions;
     }
 

@@ -8,6 +8,7 @@ import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SortMethodExtension extends SortMethod {
