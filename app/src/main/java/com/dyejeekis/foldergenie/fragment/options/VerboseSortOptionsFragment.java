@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.fragment;
+package com.dyejeekis.foldergenie.fragment.options;
 
 import android.content.Intent;
 import android.net.Uri;

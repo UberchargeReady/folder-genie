@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.dyejeekis.foldergenie.R;
-import com.dyejeekis.foldergenie.fragment.OperationProgressFragment;
+import com.dyejeekis.foldergenie.fragment.progress.OperationProgressFragment;
 import com.dyejeekis.foldergenie.model.operation.FolderClear;
 import com.dyejeekis.foldergenie.model.operation.FolderFlatten;
 import com.dyejeekis.foldergenie.model.operation.FolderGenerate;

@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.fragment;
+package com.dyejeekis.foldergenie.fragment.progress;
 
 import android.os.Bundle;
 

@@ -1,10 +1,12 @@
-package com.dyejeekis.foldergenie.fragment;
+package com.dyejeekis.foldergenie.fragment.options;
 
 import android.os.Bundle;
 
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.fragment.BaseFragment;
+import com.dyejeekis.foldergenie.fragment.progress.OperationProgressFragment;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.operation.FolderSort;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;

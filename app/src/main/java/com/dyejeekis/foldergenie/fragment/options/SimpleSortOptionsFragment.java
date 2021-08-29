@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.fragment;
+package com.dyejeekis.foldergenie.fragment.options;
 
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;

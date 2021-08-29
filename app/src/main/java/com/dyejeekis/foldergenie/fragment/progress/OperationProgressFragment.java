@@ -1,4 +1,4 @@
-package com.dyejeekis.foldergenie.fragment;
+package com.dyejeekis.foldergenie.fragment.progress;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.view.Menu;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.fragment.BaseFragment;
 import com.dyejeekis.foldergenie.model.operation.FolderOperation;
 import com.dyejeekis.foldergenie.service.GenieService;
 import com.dyejeekis.foldergenie.service.ServiceResultReceiver;

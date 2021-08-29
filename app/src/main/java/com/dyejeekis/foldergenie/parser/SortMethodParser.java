@@ -44,10 +44,6 @@ public class SortMethodParser extends TextParser {
         this.sortMethodWrappers = parseSortMethodWrappers();
     }
 
-    public List<SortMethodWrapper> getSortMethodWrappers() {
-        return sortMethodWrappers;
-    }
-
     private List<SortMethodWrapper> parseSortMethodWrappers() {
         List<SortMethodWrapper> wrappers = new ArrayList<>();
         String[] strings = input.split(SORT_METHOD_SEPARATOR);
@@ -84,7 +80,7 @@ public class SortMethodParser extends TextParser {
     }
 
     private boolean isValidParam(String param, SortMethodType type) {
-        if (param.equals(PARAMETER_ADD_TO_ARCHIVE) || param.equals(PARAMETER_ADD_TO_FILENAME))
+        if (param.equals(PARAMETER_ADD_TO_ARCHIVE) /*|| param.equals(PARAMETER_ADD_TO_FILENAME)*/)
             return true;
         switch (type) {
             case SPLIT:
