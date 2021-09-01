@@ -3,6 +3,7 @@ package com.dyejeekis.foldergenie.model.filegroup;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.AlphanumRange;
+import com.dyejeekis.foldergenie.model.RangeOverlapException;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class FileGroupName extends FileGroup {
         if (alphanumRanges.isEmpty())
             throw new IllegalArgumentException("File group must have at least one alphanumeric range to be valid");
         if (AlphanumRange.rangesOverlap(alphanumRanges))
-            throw new IllegalArgumentException("Overlap detected in selected alphanumeric ranges");
+            throw new RangeOverlapException("Overlap detected in selected alphanumeric ranges");
         this.alphanumRanges = alphanumRanges;
     }
 

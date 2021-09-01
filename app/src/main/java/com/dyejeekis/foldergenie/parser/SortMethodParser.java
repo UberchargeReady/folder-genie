@@ -44,6 +44,10 @@ public class SortMethodParser extends TextParser {
         this.sortMethodWrappers = parseSortMethodWrappers();
     }
 
+    public List<SortMethodWrapper> getSortMethodWrappers() {
+        return sortMethodWrappers;
+    }
+
     private List<SortMethodWrapper> parseSortMethodWrappers() {
         List<SortMethodWrapper> wrappers = new ArrayList<>();
         String[] strings = input.split(SORT_METHOD_SEPARATOR);
@@ -117,16 +121,12 @@ public class SortMethodParser extends TextParser {
             final boolean addToFilename = params.contains(PARAMETER_ADD_TO_FILENAME);
             switch (sortMethodWrapper.sortMethodType) {
                 case SPLIT:
-                    if (params.size() == 0) throw new InvalidParameterException("Missing -"
-                            + PARAMETER_FILECOUNT + " parameter");
                     int filecount = params.getIntParamValueSafe(PARAMETER_FILECOUNT);
                     if (filecount == -1) throw new IllegalArgumentException("Error parsing -"
                             + PARAMETER_FILECOUNT + " parameter value");
                     sortMethod = new SortMethodSplit(filecount, addToArchive, addToFilename);
                     break;
                 case FOLDER:
-                    if (params.size() == 0) throw new InvalidParameterException("Missing -"
-                            + PARAMETER_NAME + " parameter");
                     String name = params.getStringParamValueSafe(PARAMETER_NAME);
                     if (name == null) throw new IllegalArgumentException("Error parsing -"
                             + PARAMETER_NAME + " parameter value");

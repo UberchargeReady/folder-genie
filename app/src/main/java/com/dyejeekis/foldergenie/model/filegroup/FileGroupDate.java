@@ -3,6 +3,7 @@ package com.dyejeekis.foldergenie.model.filegroup;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.DateRange;
+import com.dyejeekis.foldergenie.model.RangeOverlapException;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class FileGroupDate extends FileGroup {
         if (dateRanges.isEmpty())
             throw new IllegalArgumentException("File group must have at least one date range to be valid");
         if (DateRange.rangesOverlap(dateRanges))
-            throw new IllegalArgumentException("Overlap detected in selected size ranges");
+            throw new RangeOverlapException("Overlap detected in selected size ranges");
         this.dateRanges = dateRanges;
     }
 

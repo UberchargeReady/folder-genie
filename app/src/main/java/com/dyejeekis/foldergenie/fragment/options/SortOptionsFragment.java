@@ -1,10 +1,12 @@
 package com.dyejeekis.foldergenie.fragment.options;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.fragment.BaseFragment;
 import com.dyejeekis.foldergenie.fragment.progress.OperationProgressFragment;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
@@ -26,9 +28,12 @@ public abstract class SortOptionsFragment extends BaseFragment {
     protected abstract void highlightInvalidInputs();
 
     protected String getFolderSortInfo() {
-        if (folderSort == null)
-            return "Invalid/incomplete inputs\n\n" + exception.toString();
-        else return folderSort.toString();
+        if (checkPermissions()) {
+            if (folderSort == null)
+                return "Invalid/incomplete inputs\n\n" + exception.toString();
+            else return folderSort.toString();
+        }
+        return null;
     }
 
     protected void updateFolderSort() {
@@ -45,9 +50,23 @@ public abstract class SortOptionsFragment extends BaseFragment {
     }
 
     protected void startFolderSort() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(OperationProgressFragment.KEY_FOLDER_OPERATION, folderSort);
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_beginSortVerbose, bundle);
+        if (checkPermissions()) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(OperationProgressFragment.KEY_FOLDER_OPERATION, folderSort);
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_beginSortVerbose, bundle);
+        }
+    }
+
+    protected void saveSortPreset() {
+        // TODO: 9/1/2021
+        Toast.makeText(getContext(), "TODO", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean checkPermissions() {
+        if (getActivity() instanceof MainActivity) {
+            return ((MainActivity) getActivity()).checkPermissions(false);
+        }
+        return true;
     }
 }

@@ -2,6 +2,7 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.RangeOverlapException;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 import com.dyejeekis.foldergenie.model.SizeRange;
 
@@ -17,7 +18,7 @@ public class SortMethodSize extends SortMethod {
         if (sizeRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one size range to be valid");
         if (SizeRange.rangesOverlap(sizeRanges))
-            throw new IllegalArgumentException("Overlap detected in selected size ranges");
+            throw new RangeOverlapException("Overlap detected in selected size ranges");
         this.sizeRanges = sizeRanges;
     }
 

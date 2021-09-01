@@ -81,10 +81,12 @@ public class MainActivity extends BaseActivity {
             // TODO: 6/6/2021
             return true;
         } else if (id == R.id.action_grant_permissions) {
-            checkPermissions();
+            checkPermissions(true);
             return true;
         } else if (id == R.id.action_generate_test_files) {
-            generateTestFiles();
+            if (checkPermissions(false)) {
+                generateTestFiles();
+            }
             return true;
         } else if (id == R.id.action_help) {
             showHelpDialog();
@@ -97,7 +99,10 @@ public class MainActivity extends BaseActivity {
         } else if (id == R.id.action_flatten_dir_tree) {
             flattenDirTree();
         } else if (id == R.id.action_clear_empty_dirs) {
-            clearEmptyDirs();
+            if (checkPermissions(false)) {
+                clearEmptyDirs();
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -156,14 +161,17 @@ public class MainActivity extends BaseActivity {
 
     private void showSortPresetsDialog() {
         // TODO: 7/25/2021
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
     }
 
     private void showHelpDialog() {
         // TODO: 7/25/2021
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
     }
 
     private void showInfoDialog() {
         // TODO: 6/6/2021
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
     }
 
     private void flattenDirTree() {
@@ -210,10 +218,13 @@ public class MainActivity extends BaseActivity {
                 }
             });
 
-    private void checkPermissions() {
+    public boolean checkPermissions(boolean inform) {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show();
-        } else requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (inform) Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return false;
     }
 }

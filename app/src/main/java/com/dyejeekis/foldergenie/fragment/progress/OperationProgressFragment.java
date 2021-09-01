@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.view.Menu;
 
 import com.dyejeekis.foldergenie.R;
+import com.dyejeekis.foldergenie.activity.MainActivity;
 import com.dyejeekis.foldergenie.fragment.BaseFragment;
 import com.dyejeekis.foldergenie.model.operation.FolderOperation;
 import com.dyejeekis.foldergenie.service.GenieService;

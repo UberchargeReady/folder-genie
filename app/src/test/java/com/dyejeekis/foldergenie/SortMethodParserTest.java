@@ -1,12 +1,24 @@
 package com.dyejeekis.foldergenie;
 
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
+import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
+import com.dyejeekis.foldergenie.parser.SortMethodParser;
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.*;
+
+import java.io.File;
+import java.security.InvalidParameterException;
+import java.util.List;
 
 public class SortMethodParserTest {
 
     static final String INPUT_FOLDER_VALID_1 = "folder -name sample name";
     static final String INPUT_FOLDER_VALID_2 = "folder -name   test -archive";
-    static final String INPUT_FOLDER_INVALID_1 = "folder";
+    static final String INPUT_FOLDER_INVALID_1 = "folder -archive";
     static final String INPUT_FOLDER_INVALID_2 = "folder - name test";
 
     static final String INPUT_SPLIT_VALID_1 = "split -filecount 20";
@@ -39,9 +51,40 @@ public class SortMethodParserTest {
     static final String INPUT_IMAGE_RES_INVALID_1 = "";
     static final String INPUT_IMAGE_RES_INVALID_2 = "";
 
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
     @Test
     public void testSortMethodFolder() {
-        // TODO: 8/23/2021
+        List<SortMethodParser.SortMethodWrapper> wrappers;
+        List<SortMethod> sortMethods;
+        SortMethodParser parser = new SortMethodParser(INPUT_FOLDER_VALID_1);
+        wrappers = parser.getSortMethodWrappers();
+        assertEquals(wrappers.size(), 1);
+        assertEquals(wrappers.get(0).sortMethodType, SortMethodType.FOLDER);
+        assertEquals(wrappers.get(0).parameters.get(0), "-name sample name");
+        sortMethods = parser.getSortMethods();
+        assertEquals(sortMethods.get(0).getDirName(new File("test.jpg")), "sample name");
+
+        parser = new SortMethodParser(INPUT_FOLDER_VALID_2);
+        wrappers = parser.getSortMethodWrappers();
+        assertEquals(wrappers.size(), 1);
+        assertEquals(wrappers.get(0).sortMethodType, SortMethodType.FOLDER);
+        assertEquals(wrappers.get(0).parameters.get(0), "-name   test ");
+        assertEquals(wrappers.get(0).parameters.get(1), "-archive");
+        sortMethods = parser.getSortMethods();
+        assertEquals(sortMethods.get(0).getDirName(new File("test.jpg")), "test");
+        assertTrue(sortMethods.get(0).addToArchive());
+
+        parser = new SortMethodParser(INPUT_FOLDER_INVALID_1);
+        wrappers = parser.getSortMethodWrappers();
+        assertEquals(wrappers.get(0).sortMethodType, SortMethodType.FOLDER);
+        assertEquals(wrappers.get(0).parameters.get(0), "-archive");
+        exception.expect(IllegalArgumentException.class);
+        parser.getSortMethods();
+
+        exception.expect(InvalidParameterException.class);
+        new SortMethodParser(INPUT_FOLDER_INVALID_2);
     }
 
     @Test

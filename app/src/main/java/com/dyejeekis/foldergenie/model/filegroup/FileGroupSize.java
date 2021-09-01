@@ -2,6 +2,7 @@ package com.dyejeekis.foldergenie.model.filegroup;
 
 import androidx.annotation.NonNull;
 
+import com.dyejeekis.foldergenie.model.RangeOverlapException;
 import com.dyejeekis.foldergenie.model.SizeRange;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
@@ -18,7 +19,7 @@ public class FileGroupSize extends FileGroup {
         if (sizeRanges.isEmpty())
             throw new IllegalArgumentException("File group must have at least one size range to be valid");
         if (SizeRange.rangesOverlap(sizeRanges))
-            throw new IllegalArgumentException("Overlap detected in selected size ranges");
+            throw new RangeOverlapException("Overlap detected in selected size ranges");
         this.sizeRanges = sizeRanges;
     }
 

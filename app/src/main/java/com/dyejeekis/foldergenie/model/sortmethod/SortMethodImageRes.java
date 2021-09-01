@@ -9,6 +9,7 @@ public class SortMethodImageRes extends SortMethod {
 
     @Override
     public String getDirName(File file) {
+        // TODO: 9/1/2021
         return null;
     }
 

@@ -1,6 +1,8 @@
 package com.dyejeekis.foldergenie;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class FileGroupParserTest {
 
@@ -28,6 +30,9 @@ public class FileGroupParserTest {
     static final String INPUT_EXTENSION_VALID_2 = "";
     static final String INPUT_EXTENSION_INVALID_1 = "";
     static final String INPUT_EXTENSION_INVALID_2 = "";
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testFileGroupAll() {
