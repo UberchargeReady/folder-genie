@@ -3,7 +3,7 @@ package com.dyejeekis.foldergenie.model.sortmethod;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.AlphanumRange;
-import com.dyejeekis.foldergenie.model.RangeOverlapException;
+import com.dyejeekis.foldergenie.model.OverlappingElementsException;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
@@ -19,7 +19,7 @@ public class SortMethodName extends SortMethod {
         if (alphanumRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one alphanumeric range to be valid");
         if (AlphanumRange.rangesOverlap(alphanumRanges))
-            throw new RangeOverlapException("Overlap detected in selected alphanumeric ranges");
+            throw new OverlappingElementsException("Overlap detected in selected alphanumeric ranges");
         this.alphanumRanges = alphanumRanges;
     }
 

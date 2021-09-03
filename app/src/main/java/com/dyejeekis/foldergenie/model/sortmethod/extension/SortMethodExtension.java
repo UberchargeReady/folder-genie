@@ -3,12 +3,12 @@ package com.dyejeekis.foldergenie.model.sortmethod.extension;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.ExtensionGroup;
+import com.dyejeekis.foldergenie.model.OverlappingElementsException;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SortMethodExtension extends SortMethod {
@@ -21,7 +21,7 @@ public class SortMethodExtension extends SortMethod {
         if (extensionGroups.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one extension group to be valid");
         if (ExtensionGroup.groupsOverlap(extensionGroups))
-            throw new IllegalArgumentException("Overlap detected in selected extension groups");
+            throw new OverlappingElementsException("Overlap detected in selected extension groups");
         this.extensionGroups = extensionGroups;
     }
 
