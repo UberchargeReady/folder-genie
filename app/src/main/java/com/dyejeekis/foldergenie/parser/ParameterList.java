@@ -2,7 +2,6 @@ package com.dyejeekis.foldergenie.parser;
 
 import androidx.annotation.Nullable;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +40,11 @@ public class ParameterList extends ArrayList<String> {
             throw new InvalidParameterException("Illegal attempt to add a unique parameter twice: " + paramString);
     }
 
+    private void valueCheck(String paramString) {
+        if (!paramString.contains(" "))
+            throw new IllegalArgumentException("Parameter doesn't have a value");
+    }
+
     public List<String> getUniqueParams() {
         return uniqueParams;
     }
@@ -72,6 +76,7 @@ public class ParameterList extends ArrayList<String> {
 
     public int getIntParamValue(String param, int index) {
         String s = get(index);
+        valueCheck(s);
         return Integer.parseInt(s.substring(param.length() + 1).trim());
     }
 
@@ -99,6 +104,7 @@ public class ParameterList extends ArrayList<String> {
 
     public long getLongParamValue(String param, int index) {
         String s = get(index);
+        valueCheck(s);
         return Long.parseLong(s.substring(param.length() + 1).trim());
     }
 
@@ -126,6 +132,7 @@ public class ParameterList extends ArrayList<String> {
 
     public String getStringParamValue(String param, int index) {
         String s = get(index);
+        valueCheck(s);
         return s.substring(param.length() + 1).trim();
     }
 

@@ -12,7 +12,6 @@ import com.dyejeekis.foldergenie.model.filegroup.FileGroupSize;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
 import com.dyejeekis.foldergenie.model.filegroup.extension.FileGroupVideo;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 public class FileGroupParser extends TextParser {
@@ -68,7 +67,8 @@ public class FileGroupParser extends TextParser {
             return true;
         switch (fileGroupType) {
             case SIZE:
-                return param.equals(PARAMETER_MIN) || param.equals(PARAMETER_MAX);
+                return param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_MIN)
+                        || param.equals(PARAMETER_MAX);
             case NAME:
                 return param.equals(PARAMETER_FROM) || param.equals(PARAMETER_TO)
                         || param.equals(PARAMETER_RANGE) || param.equals(PARAMETER_CASE_SENSITIVE);

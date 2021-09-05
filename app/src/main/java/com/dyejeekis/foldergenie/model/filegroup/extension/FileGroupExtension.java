@@ -3,6 +3,7 @@ package com.dyejeekis.foldergenie.model.filegroup.extension;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.ExtensionGroup;
+import com.dyejeekis.foldergenie.model.OverlappingElementsException;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroup;
 import com.dyejeekis.foldergenie.model.filegroup.FileGroupType;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
@@ -20,6 +21,8 @@ public class FileGroupExtension extends FileGroup {
         super(includeSubdirs);
         if (extensionGroups.isEmpty())
             throw new IllegalArgumentException("File group must have at least one extension group to be valid");
+        if (ExtensionGroup.groupsOverlap(extensionGroups))
+            throw new OverlappingElementsException("Overlap detected in selected extension groups");
         this.extensionGroups = extensionGroups;
     }
 

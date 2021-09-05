@@ -3,6 +3,7 @@ package com.dyejeekis.foldergenie.model.sortmethod.date;
 import androidx.annotation.NonNull;
 
 import com.dyejeekis.foldergenie.model.DateRange;
+import com.dyejeekis.foldergenie.model.OverlappingElementsException;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethod;
 import com.dyejeekis.foldergenie.model.sortmethod.SortMethodType;
 import com.dyejeekis.foldergenie.util.GeneralUtil;
@@ -19,7 +20,7 @@ public class SortMethodDate extends SortMethod {
         if (dateRanges.isEmpty())
             throw new IllegalArgumentException("Sort method must have at least one date range to be valid");
         if (DateRange.rangesOverlap(dateRanges))
-            throw new IllegalArgumentException("Overlap detected in selected size ranges");
+            throw new OverlappingElementsException("Overlap detected in selected size ranges");
         this.dateRanges = dateRanges;
     }
 

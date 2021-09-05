@@ -17,7 +17,6 @@ import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodFiletype;
 import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodImage;
 import com.dyejeekis.foldergenie.model.sortmethod.extension.SortMethodVideo;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
