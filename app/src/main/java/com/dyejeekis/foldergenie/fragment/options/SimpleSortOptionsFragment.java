@@ -30,8 +30,4 @@ public class SimpleSortOptionsFragment extends SortOptionsFragment {
         return false;
     }
 
-    @Override
-    protected void highlightInvalidInputs() {
-
-    }
 }

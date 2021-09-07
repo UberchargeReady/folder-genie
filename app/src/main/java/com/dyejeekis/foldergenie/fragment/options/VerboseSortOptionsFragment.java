@@ -47,33 +47,50 @@ public class VerboseSortOptionsFragment extends SortOptionsFragment {
                 if (result.getData() != null) {
                     Uri treeUri = result.getData().getData();
                     File file = new File(FileUtil.getFullPathFromTreeUri(treeUri, getActivity()));
-                    binding.textViewSelectedDir.setText(file.getAbsolutePath());
+                    selectedDir = file.getAbsolutePath();
+                    binding.textViewSelectedDir.setText(selectedDir);
                 }
             });
         });
 
         binding.buttonCheckSortParameters.setOnClickListener(v -> {
             GeneralUtil.hideKeyboard(getActivity());
-            updateFolderSort();
-            String sortInfo = getFolderSortInfo();
-            if (sortInfo != null) {
+            if (checkPermissions()) {
+                updateFolderSort();
+                String sortInfo = getFolderSortInfo();
                 binding.textViewSortInfo.setText(sortInfo);
                 binding.buttonSaveSortPreset.setEnabled(folderSort != null);
                 binding.buttonBeginSort.setEnabled(folderSort != null);
             }
         });
 
-        binding.buttonSaveSortPreset.setEnabled(false);
+        binding.buttonSaveSortPreset.setEnabled(folderSort != null);
         binding.buttonSaveSortPreset.setOnClickListener(v -> {
             saveSortPreset();
         });
 
         binding.textViewSortInfo.setMovementMethod(new ScrollingMovementMethod());
 
-        binding.buttonBeginSort.setEnabled(false);
+        binding.buttonBeginSort.setEnabled(folderSort != null);
         binding.buttonBeginSort.setOnClickListener(v -> {
             startFolderSort();
         });
+
+        if (selectedDir != null)
+            binding.textViewSelectedDir.setText(selectedDir);
+        else if (folderSort != null)
+            binding.textViewSelectedDir.setText(folderSort.getRootDir().getAbsolutePath());
+        if (folderSort != null || exception != null)
+            binding.textViewSortInfo.setText(getFolderSortInfo());
+    }
+
+    private String getFolderSortInfo() {
+        if (folderSort == null) {
+            String s = "Invalid/incomplete inputs";
+            if (exception != null) s = s.concat("\n\n" + exception.toString());
+            return s;
+        }
+        return "Current sort options:\n" + folderSort.toString();
     }
 
     @Override
@@ -84,7 +101,12 @@ public class VerboseSortOptionsFragment extends SortOptionsFragment {
 
     @Override
     protected File getDirectory() {
-        return new File(binding.textViewSelectedDir.getText().toString());
+        selectedDir = binding.textViewSelectedDir.getText().toString();
+        if (selectedDir.equals(getString(R.string.label_select_folder))) {
+            selectedDir = null;
+            return null;
+        }
+        return new File(selectedDir);
     }
 
     @Override
@@ -101,15 +123,9 @@ public class VerboseSortOptionsFragment extends SortOptionsFragment {
 
     @Override
     protected boolean validateInputs() {
-        // TODO: 7/8/2021
         if (binding.textViewSelectedDir.getText().toString().equals(getString(R.string.label_select_folder)))
             throw new IllegalArgumentException("Please choose a valid directory");
         return true;
-    }
-
-    @Override
-    protected void highlightInvalidInputs() {
-        // TODO: 7/8/2021
     }
 
 }

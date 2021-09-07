@@ -3,6 +3,8 @@ package com.dyejeekis.foldergenie.fragment.options;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.dyejeekis.foldergenie.R;
@@ -18,6 +20,11 @@ import java.util.List;
 
 public abstract class SortOptionsFragment extends BaseFragment {
 
+    public static final String KEY_FOLDER_SORT = "key.FOLDER_SORT";
+    public static final String KEY_EXCEPTION = "key.EXCEPTION";
+    public static final String KEY_SELECTED_DIR = "key.SELECTED_DIR";
+
+    protected String selectedDir;
     protected FolderSort folderSort;
     protected Exception exception;
 
@@ -25,15 +32,23 @@ public abstract class SortOptionsFragment extends BaseFragment {
     protected abstract FileGroup getFileGroup();
     protected abstract List<SortMethod> getSortMethods();
     protected abstract boolean validateInputs();
-    protected abstract void highlightInvalidInputs();
 
-    protected String getFolderSortInfo() {
-        if (checkPermissions()) {
-            if (folderSort == null)
-                return "Invalid/incomplete inputs\n\n" + exception.toString();
-            else return folderSort.toString();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            selectedDir = savedInstanceState.getString(KEY_SELECTED_DIR);
+            folderSort = (FolderSort) savedInstanceState.getSerializable(KEY_FOLDER_SORT);
+            exception = (Exception) savedInstanceState.getSerializable(KEY_EXCEPTION);
         }
-        return null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_FOLDER_SORT, folderSort);
+        outState.putSerializable(KEY_EXCEPTION, exception);
+        outState.putSerializable(KEY_SELECTED_DIR, selectedDir);
     }
 
     protected void updateFolderSort() {
@@ -63,7 +78,7 @@ public abstract class SortOptionsFragment extends BaseFragment {
         Toast.makeText(getContext(), "TODO", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean checkPermissions() {
+    protected boolean checkPermissions() {
         if (getActivity() instanceof MainActivity) {
             return ((MainActivity) getActivity()).checkPermissions(false);
         }

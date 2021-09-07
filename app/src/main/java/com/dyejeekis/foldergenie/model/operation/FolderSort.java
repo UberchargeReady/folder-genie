@@ -52,7 +52,7 @@ public class FolderSort extends FolderOperation {
 
     @Override
     public boolean startOperation(Context context, ResultReceiver resultReceiver, Handler handler) {
-        String message = "Folder sort options:\n" + this.toString();
+        String message = "Sort options:\n" + this.toString() + "\n";
         Log.d(TAG, message);
         onOperationProgress(resultReceiver, message);
 
