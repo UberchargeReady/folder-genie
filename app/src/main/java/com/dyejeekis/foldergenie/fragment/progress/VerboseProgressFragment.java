@@ -15,7 +15,15 @@ import com.dyejeekis.foldergenie.databinding.FragmentProgressVerboseBinding;
 
 public class VerboseProgressFragment extends OperationProgressFragment {
 
+    public static final String KEY_PROGRESS_STRING = "key.PROGRESS_STRING";
+
     private FragmentProgressVerboseBinding binding;
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_PROGRESS_STRING, binding.textViewOperationProgress.getText().toString());
+    }
 
     @Nullable
     @Override
@@ -30,12 +38,14 @@ public class VerboseProgressFragment extends OperationProgressFragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.textViewOperationProgress.setMovementMethod(new ScrollingMovementMethod());
+        if (savedInstanceState != null) {
+            String progressString = savedInstanceState.getString(KEY_PROGRESS_STRING);
+            if (progressString != null) binding.textViewOperationProgress.setText(progressString);
+        }
 
         binding.buttonStopOperation.setOnClickListener(v -> {
             stopOperation();
         });
-
-        startOperation();
     }
 
     @Override
@@ -46,7 +56,12 @@ public class VerboseProgressFragment extends OperationProgressFragment {
 
     @Override
     protected void onOperationProgress(int progressMax, int progressCurrent, String message) {
-        binding.textViewOperationProgress.append(message);
+        if (message != null) {
+            String s = message;
+            if (progressMax > 0 && progressCurrent > 0)
+                s = "\n" + progressCurrent + "/" + progressMax + s;
+            binding.textViewOperationProgress.append(s);
+        }
     }
 
     @Override
