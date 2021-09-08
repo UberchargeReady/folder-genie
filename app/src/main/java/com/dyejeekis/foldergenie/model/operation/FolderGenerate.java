@@ -79,6 +79,8 @@ public class FolderGenerate extends FolderOperation {
         onOperationProgress(resultReceiver, message);
 
         try {
+            final int progressMax = fileCount;
+            int progressCurrent = 0;
             for (int i = 0; i < fileCount; i++) {
                 if (GenieService.folderOperationStopped()) {
                     message = "Folder generate operation cancelled";
@@ -91,6 +93,7 @@ public class FolderGenerate extends FolderOperation {
                 File file = new File(rootDir.getAbsolutePath() + File.separator + filename);
                 boolean success = file.createNewFile();
 
+                progressCurrent++;
                 if (success) {
                     file.setLastModified(getRandomTimestamp());
                     // TODO: 8/4/2021 other file properties
@@ -98,9 +101,8 @@ public class FolderGenerate extends FolderOperation {
                 } else {
                     message = "Failed to create file " + file.getAbsolutePath();
                 }
-
                 Log.d(TAG, message);
-                onOperationProgress(resultReceiver, message);
+                onOperationProgress(resultReceiver, progressMax, progressCurrent, message);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -45,7 +45,7 @@ public class VerboseProgressFragment extends OperationProgressFragment {
     }
 
     @Override
-    protected void onOperationProgress(String message) {
+    protected void onOperationProgress(int progressMax, int progressCurrent, String message) {
         binding.textViewOperationProgress.append(message);
     }
 

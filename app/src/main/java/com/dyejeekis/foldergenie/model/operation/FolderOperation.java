@@ -28,12 +28,19 @@ public abstract class FolderOperation implements Serializable {
 
     public abstract boolean startOperation(Context context, ResultReceiver resultReceiver, Handler handler);
 
-    public void onOperationProgress(ResultReceiver resultReceiver, String message) {
+    public void onOperationProgress(ResultReceiver resultReceiver, int progressMax, int progressCurrent,
+                                    String message) {
         if (resultReceiver != null) {
             Bundle bundle = new Bundle();
+            bundle.putInt(ServiceResultReceiver.KEY_PROGRESS_MAX, progressMax);
+            bundle.putInt(ServiceResultReceiver.KEY_PROGRESS_CURRENT, progressCurrent);
             bundle.putString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE, message);
             resultReceiver.send(ServiceResultReceiver.CODE_SHOW_PROGRESS, bundle);
         }
+    }
+
+    public void onOperationProgress(ResultReceiver resultReceiver, String message) {
+        onOperationProgress(resultReceiver, -1, -1, message);
     }
 
     public void onOperationProgress(Context context, Handler handler, String message, int toastLength) {

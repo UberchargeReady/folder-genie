@@ -58,6 +58,8 @@ public class FolderSort extends FolderOperation {
 
         try {
             File[] files = fileGroup.listFiles(rootDir);
+            final int progressMax = files.length;
+            int progressCurrent = 0;
             for (File f : files) {
                 if (GenieService.folderOperationStopped()) {
                     message = "Folder sort operation cancelled";
@@ -85,10 +87,11 @@ public class FolderSort extends FolderOperation {
                 if (newPath.getAbsolutePath().equals(f.getAbsolutePath())) continue;
                 boolean success = GeneralUtil.rename(f, newPath);
 
+                progressCurrent++;
                 message = success ? "Moved " : "Failed to move ";
                 message = message.concat(f.getAbsolutePath() + " to " + newPath.getAbsolutePath());
                 Log.d(TAG, message);
-                onOperationProgress(resultReceiver, message);
+                onOperationProgress(resultReceiver, progressMax, progressCurrent, message);
             }
         } catch (Exception e) {
             e.printStackTrace();

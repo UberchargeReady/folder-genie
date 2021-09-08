@@ -20,7 +20,7 @@ public abstract class OperationProgressFragment extends BaseFragment implements 
 
     public static final String KEY_FOLDER_OPERATION = "key.FOLDER_OPERATION";
 
-    protected abstract void onOperationProgress(String message);
+    protected abstract void onOperationProgress(int progressMax, int progressCurrent, String message);
     protected abstract void onOperationCompleted(boolean success);
 
     @Override
@@ -37,8 +37,7 @@ public abstract class OperationProgressFragment extends BaseFragment implements 
 
     protected void startOperation() {
         FolderOperation folderOperation = (FolderOperation) getArguments().getSerializable(KEY_FOLDER_OPERATION);
-        ServiceResultReceiver serviceResultReceiver = new ServiceResultReceiver(
-                new Handler(Looper.getMainLooper()));
+        ServiceResultReceiver serviceResultReceiver = new ServiceResultReceiver(new Handler(Looper.getMainLooper()));
         serviceResultReceiver.setReceiver(this);
         GenieService.enqueueFolderOperation(getActivity(), serviceResultReceiver, folderOperation);
     }
@@ -51,8 +50,10 @@ public abstract class OperationProgressFragment extends BaseFragment implements 
     public void onReceiveResult(int resultCode, Bundle resultData) {
         if (resultCode == ServiceResultReceiver.CODE_SHOW_PROGRESS) {
             if (resultData != null) {
+                int max = resultData.getInt(ServiceResultReceiver.KEY_PROGRESS_MAX);
+                int current = resultData.getInt(ServiceResultReceiver.KEY_PROGRESS_CURRENT);
                 String msg = "\n" + resultData.getString(ServiceResultReceiver.KEY_PROGRESS_MESSAGE);
-                onOperationProgress(msg);
+                onOperationProgress(max, current, msg);
             }
         } else if (resultCode == ServiceResultReceiver.CODE_OPERATION_COMPLETION) {
             boolean completed = resultData.getBoolean(ServiceResultReceiver.KEY_OPERATION_COMPLETED);

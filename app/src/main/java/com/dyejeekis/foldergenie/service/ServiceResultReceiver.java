@@ -10,6 +10,8 @@ public class ServiceResultReceiver extends ResultReceiver {
     public static final int CODE_OPERATION_COMPLETION = 2001;
     public static final int CODE_OPERATION_SUCCESS = 2002;
 
+    public static final String KEY_PROGRESS_CURRENT = "key.PROGRESS_CURRENT";
+    public static final String KEY_PROGRESS_MAX = "key.PROGRESS_MAX";
     public static final String KEY_PROGRESS_MESSAGE = "key.PROGRESS_MESSAGE";
     public static final String KEY_OPERATION_COMPLETED = "key.OPERATION_COMPLETED";
     public static final String KEY_OPERATION_SUCCESS = "key.OPERATION_SUCCESS";

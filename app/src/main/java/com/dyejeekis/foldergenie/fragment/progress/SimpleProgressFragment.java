@@ -10,8 +10,16 @@ import android.view.ViewGroup;
 
 import com.dyejeekis.foldergenie.R;
 
-public class SimpleProgressFragment extends Fragment {
-
+public class SimpleProgressFragment extends OperationProgressFragment {
     // TODO: 8/18/2021
 
+    @Override
+    protected void onOperationProgress(int progressMax, int progressCurrent, String message) {
+        // TODO: 9/8/2021
+    }
+
+    @Override
+    protected void onOperationCompleted(boolean success) {
+        // TODO: 9/8/2021
+    }
 }
