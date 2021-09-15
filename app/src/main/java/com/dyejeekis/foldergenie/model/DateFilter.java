@@ -115,7 +115,7 @@ public class DateFilter implements Serializable {
     public String toString() {
         // exact date
         if (isExactDate()) {
-            return day + "/" + month + "/" + year;
+            return day + "-" + month + "-" + year;
         }
         // year
         if (isYear()) {
